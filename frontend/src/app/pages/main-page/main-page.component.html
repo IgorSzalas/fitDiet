@@ -1,0 +1,27 @@
+<section>
+  <div class="main-page-container">
+    <app-card-widget
+      class="widget"
+      [widgetTitle]="'Następne danie'"
+      [widgetText]="'Pomidorowa'"
+      [widgetSubtext]="'Pozostało '"
+    >
+    </app-card-widget>
+    <app-card-widget
+      class="widget"
+      [widgetTitle]="'Następna szklanka wody'"
+      [widgetText]="'planowana za '"
+      [widgetSubtext]="'Pozostało do spożycia '"
+      [widgetImage]="'../../../assets/water-glass.jpg'"
+    >
+    </app-card-widget>
+    <app-card-widget class="widget" [widgetTitle]="'Postęp diety'">
+    </app-card-widget>
+    <app-card-widget
+      class="widget"
+      [widgetTitle]="'Następne planowane danie '"
+      [widgetText]="nextDish"
+    >
+    </app-card-widget>
+  </div>
+</section>

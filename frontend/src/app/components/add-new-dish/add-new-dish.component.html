@@ -1,0 +1,50 @@
+<div class="add-new-dish">
+  <h1 mat-dialog-title>Dodaj kolejny posiłek</h1>
+  <div mat-dialog-content>
+    <form [formGroup]="addNewDishForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>Nazwa posiłku</mat-label>
+        <input matInput formControlName="title" placeholder="Nazwa posiłku" />
+      </mat-form-field>
+
+      <mat-form-field (click)="helloInput.showPicker()">
+        <mat-label>Data i godzina posiłku</mat-label>
+        <input
+          type="datetime-local"
+          placeholder="Data i godzina posiłku"
+          matInput
+          #helloInput
+          formControlName="time"
+        />
+
+        <mat-icon matSuffix fontIcon="today" />
+      </mat-form-field>
+
+      <!-- <mat-form-field>
+        <mat-label>Wybierz datę posiłku</mat-label>
+        <input matInput [matDatepicker]="picker" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Wybierz godzinę posiłku</mat-label>
+        <input
+          matInput
+          formControlName="time"
+          type="time"
+          placeholder="start date"
+        />
+      </mat-form-field> -->
+
+  
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Anuluj</button>
+    <button mat-button cdkFocusInitial type="submit">Dodaj</button>
+  </div>
+</form>
+</div>

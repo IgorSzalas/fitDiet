@@ -1,0 +1,28 @@
+.diet-progress-page {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.user-bmi-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 2rem;
+  height: 40vh;
+}
+
+.user-weight-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 2rem;
+  height: 40vh;
+}
+
+button {
+  width: 10rem;
+  height: 5rem;
+}

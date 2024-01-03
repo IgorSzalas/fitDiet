@@ -1,0 +1,63 @@
+<div class="preferences-page">
+  <div class="containers">
+    <div class="example-container">
+      <h2>Nielubiane składniki</h2>
+      <div
+        cdkDropList
+        #fakeList="cdkDropList"
+        [cdkDropListData]="fake"
+        [cdkDropListConnectedTo]="[doneList, todoList, fakeList]"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        @for (item of fake; track item) {
+        <div class="example-box" cdkDrag>{{ item }}</div>
+        }
+      </div>
+    </div>
+
+    <div class="example-container">
+      <h2>Składniki</h2>
+      <div
+        cdkDropList
+        #todoList="cdkDropList"
+        [cdkDropListData]="todo"
+        [cdkDropListConnectedTo]="[doneList, todoList, fakeList]"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        @for (item of todo; track item) {
+        <div class="example-box" cdkDrag>{{ item }}</div>
+        }
+      </div>
+    </div>
+
+    <div class="example-container">
+      <h2>Ulubione składniki</h2>
+      <div
+        cdkDropList
+        #doneList="cdkDropList"
+        [cdkDropListData]="done"
+        [cdkDropListConnectedTo]="[doneList, todoList, fakeList]"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        @for (item of done; track item) {
+        <div class="example-box" cdkDrag>{{ item }}</div>
+        }
+      </div>
+    </div>
+    <form formGroup="preferencesForm">
+      <mat-checkbox formControlName="vegetarian" color="primary"
+        >Czy chcesz by proponowano Ci dania bez mięsa?</mat-checkbox
+      >
+      <mat-checkbox formControlName="glutenFree" color="primary"
+        >Czy chcesz by proponowano Ci dania bez glutenu?</mat-checkbox
+      >
+      <mat-checkbox formControlName="lactoseFree" color="primary"
+        >Czy chcesz by proponowano Ci dania bez laktozy?</mat-checkbox
+      >
+    </form>
+  </div>
+  <button mat-raised-button color="primary" type="submit">Zapisz</button>
+</div>

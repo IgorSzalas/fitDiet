@@ -1,0 +1,292 @@
+<mat-stepper class="register-form" linear #stepper>
+  <mat-step [stepControl]="firstFormGroup" [editable]="true">
+    <form class="form" [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Podaj swoje dane osobowe i wymiary</ng-template>
+      <mat-form-field>
+        <mat-label>Imie</mat-label>
+        <input
+          matInput
+          formControlName="firstCtrl"
+          placeholder="Last name, First name"
+          required
+        />
+        <mat-icon matSuffix>mode_edit</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Nazwisko</mat-label>
+        <input
+          matInput
+          formControlName="firstCtrl"
+          placeholder="Last name, First name"
+          required
+        />
+        <mat-icon matSuffix>mode_edit</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input
+          type="email"
+          matInput
+          formControlName="firstCtrl"
+          placeholder="Last name, First name"
+          required
+        />
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Zdjęcie profilowe</mat-label>
+        <input
+          matInput
+          (change)="uploadProfilePhoto($event)"
+          formControlName="profilePhoto"
+          placeholder="Last name, First name"
+          readonly
+        />
+        <input
+          hidden
+          multiple
+          type="file"
+          #fileWindow
+          (change)="uploadProfilePhoto($event)"
+        />
+        <button mat-icon-button matSuffix (click)="fileWindow.click()">
+          <mat-icon>attach_file</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Hasło</mat-label>
+        <input
+          type="passwordVisibility ? 'password' : 'text'"
+          matInput
+          formControlName="firstCtrl"
+          placeholder="Last name, First name"
+          required
+        />
+        <mat-icon
+          (click)="passwordVisibility = !passwordVisibility"
+          matSuffix
+          >{{ passwordVisibility ? "visibility" : "visibility_off" }}</mat-icon
+        >
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Powtórz hasło</mat-label>
+        <input
+          type="password"
+          matInput
+          formControlName="firstCtrl"
+          placeholder="Last name, First name"
+          required
+        />
+        <mat-icon
+          (click)="repeatPasswordVisibility = !repeatPasswordVisibility"
+          matSuffix
+          >{{
+            repeatPasswordVisibility ? "visibility" : "visibility_off"
+          }}</mat-icon
+        >
+      </mat-form-field>
+
+      <!-- <mat-form-field>
+        <mat-label>Wzrost (podany w centymetrach)</mat-label>
+        <input
+          type="number"
+          max="200"
+          min="30"
+          matInput
+          formControlName="userWeight"
+          placeholder="Waga użytkownika"
+          required
+        />
+        <mat-icon matSuffix>height</mat-icon>
+      </mat-form-field> -->
+
+      <!-- <mat-form-field>
+        <mat-label>Waga (podana w kilogramach)</mat-label>
+        <input
+          type="number"
+          max="200"
+          min="30"
+          matInput
+          formControlName="userWeight"
+          placeholder="Waga użytkownika"
+          required
+        />
+        <mat-icon matSuffix>monitor_weight</mat-icon>
+      </mat-form-field> -->
+
+      <div class="example-label-container">
+        <h2 id="example-name-label" class="example-name-label">
+          Twój wzrost w centymetrach: {{ height }}cm
+        </h2>
+        <!-- <label class="example-value-label">{{ slider.value }}</label> -->
+      </div>
+      <mat-slider
+        class="example-margin"
+        [max]="250"
+        [min]="100"
+        [step]="1"
+        [discrete]="true"
+        [showTickMarks]="true"
+      >
+        <input
+          matSliderThumb
+          formControlName="userHeight"
+          [(ngModel)]="height"
+          required
+          (change)="calculateBMI(height, weight)"
+          #slider
+        />
+      </mat-slider>
+
+      <div class="example-label-container">
+        <h2 id="example-name-label" class="example-name-label">
+          Twoja waga w kilogramach: {{ weight }}kg
+        </h2>
+        <!-- <label class="example-value-label">{{ slider.value }}</label> -->
+      </div>
+      <mat-slider
+        class="example-margin"
+        [max]="200"
+        [min]="30"
+        [step]="1"
+        [discrete]="true"
+        [showTickMarks]="true"
+      >
+        <input
+          matSliderThumb
+          formControlName="userWeight"
+          [(ngModel)]="weight"
+          required
+          (change)="calculateBMI(height, weight)"
+          #slider
+        />
+      </mat-slider>
+
+      <h2 id="example-name-label" class="example-name-label">
+        Twoje BMI: {{ userBMI }}
+      </h2>
+
+      @if (userBMI < 18.5) {
+      <h2>Niedowaga</h2>
+      } @else if (userBMI > 18.5 && userBMI< 24.99) {
+      <h2>Wartość prawidłowa</h2>
+      } @else if (userBMI > 25 && userBMI< 29.99 ) {
+      <h2>Nadwaga</h2>
+      } @else if (userBMI > 30 && userBMI< 34.99) {
+      <h2>Otyłość I stopnia</h2>
+      } @else if (userBMI > 35 && userBMI< 39.99) {
+      <h2>Otyłość II stopnia</h2>
+      } @else if (userBMI > 40 ) {
+      <h2>Otyłość III stopnia (tzw. otyłość olbrzymia)</h2>
+      } @else{
+      <h2>Brak danych. Podaj niezbędne wartości powyżej</h2>
+      }
+
+      <h3>
+        Badania wykazują, że osoby ze współczynnikiem w przedziale 18,5 – 24,99
+        najdłużej cieszą się dobrym stanem zdrowia, jak również mają mniejsze
+        ryzyko wystąpienia niektórych chorób takich jak nadciśnienie tętnicze,
+        cukrzyca typu 2 czy miażdżyca. W sytuacji kiedy wskaźnik wskazuje
+        niedowagę lub jest większy niż 30, czyli określa nadwagę powinno to być
+        dla nas ostrzeżeniem. W tych przypadkach stan swojego zdrowia powinno
+        się skonsultować z lekarzem oraz wykonać zlecone badania, które pomogą
+        wykluczyć lub potwierdzić istnienie niektórych chorób istotnie
+        wpływających na naszą masę ciała. Jeżeli mamy do czynienia z nadwagą
+        warto zadbać o zmianę stylu życia, a przede wszystkim o codzienną,
+        zbilansowaną dietę i włączenie regularnej aktywności fizycznej. W
+        przypadku niedowagi zaleca się natomiast zmianę odżywania na
+        pełnowartościowe, czyli bogate w witaminy, białko i składniki mineralne.
+        Bagatelizowanie zbyt niskiej masy ciała może mieć bowiem negatywne
+        konsekwencje dla naszego zdrowia, które często prowadzą do zaburzeń
+        hormonalnych, problemów kardiologicznych, poronień w ciąży jak również
+        wpływają na rozwój takich chorób jak anemia czy osteoporoza. Otyłość
+        olbrzymia czyli przy współczynniku BMI wynoszącym 40 jest zawsze
+        sygnałem alarmującym do podjęcia niezwłocznych działań zmierzających do
+        redukcji masy ciała.
+      </h3>
+
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup" [editable]="true">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Podaj swoje preferencje żywieniowe</ng-template>
+
+      <div class="example-container">
+        <h2>Nielubiane składniki</h2>
+        <div
+          cdkDropList
+          #fakeList="cdkDropList"
+          [cdkDropListData]="fake"
+          [cdkDropListConnectedTo]="[doneList, todoList, fakeList]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          @for (item of fake; track item) {
+          <div class="example-box" cdkDrag>{{ item }}</div>
+          }
+        </div>
+      </div>
+
+      <div class="example-container">
+        <h2>Składniki</h2>
+        <div
+          cdkDropList
+          #todoList="cdkDropList"
+          [cdkDropListData]="todo"
+          [cdkDropListConnectedTo]="[doneList, todoList, fakeList]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          @for (item of todo; track item) {
+          <div class="example-box" cdkDrag>{{ item }}</div>
+          }
+        </div>
+      </div>
+
+      <div class="example-container">
+        <h2>Ulubione składniki</h2>
+        <div
+          cdkDropList
+          #doneList="cdkDropList"
+          [cdkDropListData]="done"
+          [cdkDropListConnectedTo]="[doneList, todoList, fakeList]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          @for (item of done; track item) {
+          <div class="example-box" cdkDrag>{{ item }}</div>
+          }
+        </div>
+      </div>
+      <!-- <mat-form-field>
+        <mat-label>Address</mat-label>
+        <input
+          matInput
+          formControlName="secondCtrl"
+          placeholder="Ex. 1 Main St, New York, NY"
+          required
+        />
+      </mat-form-field> -->
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-stepper>

@@ -1,0 +1,106 @@
+@if(isNavbarVisible){
+<mat-toolbar color="primary">
+  <button
+    (click)="drawer.toggle()"
+    mat-icon-button
+    class="example-icon"
+    aria-label="Example icon-button with menu icon"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <h2 [routerLink]="''">fitDiet</h2>
+  <span class="spacer"></span>
+
+  <div class="water-control-section">
+    <p>11:30</p>
+    <button
+      mat-mini-fab
+      disabled
+      aria-label="Example mini fab with a heart icon"
+    >
+      <mat-icon>local_drink</mat-icon>
+    </button>
+    <button
+      mat-mini-fab
+      disabled
+      aria-label="Example mini fab with a heart icon"
+    >
+      <mat-icon>local_drink</mat-icon>
+    </button>
+    <button
+      mat-mini-fab
+      disabled
+      aria-label="Example mini fab with a heart icon"
+    >
+      <mat-icon>local_drink</mat-icon>
+    </button>
+    <button
+      mat-mini-fab
+      disabled
+      aria-label="Example mini fab with a heart icon"
+    >
+      <mat-icon>local_drink</mat-icon>
+    </button>
+    <button
+      mat-mini-fab
+      matTooltip="Primary"
+      color="primary"
+      aria-label="Example mini fab with a heart icon"
+    >
+      <mat-icon>local_drink</mat-icon>
+    </button>
+  </div>
+  <span class="spacer"></span>
+  <button
+    class="profile"
+    mat-fab
+    matRipple
+    aria-label="Example icon button with a home icon"
+    [matMenuTriggerFor]="menu"
+  ></button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item [routerLink]="''">Mój profil</button>
+    <button mat-menu-item [routerLink]="'zaloguj-sie'">Wyloguj</button>
+  </mat-menu> </mat-toolbar
+>}
+<mat-drawer-container autosize class="example-container">
+  <mat-drawer #drawer opened="false" mode="over">
+    <mat-nav-list>
+      <mat-list-item (click)="drawer.toggle()" [routerLink]="''">
+        Strona główna
+      </mat-list-item>
+      <mat-list-item
+        (click)="drawer.toggle()"
+        [routerLink]="'planowane-posilki'"
+      >
+        Planowane posiłki
+      </mat-list-item>
+      <mat-list-item
+        (click)="drawer.toggle()"
+        [routerLink]="'moje-preferencje'"
+      >
+        Moje preferencje
+      </mat-list-item>
+      <mat-list-item (click)="drawer.toggle()" [routerLink]="'progres-diety'">
+        Kontrola postępu diety
+      </mat-list-item>
+      <mat-list-item
+        (click)="drawer.toggle()"
+        [routerLink]="'panel-spolecznosciowy'"
+      >
+        Panel społecznościowy
+      </mat-list-item>
+      <!-- @if(isAdministrator()){ -->
+      <mat-list-item
+        (click)="drawer.toggle()"
+        [routerLink]="'zarzadzaj-uzytkownikami'"
+      >
+        Zarządzaj użytkownikami
+      </mat-list-item>
+      <!-- } -->
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -1,0 +1,28 @@
+// .main-page-container{
+//   height: 100%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   flex-wrap: wrap;
+//   gap: 2rem
+// }
+
+.main-page-container {
+  height: 100%;
+  display: grid;
+  column-gap: 5rem;
+  grid-template-columns: 40vw 40vw;
+  grid-template-rows: 45vh 45vh;
+}
+
+.widget {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

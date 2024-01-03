@@ -1,0 +1,38 @@
+.example-container {
+  height: calc(100vh - 65px);
+  text-align: center;
+}
+
+.mat-button-toggle {
+  width: 100%;
+}
+
+.sidenav-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile {
+  background-image: url(../assets/default-profile-icon.jpg) !important;
+  background-size: cover;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.water-control-section {
+  display: flex;
+  align-items: center;
+  width: 20rem;
+  background-color: aliceblue;
+  border-radius: 1rem;
+  button {
+    margin: 0.25rem;
+  }
+  p {
+    margin: 0.25rem 0.5rem 0.25rem 0.5rem;
+    color: #3f51b5;
+    font-size: 1.5rem;
+  }
+}

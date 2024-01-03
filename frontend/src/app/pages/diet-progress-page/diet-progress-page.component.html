@@ -1,0 +1,28 @@
+<div class="diet-progress-page">
+  <div class="user-weight-results">
+    <h2>Twoja waga</h2>
+    <canvas
+      baseChart
+      [datasets]="barChartData"
+      [labels]="barChartLabels"
+      [options]="barChartOptions"
+      [legend]="barChartLegend"
+      (chartHover)="chartHovered($event)"
+      (chartClick)="chartClicked($event)"
+    ></canvas>
+  </div>
+
+  <div class="user-bmi-results">
+    <h2>Twoje BMI</h2>
+    <canvas
+      baseChart
+      [datasets]="barChartData"
+      [labels]="barChartLabels"
+      [options]="barChartOptions"
+      [legend]="barChartLegend"
+      (chartHover)="chartHovered($event)"
+      (chartClick)="chartClicked($event)"
+    ></canvas>
+  </div>
+  <button mat-raised-button color="primary">Dodaj obecną wagę</button>
+</div>

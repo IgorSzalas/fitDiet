@@ -1,0 +1,22 @@
+<div class="edit-dish">
+  <h1 mat-dialog-title>Edytuj posiłek</h1>
+  <div mat-dialog-content>
+    <form [formGroup]="editDishForm">
+      <input matInput formControlName="title" />
+      <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </form>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Anuluj</button>
+    <button mat-button cdkFocusInitial type="submit">Dodaj</button>
+  </div>
+</div>
