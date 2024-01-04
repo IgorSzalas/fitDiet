@@ -66,6 +66,7 @@ export class AppComponent implements OnInit {
     if (token) {
       const claims = jose.decodeJwt(token);
       console.log(claims);
+      localStorage.setItem('token', JSON.stringify(claims));
     } else {
       throw new Error("Token hasn't been decoded");
     }

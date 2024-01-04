@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -23,10 +23,24 @@ export class UserService {
     this.http.get<any>('https://localhost:9000/users');
   }
 
+  getUserDietProgresData(userID: string): any {
+    const userParams = new HttpParams().set('userID', userID);
+    return this.http.get<any>('http://localhost:9000/users/user-progres', {
+      params: userParams,
+    });
+  }
+
   updateUserWeight(): any {
     const userData = {};
     // this.http.put<any>('',)
   }
+
+  // editUser(userID: string, userData: any) {
+  //   const userParams = new HttpParams().set('id', userID);
+  //   return this.http.put<any>(`${localAddress}/clients/edit-client`, userData, {
+  //     params: userParams,
+  //   });
+  // }
 
   addNewDish(): any {
     this.http.post<any>('https://localhost:9000/users', null);

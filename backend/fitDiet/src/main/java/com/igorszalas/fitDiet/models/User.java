@@ -9,12 +9,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.igorszalas.fitDiet.dto.DietProgresDTO;Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstrucList<DietProgresDTO>
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,7 +42,7 @@ public class User implements UserDetails {
 
     private List<String> favouriteIngredients;
 
-    private List<String> dietProgres;
+    private List<DietProgresDTO> dietProgres;
 
     private List<Post> userPosts;
 

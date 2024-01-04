@@ -22,6 +22,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
 @Component({
   selector: 'app-register-page',
   standalone: true,
@@ -33,24 +38,17 @@ import { MatSliderModule } from '@angular/material/slider';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    MatButtonModule,
     MatStepperModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatIconModule,
     CdkDropList,
     CdkDrag,
-    MatButtonModule,
     MatDividerModule,
-    MatIconModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
     MatCheckboxModule,
     MatSliderModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss',
@@ -60,6 +58,10 @@ export class RegisterPageComponent {
   height: number = 170;
   weight: number = 70;
   constructor(private formBuilder: FormBuilder) {}
+
+  startDate = new Date(1990, 0, 1);
+
+  selected = 'option2';
 
   fake = ['chuj', 'dupa', 'cyce'];
 
@@ -100,10 +102,17 @@ export class RegisterPageComponent {
   }
 
   firstFormGroup = this.formBuilder.group({
-    firstCtrl: ['', Validators.required],
-    profilePhoto: ['', Validators.required],
+    firstName: ['', Validators.required],
+    surname: ['', Validators.required],
+    email: ['', Validators.required],
+    // profilePhoto: ['', Validators.required],
+    password: ['', Validators.required],
+    repeatPassword: ['', Validators.required],
+    userAge: ['', Validators.required],
     userHeight: ['', Validators.required],
     userWeight: ['', Validators.required],
+    userGender: ['', Validators.required],
+    userActivityMode: ['', Validators.required],
   });
   secondFormGroup = this.formBuilder.group({
     secondCtrl: ['', Validators.required],

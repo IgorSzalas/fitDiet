@@ -2,6 +2,7 @@ package com.igorszalas.fitDiet.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.igorszalas.fitDiet.dto.DietProgresDTO;
 import com.igorszalas.fitDiet.models.User;
 import com.igorszalas.fitDiet.repositories.UserRepository;
 import com.igorszalas.fitDiet.services.UserService;
@@ -41,10 +42,17 @@ public class UserController {
         return user.getFavouriteIngredients();
     }
 
+    @GetMapping("/user-progres")
+    public List<DietProgresDTO> getDietProgresByUser(@RequestParam String userID) {
+        User user = userRepository.findUserById(userID);
+        return user.getDietProgres();
+    }
+
     // @PutMapping("path/{id}")
-    // public User editFavouriteIngredients(@PathVariable String userID, @RequestBody SomeEnityData entity) {
-    //     //TODO: process PUT request
-        
-    //     return entity;
+    // public User editFavouriteIngredients(@PathVariable String userID,
+    // @RequestBody SomeEnityData entity) {
+    // //TODO: process PUT request
+
+    // return entity;
     // }
 }

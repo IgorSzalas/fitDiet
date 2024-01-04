@@ -1,3 +1,5 @@
+import { first, pipe } from 'rxjs';
+import { UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
@@ -12,9 +14,12 @@ import { NgChartsModule } from 'ng2-charts';
   styleUrls: ['diet-progress-page.component.scss'],
 })
 export class DietProgressPageComponent implements OnInit {
-  constructor() {}
+  constructor(private readonly userService: UserService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchUser();
+    console.log('onInit');
+  }
 
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -34,9 +39,30 @@ export class DietProgressPageComponent implements OnInit {
 
   public barChartData: any[] = [
     { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
+    // { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
   ];
 
+  tablesLabels: any = [];
+
+  userProgres: any;
+
+  fetchUser(): any {
+    // const authorizationToken = sessionStorage.getItem('authorizationToken');
+    const token = JSON.parse(localStorage.getItem('token')!);
+    console.log(token.UserID);
+    this.userService
+      .getUserDietProgresData(token.UserID)
+      .pipe(first())
+      .subscribe((userProgres: any) => {
+        this.userProgres = userProgres;
+        console.log(this.userProgres);
+        this.userProgres.map((element: any) => {
+          this.tablesLabels.push(element);
+          console.log(element);
+        });
+        console.log(this.tablesLabels);
+      });
+  }
   // events
   public chartClicked(e: any): void {
     console.log(e);
