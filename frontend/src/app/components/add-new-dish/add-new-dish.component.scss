@@ -2,3 +2,18 @@ form {
   display: flex;
   flex-direction: column;
 }
+
+.dish-choose {
+  display: flex;
+  width: 60rem;
+}
+
+input[type="radio"] {
+  visibility: hidden;
+  height: 0;
+  width: 0;
+}
+
+.mat-mdc-radio-touch-target {
+  visibility: hidden;
+}

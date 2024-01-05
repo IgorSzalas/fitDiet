@@ -22,7 +22,7 @@ export class DietProgressPageComponent implements OnInit {
   }
 
   public barChartOptions: any = {
-    scaleShowVerticalLines: false,
+    scaleShowVerticalLines: true,
     responsive: true,
   };
   public barChartLabels: string[] = [
@@ -42,6 +42,10 @@ export class DietProgressPageComponent implements OnInit {
     // { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
   ];
 
+  tableWeightData: any = [{ data: [], label: 'Waga' }];
+
+  tableBMIData: any = [{ data: [], label: 'BMI' }];
+
   tablesLabels: any = [];
 
   userProgres: any;
@@ -57,10 +61,23 @@ export class DietProgressPageComponent implements OnInit {
         this.userProgres = userProgres;
         console.log(this.userProgres);
         this.userProgres.map((element: any) => {
-          this.tablesLabels.push(element);
+          this.tablesLabels.push(element.date);
           console.log(element);
         });
-        console.log(this.tablesLabels);
+
+        this.userProgres.map((element: any) => {
+          this.tableWeightData[0].data.push(element.weight);
+          console.log(element);
+        });
+
+        this.userProgres.map((element: any) => {
+          this.tableBMIData[0].data.push(element.bmi);
+          console.log(element);
+        });
+
+        console.log('this.tablesLabels ', this.tablesLabels);
+        console.log('this.tableBMIData ', this.tableBMIData);
+        console.log('this.tableWeightData ', this.tableWeightData);
       });
   }
   // events

@@ -1,3 +1,4 @@
+import { first, pipe } from 'rxjs';
 import { Component, Inject, OnInit } from '@angular/core';
 import {
   MatDialog,
@@ -20,10 +21,14 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { UserService } from '../../services/user.service';
+import { ChooseDishCardComponent } from '../choose-dish-card/choose-dish-card.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { RecipeService } from '../../services/recipe.service';
 
 @Component({
   standalone: true,
   imports: [
+    ChooseDishCardComponent,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
@@ -40,6 +45,7 @@ import { UserService } from '../../services/user.service';
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
+    MatRadioModule,
   ],
   selector: 'app-add-new-dish',
   templateUrl: './add-new-dish.component.html',
@@ -49,12 +55,16 @@ export class AddNewDishComponent implements OnInit {
   constructor(
     private readonly form: FormBuilder,
     private readonly userService: UserService,
+    private readonly recipeService: RecipeService,
     public dialogRef: MatDialogRef<AddNewDishComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
+  userProposedDishes: any;
+
   //inputData: any = this.formatDate(new Date());
   ngOnInit() {
+    this.fetchUserProposedDishes();
     console.log(
       'this.dialogRef: ',
       this.dialogRef.componentInstance.data.dayData.start,
@@ -66,8 +76,19 @@ export class AddNewDishComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log();
     this.addDishToCalendar(this.dialogRef);
+  }
+
+  fetchUserProposedDishes() {
+    const token = JSON.parse(localStorage.getItem('token')!);
+    console.log('TOKEN: ', token.UserID);
+    this.recipeService
+      .getRecipesByUserPreferences(token.UserID)
+      .pipe(first())
+      .subscribe((recipes: any) => {
+        console.log('RECIPES: ', recipes);
+        this.userProposedDishes = recipes;
+      });
   }
 
   private addDishToCalendar(dayData: any) {

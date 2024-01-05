@@ -1,28 +1,30 @@
 <div class="diet-progress-page">
+  @if(userProgres){
   <div class="user-weight-results">
     <h2>Twoja waga</h2>
     <canvas
       baseChart
-      [datasets]="barChartData"
-      [labels]="barChartLabels"
+      [datasets]="tableWeightData"
+      [labels]="tablesLabels"
       [options]="barChartOptions"
       [legend]="barChartLegend"
-      (chartHover)="chartHovered($event)"
-      (chartClick)="chartClicked($event)"
     ></canvas>
+    <!-- (chartHover)="chartHovered($event)"
+    (chartClick)="chartClicked($event)" -->
   </div>
 
   <div class="user-bmi-results">
     <h2>Twoje BMI</h2>
     <canvas
       baseChart
-      [datasets]="barChartData"
-      [labels]="barChartLabels"
+      [datasets]="tableBMIData"
+      [labels]="tablesLabels"
       [options]="barChartOptions"
       [legend]="barChartLegend"
-      (chartHover)="chartHovered($event)"
-      (chartClick)="chartClicked($event)"
     ></canvas>
+    <!-- (chartHover)="chartHovered($event)" -->
+    <!-- (chartClick)="chartClicked($event)" -->
   </div>
+  }
   <button mat-raised-button color="primary">Dodaj obecną wagę</button>
 </div>

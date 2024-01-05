@@ -2,10 +2,13 @@ import { UserService } from './../../services/user.service';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { first, pipe } from 'rxjs';
+import { first } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
 
 export interface UserData {
   id: string;
@@ -55,6 +58,10 @@ const NAMES: string[] = [
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatIconModule,
   ],
   selector: 'app-user-table',
   templateUrl: './user-table.component.html',
@@ -67,7 +74,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = [
     'ID',
-    'profilePhoto',
+    // 'profilePhoto',
     'firstName',
     'surname',
     'email',

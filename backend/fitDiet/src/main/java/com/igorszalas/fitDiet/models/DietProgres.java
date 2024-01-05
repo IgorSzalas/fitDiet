@@ -1,9 +1,9 @@
-package com.igorszalas.fitDiet.dto;
+package com.igorszalas.fitDiet.models;
 
 import lombok.Data;
 
 @Data
-public class DietProgresDTO {
+public class DietProgres {
     private double weight;
     private double bmi;
     private String date;

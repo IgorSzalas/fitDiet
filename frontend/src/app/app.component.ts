@@ -16,7 +16,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { DatePipe } from '@angular/common';
 import * as jose from 'jose';
+import { timer } from 'rxjs';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -40,6 +42,7 @@ export class AppComponent implements OnInit {
   opened: boolean = false;
   currentRoute: string | undefined;
   actualUrl?: string;
+  date?: Date;
 
   isNavbarVisible: boolean = false;
   constructor(private router: Router, private route: ActivatedRoute) {
@@ -59,6 +62,9 @@ export class AppComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    timer(0, 1000).subscribe((date) => {
+      this.date = new Date();
+    });
     console.log(this.parseJWT(sessionStorage.getItem('authorizationToken')!));
   }
 

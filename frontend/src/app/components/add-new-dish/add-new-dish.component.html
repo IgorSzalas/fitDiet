@@ -7,6 +7,24 @@
         <input matInput formControlName="title" placeholder="Nazwa posiłku" />
       </mat-form-field>
 
+      @if(userProposedDishes){
+      <mat-radio-group aria-label="Select an option" class="dish-choose">
+        @for(dish of userProposedDishes; track dish.id){
+        <mat-radio-button>
+          <app-choose-dish-card
+            [dishName]="dish.name"
+            [dishType]="dish.dishType"
+            [dishCreator]="dish.creator"
+            [dishDescription]="dish.description"
+            [dishCaloricValue]="dish.nutrients"
+            [dishImage]="dish.photo"
+          ></app-choose-dish-card>
+        </mat-radio-button>
+        } @empty {
+        <h1>Brak proponowanych dań</h1>
+        }
+      </mat-radio-group>
+      }
       <mat-form-field (click)="helloInput.showPicker()">
         <mat-label>Data i godzina posiłku</mat-label>
         <input
@@ -41,10 +59,10 @@
         />
       </mat-form-field> -->
 
-  
-  <div mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Anuluj</button>
-    <button mat-button cdkFocusInitial type="submit">Dodaj</button>
+      <div mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Anuluj</button>
+        <button mat-button cdkFocusInitial type="submit">Dodaj</button>
+      </div>
+    </form>
   </div>
-</form>
 </div>

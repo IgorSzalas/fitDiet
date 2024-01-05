@@ -2,7 +2,7 @@ package com.igorszalas.fitDiet.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.igorszalas.fitDiet.dto.DietProgresDTO;
+import com.igorszalas.fitDiet.models.DietProgres;
 import com.igorszalas.fitDiet.models.User;
 import com.igorszalas.fitDiet.repositories.UserRepository;
 import com.igorszalas.fitDiet.services.UserService;
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/user-progres")
-    public List<DietProgresDTO> getDietProgresByUser(@RequestParam String userID) {
+    public List<DietProgres> getDietProgresByUser(@RequestParam String userID) {
         User user = userRepository.findUserById(userID);
         return user.getDietProgres();
     }
