@@ -1,3 +1,4 @@
+import { AuthorizationService } from './../../services/authorization.service';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -57,7 +58,13 @@ export class RegisterPageComponent {
   userBMI: any;
   height: number = 170;
   weight: number = 70;
-  constructor(private formBuilder: FormBuilder) {}
+  userEnergyDemand: any;
+  userData: any;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private authorizationService: AuthorizationService
+  ) {}
 
   startDate = new Date(1990, 0, 1);
 
@@ -69,7 +76,70 @@ export class RegisterPageComponent {
 
   done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
 
+  repeatPasswordVisibility: boolean = false;
+  passwordVisibility: boolean = false;
+  isEditable = false;
+  favouriteIngredients: string[] = [];
+  dislikedIngredients: string[] = [];
+  ingredients: string[] = [];
+  vegetarianOption?: any;
+  glutenFreeOption?: any;
+  lactoseFreeOption?: any;
+
+  onSubmit() {
+    this.userData = {
+      firstName: this.firstFormGroup.controls['firstName'].value,
+      surname: this.firstFormGroup.controls['surname'].value,
+      email: this.firstFormGroup.controls['email'].value,
+      password: this.firstFormGroup.controls['password'].value,
+      repeatPassword: this.firstFormGroup.controls['repeatPassword'].value,
+      // userEnergyDemand: this.userEnergyDemand,
+      userWeight: this.firstFormGroup.controls['userWeight'].value,
+      userHeight: this.firstFormGroup.controls['userHeight'].value,
+      userAge: this.firstFormGroup.controls['userAge'].value,
+      userActivityMode: this.firstFormGroup.controls['userActivityMode'].value,
+      userGender: this.firstFormGroup.controls['userGender'].value,
+      userType: 'USER',
+      favouriteIngredients: this.favouriteIngredients,
+      dislikedIngredients: this.dislikedIngredients,
+      vegetarianOption:
+        this.preferencesForm.controls['vegetarian'].value ?? false,
+      glutenFreeOption:
+        this.preferencesForm.controls['glutenFree'].value ?? false,
+      lactoseFreeOption:
+        this.preferencesForm.controls['lactoseFree'].value ?? false,
+    };
+
+    console.log('this.userData ONSUBMIT ', this.userData);
+    this.authorizationService.register(this.userData).subscribe((register) => {
+      console.log(register);
+    });
+  }
+
+  calculateUserEnergyDemand(
+    height: number,
+    weight: number,
+    age: number,
+    gender: any,
+    liveMode: any
+  ) {
+    if (gender === 'woman') {
+      this.userEnergyDemand = 9.99 * weight + 6.25 * height - 4.92 * age - 161;
+    } else if (gender === 'men') {
+      this.userEnergyDemand = 9.99 * weight + 6.25 * height - 4.92 * age + 5;
+    }
+
+    this.userEnergyDemand * liveMode;
+  }
+
   calculateBMI(height: number, weight: number) {
+    this.calculateUserEnergyDemand(
+      parseInt(this.firstFormGroup.controls['userHeight'].value!),
+      parseInt(this.firstFormGroup.controls['userWeight'].value!),
+      parseInt(this.firstFormGroup.controls['userAge'].value!),
+      this.firstFormGroup.controls['userGender'].value,
+      this.firstFormGroup.controls['userActivityMode'].value
+    );
     this.userBMI = (10000 * this.weight) / (this.height * this.height);
     this.userBMI = Math.round(this.userBMI * 100) / 100;
     return this.userBMI;
@@ -105,7 +175,6 @@ export class RegisterPageComponent {
     firstName: ['', Validators.required],
     surname: ['', Validators.required],
     email: ['', Validators.required],
-    // profilePhoto: ['', Validators.required],
     password: ['', Validators.required],
     repeatPassword: ['', Validators.required],
     userAge: ['', Validators.required],
@@ -114,11 +183,14 @@ export class RegisterPageComponent {
     userGender: ['', Validators.required],
     userActivityMode: ['', Validators.required],
   });
+
+  preferencesForm = this.formBuilder.group({
+    vegetarian: [this.vegetarianOption, Validators.required],
+    glutenFree: [this.glutenFreeOption, Validators.required],
+    lactoseFree: [this.lactoseFreeOption, Validators.required],
+  });
+
   secondFormGroup = this.formBuilder.group({
     secondCtrl: ['', Validators.required],
   });
-
-  repeatPasswordVisibility: boolean = false;
-  passwordVisibility: boolean = false;
-  isEditable = false;
 }

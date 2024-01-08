@@ -65,11 +65,12 @@ public class SecurityConfiguration {
         // .httpBasic();
 
         httpSecurity.authorizeHttpRequests(
-                (authorize) -> authorize.requestMatchers("/login").permitAll().anyRequest().authenticated())
+                (authorize) -> authorize.requestMatchers("/login", "/register").permitAll().anyRequest()
+                        .authenticated())
                 .csrf((csrf) -> csrf.disable())
                 .httpBasic(Customizer.withDefaults())
-                .sessionManagement((session)->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling((exception)->exception.authenticationEntryPoint(jwtAuthorizationEntryPoint));
+                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling((exception) -> exception.authenticationEntryPoint(jwtAuthorizationEntryPoint));
 
         httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();

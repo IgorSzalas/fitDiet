@@ -1,0 +1,19 @@
+<div class="add-new-measurment">
+  <h1 mat-dialog-title>Edytuj posiłek</h1>
+  <div mat-dialog-content>
+    <form [formGroup]="weightForm">
+      <mat-form-field>
+        <mat-label>Input</mat-label>
+        <input matInput formControlName="weight" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Input</mat-label>
+        <input matInput formControlName="time" />
+      </mat-form-field>
+    </form>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Anuluj</button>
+    <button mat-button cdkFocusInitial type="submit">Dodaj</button>
+  </div>
+</div>

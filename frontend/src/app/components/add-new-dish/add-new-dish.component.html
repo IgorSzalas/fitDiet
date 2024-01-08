@@ -4,13 +4,25 @@
     <form [formGroup]="addNewDishForm" (ngSubmit)="onSubmit()">
       <mat-form-field>
         <mat-label>Nazwa posiłku</mat-label>
-        <input matInput formControlName="title" placeholder="Nazwa posiłku" />
+        <input matInput formControlName="title" placeholder="Nazwa posiłku" [matAutocomplete]="auto"/>
+        <mat-autocomplete #auto="matAutocomplete">
+          @for (option of options; track option) {
+            <mat-option [value]="option">{{option}}</mat-option>
+          }
+        </mat-autocomplete>
       </mat-form-field>
 
       @if(userProposedDishes){
-      <mat-radio-group aria-label="Select an option" class="dish-choose">
+      <mat-radio-group
+        formControlName="dishRecipe"
+        aria-label="Select an option"
+        class="dish-choose"
+      >
         @for(dish of userProposedDishes; track dish.id){
-        <mat-radio-button>
+        <mat-radio-button
+          [value]="dish"
+          (click)="calculateRestCalories(dish.caloricValue)"
+        >
           <app-choose-dish-card
             [dishName]="dish.name"
             [dishType]="dish.dishType"
@@ -19,20 +31,34 @@
             [dishCaloricValue]="dish.nutrients"
             [dishImage]="dish.photo"
           ></app-choose-dish-card>
+
         </mat-radio-button>
         } @empty {
         <h1>Brak proponowanych dań</h1>
         }
       </mat-radio-group>
+
+      @if(restCalories){
+      <mat-label> Pozostanie tego dnia {{ restCalories }} kcal </mat-label>
       }
-      <mat-form-field (click)="helloInput.showPicker()">
+
+      @if(restCalories<0){
+      <mat-label class="calories-error">
+        Uwaga! Wybierając to danie przekroczysz dzienne zapotrzebowanie
+        kaloryczne i pogorszysz rezultaty diety!
+      </mat-label>
+      } }
+      <mat-form-field
+        formControlName="dishDate"
+        (click)="helloInput.showPicker()"
+      >
         <mat-label>Data i godzina posiłku</mat-label>
         <input
           type="datetime-local"
           placeholder="Data i godzina posiłku"
           matInput
           #helloInput
-          formControlName="time"
+          formControlName="dishDate"
         />
 
         <mat-icon matSuffix fontIcon="today" />
@@ -61,7 +87,9 @@
 
       <div mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Anuluj</button>
-        <button mat-button cdkFocusInitial type="submit">Dodaj</button>
+        <button mat-button cdkFocusInitial type="submit" mat-dialog-close>
+          Dodaj
+        </button>
       </div>
     </form>
   </div>

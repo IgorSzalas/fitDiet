@@ -1,3 +1,42 @@
-<p>
-  my-profile works!
-</p>
+<div class="my-profile">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Mój profil</mat-card-title>
+      <mat-card-subtitle>
+        <form
+          [formGroup]="editUserForm"
+          (ngSubmit)="modifyUserByID()"
+          class="example-form"
+        >
+          <mat-form-field class="example-full-width">
+            <mat-label>Imię</mat-label>
+            <input formControlName="name" matInput placeholder="Imię" />
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Nazwisko</mat-label>
+            <input formControlName="surname" matInput placeholder="Nazwisko" />
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input formControlName="email" matInput placeholder="Email" />
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Typ użytkownika</mat-label>
+            <input
+              formControlName="userType"
+              matInput
+              placeholder="Typ użytkownika"
+            />
+          </mat-form-field>
+        </form>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions align="end">
+      <button mat-button>Wróć do strony głównej</button>
+      <button mat-button>Edytuj użytkownika</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -61,7 +61,7 @@ public class AuthorizationController {
         user.setFavouriteRecipes(registerDTO.getFavouriteRecipes());
         user.setFavouriteIngredients(registerDTO.getFavouriteIngredients());
 
-        UserType userType = userTypeRepository.findByUserTypeName(UserTypeEnum.USER).get();
+        String userType = userTypeRepository.findByUserTypeName("ADMIN").get();
         user.setUserType(Collections.singletonList(userType));
 
         userRepository.save(user);

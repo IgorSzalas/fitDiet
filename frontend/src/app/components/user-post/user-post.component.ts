@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,7 +17,7 @@ import { UserCommentComponent } from '../user-comment/user-comment.component';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    UserCommentComponent
+    UserCommentComponent,
   ],
   selector: 'app-user-post',
   templateUrl: 'user-post.component.html',
@@ -25,7 +25,12 @@ import { UserCommentComponent } from '../user-comment/user-comment.component';
 })
 export class UserPostComponent implements OnInit {
   constructor() {}
-
+  @Input() postTitle?: string;
+  @Input() postCreator?: string;
+  @Input() postContent?: string;
+  @Input() postDate?: string;
+  @Input() postComments?: string;
+  @Input() postReactions?: string;
   step = 0;
 
   setStep(index: number) {

@@ -12,36 +12,18 @@
   <span class="spacer"></span>
 
   <div class="water-control-section">
-    <p>{{ date | date : "dd.MM.YYYY HH:mm" }}</p>
-    <button
+    <!-- <p>{{ date | date : "dd.MM.YYYY HH:mm" }}</p> -->
+    <p>{{ dailyStartWaterDemand }}/{{ dailyWaterDemand }}ml</p>
+    <!-- <button
       mat-mini-fab
       disabled
       aria-label="Example mini fab with a heart icon"
     >
       <mat-icon>local_drink</mat-icon>
-    </button>
+    </button> -->
+
     <button
-      mat-mini-fab
-      disabled
-      aria-label="Example mini fab with a heart icon"
-    >
-      <mat-icon>local_drink</mat-icon>
-    </button>
-    <button
-      mat-mini-fab
-      disabled
-      aria-label="Example mini fab with a heart icon"
-    >
-      <mat-icon>local_drink</mat-icon>
-    </button>
-    <button
-      mat-mini-fab
-      disabled
-      aria-label="Example mini fab with a heart icon"
-    >
-      <mat-icon>local_drink</mat-icon>
-    </button>
-    <button
+      (click)="waterDailyCalculate()"
       mat-mini-fab
       matTooltip="Primary"
       color="primary"
@@ -59,7 +41,7 @@
     [matMenuTriggerFor]="menu"
   ></button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item [routerLink]="''">Mój profil</button>
+    <button mat-menu-item [routerLink]="'moj-profil'">Mój profil</button>
     <button mat-menu-item [routerLink]="'zaloguj-sie'">Wyloguj</button>
   </mat-menu> </mat-toolbar
 >}
@@ -73,7 +55,7 @@
         (click)="drawer.toggle()"
         [routerLink]="'planowane-posilki'"
       >
-        Planowane posiłki
+        Planowane posiłki i zadania
       </mat-list-item>
       <mat-list-item
         (click)="drawer.toggle()"
@@ -83,6 +65,9 @@
       </mat-list-item>
       <mat-list-item (click)="drawer.toggle()" [routerLink]="'progres-diety'">
         Kontrola postępu diety
+      </mat-list-item>
+      <mat-list-item (click)="drawer.toggle()" [routerLink]="'wypijana-woda'">
+        Kontrola wypijanej wody
       </mat-list-item>
       <mat-list-item
         (click)="drawer.toggle()"

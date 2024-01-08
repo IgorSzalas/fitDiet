@@ -1,3 +1,4 @@
+import { pipe, first } from 'rxjs';
 import { AuthorizationService } from '../../services/authorization.service';
 import { Component, OnInit, inject } from '@angular/core';
 import {
@@ -12,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router, RouterModule } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
-
+import * as jose from 'jose';
 
 interface accessToken {
   accessToken: string;
@@ -47,46 +48,91 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit() {}
 
+  // login() {
+  //   if (
+  //     this.loginForm.controls.email.value !== ' ' &&
+  //     this.loginForm.controls.password.value !== ' '
+  //   ) {
+  //     this.authorizationService.login(
+  //       this.loginForm.controls.email.value,
+  //       this.loginForm.controls.password.value
+  //     )
+  //     .pipe({
+  //       next: (token: accessToken) => {
+  //         this.parseJWT(token.accessToken);
+  //         sessionStorage.setItem('authorizationToken', token.accessToken);
+  //         console.log(sessionStorage.getItem('authorizationToken'));
+  //         this.toastService.success('Logowanie udane!', {
+  //           autoClose: true,
+  //           dismissible: true,
+  //         }),
+  //           this.router.navigateByUrl('/');
+  //       },
+  //       error: (error: string) =>
+  //         this.toastService.error('Logowanie nieudane!', {
+  //           autoClose: true,
+  //           dismissible: true,
+  //         }),
+  //     });
+  // } else {
+  //   this.toastService.warning(
+  //     'Przed zalogowaniem sprawdź poprawność danych!',
+  //     {
+  //       autoClose: true,
+  //       dismissible: true,
+  //     }
+  //   );
+  // }
+
+  //   }
+
+  parseJWT(token: string) {
+    if (token) {
+      const claims = jose.decodeJwt(token);
+      console.log(claims);
+      localStorage.setItem('token', JSON.stringify(claims));
+    } else {
+      throw new Error("Token hasn't been decoded");
+    }
+  }
+
   login() {
-    sessionStorage.removeItem('authorizationToken');
-    sessionStorage.removeItem('userRole');
     if (
       this.loginForm.controls.email.value !== ' ' &&
       this.loginForm.controls.password.value !== ' '
     ) {
       this.authorizationService
-        .login(
+        .loginToSession(
           this.loginForm.controls.email.value,
           this.loginForm.controls.password.value
         )
         .subscribe({
           next: (token: accessToken) => {
+            this.parseJWT(token.accessToken);
             sessionStorage.setItem('authorizationToken', token.accessToken);
             console.log(sessionStorage.getItem('authorizationToken'));
+            this.router.navigateByUrl('/');
             this.toastService.success('Logowanie udane!', {
               autoClose: true,
               dismissible: true,
-            }),
-              this.router.navigateByUrl('/');
+            });
           },
-          error: (error: string) =>
-            this.toastService.error('Logowanie nieudane!', {
-              autoClose: true,
-              dismissible: true,
-            }),
+          error: (error: any) => {
+            console.log(error);
+            this.toastService.warning(
+              'Przed zalogowaniem sprawdź poprawność danych!',
+              {
+                autoClose: true,
+                dismissible: true,
+              }
+            );
+          },
         });
-      console.log(
-        this.loginForm.controls.email.value,
-        this.loginForm.controls.password.value
-      );
     } else {
-      this.toastService.warning(
-        'Przed zalogowaniem sprawdź poprawność danych!',
-        {
-          autoClose: true,
-          dismissible: true,
-        }
-      );
+      this.toastService.warning('Nieznany błąd logowania!', {
+        autoClose: true,
+        dismissible: true,
+      });
     }
   }
 

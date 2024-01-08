@@ -11,7 +11,9 @@ C:\Users\szala\Desktop\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitD
 C:\Users\szala\Desktop\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\repositories\PostRepository.java
 C:\Users\szala\Desktop\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\repositories\UserTypeRepository.java
 C:\Users\szala\Desktop\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\dto\LoginDTO.java
+C:\Users\szala\Desktop\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\models\Dish.java
 C:\Users\szala\Desktop\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\models\Post.java
+C:\Users\szala\Desktop\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\repositories\DishRepository.java
 C:\Users\szala\Desktop\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\dto\RegisterDTO.java
 C:\Users\szala\Desktop\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\models\UserType.java
 C:\Users\szala\Desktop\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\controllers\AuthorizationController.java

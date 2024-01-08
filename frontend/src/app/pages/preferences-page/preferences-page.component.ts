@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { first, pipe } from 'rxjs';
+import { UserService } from './../../services/user.service';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   CdkDragDrop,
@@ -11,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-preferences-page',
@@ -28,22 +30,32 @@ import { FormBuilder } from '@angular/forms';
   templateUrl: 'preferences-page.component.html',
   styleUrl: 'preferences-page.component.scss',
 })
-export class PreferencesPageComponent {
-  constructor(private readonly form: FormBuilder) {}
+export class PreferencesPageComponent implements OnInit, AfterViewInit {
+  constructor(
+    private readonly form: FormBuilder,
+    private readonly userService: UserService
+  ) {}
 
   preferencesForm = this.form.group({
-    vegetarian: false,
-    glutenFree: false,
-    lactoseFree: false,
+    vegetarian: [this.vegetarianOption, Validators.required],
+    glutenFree: [this.glutenFreeOption, Validators.required],
+    lactoseFree: [this.lactoseFreeOption, Validators.required],
   });
+  ngAfterViewInit(): void {
+    this.fetchUserData();
+  }
+  ngOnInit(): void {}
 
-  fake = ['chuj', 'dupa', 'cyce'];
+  userData: any;
 
-  todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
+  favouriteIngredients: string[] = [];
+  dislikedIngredients: string[] = [];
+  ingredients: string[] = [];
+  vegetarianOption?: any;
+  glutenFreeOption?: any;
+  lactoseFreeOption?: any;
 
-  done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
-
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<any>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -51,6 +63,9 @@ export class PreferencesPageComponent {
         event.currentIndex
       );
     } else {
+      console.log(this.favouriteIngredients);
+      console.log(this.dislikedIngredients);
+      console.log(this.ingredients);
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -58,5 +73,29 @@ export class PreferencesPageComponent {
         event.currentIndex
       );
     }
+  }
+
+  fetchUserData() {
+    const token = JSON.parse(localStorage.getItem('token')!);
+    console.log(token.UserID);
+    return this.userService
+      .getUserDataByID(token.UserID)
+      .pipe(first())
+      .subscribe((userData: any) => {
+        this.userData = userData;
+        console.log('userData: ', userData);
+        this.favouriteIngredients = this.userData.favouriteIngredients;
+        this.dislikedIngredients = this.userData.dislikedIngredients;
+        this.ingredients = this.userData.ingredients ?? [];
+        this.vegetarianOption = this.userData.dishesWithMeat;
+        this.glutenFreeOption = this.userData.dishesWithGluten;
+        this.lactoseFreeOption = this.userData.dishesWithLactose;
+
+        this.preferencesForm.setValue({
+          vegetarian: [this.vegetarianOption],
+          glutenFree: [this.glutenFreeOption],
+          lactoseFree: [this.lactoseFreeOption],
+        });
+      });
   }
 }

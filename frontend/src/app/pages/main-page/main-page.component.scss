@@ -10,9 +10,11 @@
 .main-page-container {
   height: 100%;
   display: grid;
+  margin: 2rem;
   column-gap: 5rem;
+  row-gap: 5rem;
   grid-template-columns: 40vw 40vw;
-  grid-template-rows: 45vh 45vh;
+  grid-template-rows: 42vh 42vh;
 }
 
 .widget {

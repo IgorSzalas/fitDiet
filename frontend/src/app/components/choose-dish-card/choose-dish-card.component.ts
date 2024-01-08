@@ -24,11 +24,11 @@ export class ChooseDishCardComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    console.log('dishName: ', this.dishName);
-    console.log('dishType: ', this.dishType);
-    console.log('dishCreator: ', this.dishCreator);
-    console.log('dishCaloricValue: ', this.dishCaloricValue);
-    console.log('dishImage: ', this.dishImage);
-    console.log('dishDescription: ', this.dishDescription);
+    // console.log('dishName: ', this.dishName);
+    // console.log('dishType: ', this.dishType);
+    // console.log('dishCreator: ', this.dishCreator);
+    // console.log('dishCaloricValue: ', this.dishCaloricValue);
+    // console.log('dishImage: ', this.dishImage);
+    // console.log('dishDescription: ', this.dishDescription);
   }
 }

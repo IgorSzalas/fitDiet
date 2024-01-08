@@ -1,6 +1,6 @@
 <section>
   <div class="main-page-container">
-    <app-card-widget
+    <!-- <app-card-widget
       class="widget"
       [widgetTitle]="'Następne danie'"
       [widgetText]="'Pomidorowa'"
@@ -22,6 +22,53 @@
       [widgetTitle]="'Następne planowane danie '"
       [widgetText]="nextDish"
     >
-    </app-card-widget>
+    </app-card-widget> -->
+    <mat-card class="widget">
+      <mat-card-content>Simple card</mat-card-content>
+    </mat-card>
+    <mat-card class="widget">
+      <mat-card-content>Simple card</mat-card-content>
+    </mat-card>
+    <mat-card class="widget">
+      <mat-card-content>
+        <div class="diet-progress-page">
+          @if(userProgres){
+
+          <div class="user-bmi-results">
+            <h2>Twoje BMI</h2>
+            <canvas
+              baseChart
+              [datasets]="tableBMIData"
+              [labels]="tablesLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+            ></canvas>
+            <!-- (chartHover)="chartHovered($event)" -->
+            <!-- (chartClick)="chartClicked($event)" -->
+          </div>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="widget">
+      <mat-card-content>
+        <div class="diet-progress-page">
+          @if(userProgres){
+          <div class="user-weight-results">
+            <h2>Twoje pomiary ilości wypitej wody</h2>
+            <canvas
+              baseChart
+              [datasets]="tableWaterData"
+              [labels]="tablesLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+            ></canvas>
+            <!-- (chartHover)="chartHovered($event)" -->
+            <!-- (chartClick)="chartClicked($event)" -->
+          </div>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </section>

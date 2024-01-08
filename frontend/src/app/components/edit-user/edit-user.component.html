@@ -1,0 +1,40 @@
+<div class="edit-dish">
+  <h1 mat-dialog-title>Edytuj użytkownika</h1>
+  <div mat-dialog-content>
+    <form
+      [formGroup]="editUserForm"
+      (ngSubmit)="modifyUserByID()"
+      class="example-form"
+    >
+      <mat-form-field class="example-full-width">
+        <mat-label>Imię</mat-label>
+        <input formControlName="name" matInput placeholder="Imię" />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Nazwisko</mat-label>
+        <input formControlName="surname" matInput placeholder="Nazwisko" />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input formControlName="email" matInput placeholder="Email" />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Typ użytkownika</mat-label>
+        <input
+          formControlName="userType"
+          matInput
+          placeholder="Typ użytkownika"
+        />
+      </mat-form-field>
+      <div mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Anuluj</button>
+        <button mat-button cdkFocusInitial type="submit" mat-dialog-close>
+          Edytuj
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

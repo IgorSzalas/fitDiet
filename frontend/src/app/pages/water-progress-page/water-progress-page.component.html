@@ -1,0 +1,23 @@
+<div class="diet-progress-page">
+  @if(userProgres){
+  <div class="user-weight-results">
+    <h2>Twoje pomiary ilości wypitej wody</h2>
+    <canvas
+      baseChart
+      [datasets]="tableWaterData"
+      [labels]="tablesLabels"
+      [options]="barChartOptions"
+      [legend]="barChartLegend"
+    ></canvas>
+    <!-- (chartHover)="chartHovered($event)" -->
+    <!-- (chartClick)="chartClicked($event)" -->
+  </div>
+  }
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="openAddNewWaterMeasurementDialog()"
+  >
+    Dodaj pomiar
+  </button>
+</div>

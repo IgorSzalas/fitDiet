@@ -43,8 +43,11 @@ export class AppComponent implements OnInit {
   currentRoute: string | undefined;
   actualUrl?: string;
   date?: Date;
-
   isNavbarVisible: boolean = false;
+  waterDaily: any = [];
+  dailyWaterDemand = 2000;
+  dailyStartWaterDemand = 0;
+
   constructor(private router: Router, private route: ActivatedRoute) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -61,6 +64,12 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
+  waterDailyCalculate() {
+    this.dailyStartWaterDemand += 250;
+    console.log(this.dailyStartWaterDemand);
+  }
+
   ngOnInit(): void {
     timer(0, 1000).subscribe((date) => {
       this.date = new Date();

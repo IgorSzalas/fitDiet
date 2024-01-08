@@ -10,7 +10,7 @@ export class RecipeService {
   getRecipesByUserPreferences(userID: string): any {
     const userParams = new HttpParams().set('userID', userID);
     return this.http.get<any>(
-      'http://localhost:9000/recipes/favourite-ingredients',
+      'http://localhost:9000/recipes/user-preferences',
       {
         params: userParams,
       }

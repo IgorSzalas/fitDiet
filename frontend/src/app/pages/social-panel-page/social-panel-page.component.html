@@ -1,4 +1,23 @@
-<div class="social-panel-page">
-  <app-user-post></app-user-post>
+<h1>Panel społecznościowy</h1>
+<div class="search-module">
+  <mat-form-field>
+    <mat-label>Wyszukaj post</mat-label>
+    <input matInput placeholder="Wyszukaj post" />
+  </mat-form-field>
+  <div>
+    <button mat-raised-button color="primary">Dodaj post</button>
+  </div>
 </div>
-
+<div class="social-panel-page">
+  @for(post of posts; track post){
+  <app-user-post
+    postCreator
+    postTitle
+    postContent
+    postDate
+    postComments
+  ></app-user-post>
+  }@empty {
+  <h1>Brak postów</h1>
+  }
+</div>

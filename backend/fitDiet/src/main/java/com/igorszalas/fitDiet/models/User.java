@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -32,7 +33,15 @@ public class User implements UserDetails {
 
     private String password;
 
-    private List<UserType> userType = new ArrayList<>();
+    private String dateOfBirth;
+
+    private int userHeight;
+
+    private String userGender;
+
+    private double userActivityMode;
+
+    private List<String> userType = new ArrayList<>();
 
     private String profilePhoto;
 
@@ -40,9 +49,21 @@ public class User implements UserDetails {
 
     private List<String> favouriteIngredients;
 
+    private List<String> dislikedIngredients;
+
+    private List<Dish> plannedDishes;
+
+    private boolean dishesWithGluten;
+
+    private boolean dishesWithMeat;
+
+    private boolean dishesWithLactose;
+
     private List<DietProgres> dietProgres;
 
     private List<Post> userPosts;
+
+    private int caloricDemand;
 
     @Override
     public String getPassword() {
@@ -79,7 +100,7 @@ public class User implements UserDetails {
         return new ArrayList<>();
     }
 
-    public void setUserType(List<UserType> singletonList) {
+    public void setUserType(List<String> list) {
         this.userType = userType;
     }
 

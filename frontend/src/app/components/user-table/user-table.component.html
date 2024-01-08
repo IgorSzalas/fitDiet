@@ -1,66 +1,60 @@
 <mat-form-field>
-  <mat-label>Filter</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input />
+  <mat-label>Wyszukaj użytkownika</mat-label>
+  <input
+    matInput
+    (keyup)="applyFilter($event)"
+    placeholder="Wyszukaj użytkownika"
+    #input
+  />
 </mat-form-field>
 
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" matSort>
-    <!-- ID Column -->
     <ng-container matColumnDef="ID">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
       <td mat-cell *matCellDef="let row">{{ row.id }}</td>
     </ng-container>
 
-    <!-- Profile Column -->
-    <!-- <ng-container matColumnDef="profilePhoto">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Profile photo</th>
-      <td mat-cell *matCellDef="let row">{{ row.profilePhoto }}%</td>
-    </ng-container> -->
-
-    <!-- Firstname Column -->
     <ng-container matColumnDef="firstName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Imię</th>
       <td mat-cell *matCellDef="let row">{{ row.firstName }}</td>
     </ng-container>
 
-    <!-- Surname Column -->
     <ng-container matColumnDef="surname">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Nazwisko</th>
       <td mat-cell *matCellDef="let row">{{ row.surname }}</td>
     </ng-container>
 
-    <!-- Email Column -->
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
       <td mat-cell *matCellDef="let row">{{ row.email }}</td>
     </ng-container>
 
-    <!-- Usertype Column -->
     <ng-container matColumnDef="userType">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Typ użytkownika</th>
       <td mat-cell *matCellDef="let row">{{ row.usertype }}</td>
     </ng-container>
 
-    <!-- Edit Column -->
     <ng-container matColumnDef="edit">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Edytuj</th>
       <td mat-cell *matCellDef="let row">
         <button
           mat-icon-button
           aria-label="Example icon button with a vertical three dot icon"
+          (click)="openEditUserDialog(row.id)"
         >
           <mat-icon>edit</mat-icon>
         </button>
       </td>
     </ng-container>
 
-    <!-- Delete Column -->
     <ng-container matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Usuń</th>
       <td mat-cell *matCellDef="let row">
         <button
           mat-icon-button
           aria-label="Example icon button with a vertical three dot icon"
+          (click)="openDeleteUserDialog(row.id)"
         >
           <mat-icon>delete</mat-icon>
         </button>
@@ -70,7 +64,6 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-    <!-- Row shown when there is no matching data. -->
     <tr class="mat-row" *matNoDataRow>
       <td class="mat-cell" colspan="4">
         No data matching the filter "{{ input.value }}"

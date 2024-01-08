@@ -5,54 +5,21 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import {
   CalendarOptions,
   DateSelectArg,
-  EventApi,
   EventClickArg,
-} from '@fullcalendar/core'; // useful for typechecking
+} from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import { Calendar } from '@fullcalendar/core';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
+
 } from '@angular/material/dialog';
 import { AddNewDishComponent } from '../../components/add-new-dish/add-new-dish.component';
-
-import { EventInput } from '@fullcalendar/core';
 import { EditDishComponent } from '../../components/edit-dish/edit-dish.component';
-
-let eventGuid = 0;
-const TODAY_STR = new Date().toISOString().replace(/T.*$/, ''); // YYYY-MM-DD of today
-
-export const INITIAL_EVENTS: EventInput[] = [
-  {
-    id: createEventId(),
-    title: 'All-day event',
-    start: TODAY_STR,
-  },
-  {
-    id: createEventId(),
-    title: 'Timed event',
-    start: TODAY_STR + 'T00:00:00',
-    end: TODAY_STR + 'T03:00:00',
-  },
-  {
-    id: createEventId(),
-    title: 'Timed event',
-    start: TODAY_STR + 'T12:00:00',
-    end: TODAY_STR + 'T15:00:00',
-  },
-];
-
-export function createEventId() {
-  return String(eventGuid++);
-}
+import { UserService } from '../../services/user.service';
+import { first } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone: true,
@@ -63,23 +30,21 @@ export function createEventId() {
 })
 export class PlannedDishesPageComponent implements OnInit {
   constructor(
+    private readonly userService: UserService,
     private readonly dialog: MatDialog,
+    private readonly http: HttpClient,
     private changeDetector: ChangeDetectorRef
   ) {}
 
   calendarVisible: boolean = true;
   currentEvents: any;
-  ngOnInit() {}
-
-  openAddNewDishModal(dayData: any) {
-    const addNewDishDialog = this.dialog.open(AddNewDishComponent, {
-      data: { dayData },
-    });
-    addNewDishDialog.afterClosed().subscribe((result) => {
-      console.log(result);
-    });
+  ngOnInit() {
+    this.fetchUserData();
+    this.changeDetector.detectChanges();
   }
-
+  userData: any;
+  events: any = [];
+  event: any;
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
     headerToolbar: {
@@ -89,36 +54,60 @@ export class PlannedDishesPageComponent implements OnInit {
     },
     initialView: 'timeGridWeek',
     firstDay: 1,
+    allDaySlot: false,
     locale: 'pl',
     timeZone: 'local',
     editable: true,
     selectable: true,
+    themeSystem: 'Pulse',
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
-
-    events: [
-      {
-        title: 'Meeting',
-        start: '2023-12-23T14:30:00',
-        extendedProps: {
-          status: 'done',
-        },
-      },
-      {
-        title: 'Meeting',
-        start: '2023-12-22T14:30:00',
-        extendedProps: {
-          status: 'green',
-        },
-      },
-      {
-        title: 'Birthday Party',
-        start: '2023-12-13T07:00:00',
-        backgroundColor: 'green',
-        borderColor: 'green',
-      },
-    ],
   };
+
+  fetchDishes(info: any, success: any, failed: any) {
+    if (!this.userData) {
+      failed(new Error());
+    } else {
+      success(this.userData.plannedDishes);
+      this.changeDetector.detectChanges();
+    }
+  }
+
+  openAddNewDishModal(dayData: any) {
+    const addNewDishDialog = this.dialog.open(AddNewDishComponent, {
+      data: { dayData },
+      width: '600px',
+    });
+    addNewDishDialog.afterClosed().subscribe((result) => {
+      console.log(result);
+      this.fetchUserData();
+    });
+  }
+
+  fetchUserData() {
+    const token = JSON.parse(localStorage.getItem('token')!);
+    return this.userService
+      .getUserDataByID(token.UserID)
+      .pipe(first())
+      .subscribe((userData: any) => {
+        this.userData = userData;
+        console.log('userData: ', userData);
+        this.userData.plannedDishes.forEach((element: any) => {
+          const event = {
+            id: element.dishID ?? null,
+            title: element.dishTitle,
+            start: element.dateOfConsumption,
+          };
+          this.events.push(event);
+          console.log(this.events);
+        });
+        if (this.events.length > 0) {
+          this.calendarOptions.events = this.events;
+          this.events = [];
+        }
+
+      });
+  }
 
   handleCalendarToggle() {
     this.calendarVisible = !this.calendarVisible;
@@ -129,6 +118,7 @@ export class PlannedDishesPageComponent implements OnInit {
     // console.log(selectInfo);
     // const calendarApi = selectInfo.view.calendar;
     this.openAddNewDishModal(selectInfo);
+
     // calendarApi.unselect(); // clear date selection
 
     // if (title) {
@@ -143,7 +133,7 @@ export class PlannedDishesPageComponent implements OnInit {
   }
 
   handleEventClick(clickInfo: EventClickArg) {
-    console.log(clickInfo);
+    // console.log(clickInfo);
     const editDishDialog = this.dialog.open(EditDishComponent);
     // if (
     //   confirm(

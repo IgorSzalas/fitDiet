@@ -5,6 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { NgChartsModule } from 'ng2-charts';
+import { MatDialog } from '@angular/material/dialog';
+import { AddNewMeasurmentComponent } from '../../components/add-new-measurment/add-new-measurment.component';
 //import { ChartsModule } from 'ng2-charts/ng2-charts';
 @Component({
   standalone: true,
@@ -14,7 +16,10 @@ import { NgChartsModule } from 'ng2-charts';
   styleUrls: ['diet-progress-page.component.scss'],
 })
 export class DietProgressPageComponent implements OnInit {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly userService: UserService
+  ) {}
 
   ngOnInit() {
     this.fetchUser();
@@ -49,6 +54,19 @@ export class DietProgressPageComponent implements OnInit {
   tablesLabels: any = [];
 
   userProgres: any;
+
+  addNewMeasurement() {
+    const addNewMeasurementDialog = this.dialog.open(
+      AddNewMeasurmentComponent,
+      {
+        // data: { dayData },
+        width: '400px',
+      }
+    );
+    addNewMeasurementDialog.afterClosed().subscribe((result) => {
+      console.log(result);
+    });
+  }
 
   fetchUser(): any {
     // const authorizationToken = sessionStorage.getItem('authorizationToken');

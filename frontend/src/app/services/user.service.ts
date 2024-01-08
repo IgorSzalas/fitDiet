@@ -20,7 +20,14 @@ export class UserService {
   }
 
   getUserData(): any {
-    this.http.get<any>('https://localhost:9000/users');
+    return this.http.get<any>('https://localhost:9000/users');
+  }
+
+  getUserDataByID(userID: string): any {
+    const userParams = new HttpParams().set('userID', userID);
+    return this.http.get<any>('http://localhost:9000/users/user', {
+      params: userParams,
+    });
   }
 
   getUserDietProgresData(userID: string): any {
@@ -30,19 +37,45 @@ export class UserService {
     });
   }
 
+  deleteUser(userID: string): any {
+    const userParams = new HttpParams().set('userID', userID);
+    return this.http.get<any>('http://localhost:9000/users/delete', {
+      params: userParams,
+    });
+  }
+
   updateUserWeight(): any {
     const userData = {};
     // this.http.put<any>('',)
   }
 
-  // editUser(userID: string, userData: any) {
-  //   const userParams = new HttpParams().set('id', userID);
-  //   return this.http.put<any>(`${localAddress}/clients/edit-client`, userData, {
-  //     params: userParams,
-  //   });
-  // }
+  addDishToUser(userID: string, newDish: any) {
+    const userParams = new HttpParams().set('userID', userID);
+    console.log('addDishToUser TOKEN: ', userID);
+    return this.http.put<any>(
+      'http://localhost:9000/users/user/add-new-dish',
+      newDish,
+      {
+        params: userParams,
+      }
+    );
+  }
 
-  addNewDish(): any {
-    this.http.post<any>('https://localhost:9000/users', null);
+  editUserIgredients(userID: string, user: any) {
+    const userParams = new HttpParams().set('userID', userID);
+    return this.http.put<any>(
+      'http://localhost:9000/users/igredients/edit',
+      user,
+      {
+        params: userParams,
+      }
+    );
+  }
+
+  editUser(userID: string, user: any) {
+    const userParams = new HttpParams().set('userID', userID);
+    return this.http.put<any>(`http://localhost:9000/users/edit`, user, {
+      params: userParams,
+    });
   }
 }

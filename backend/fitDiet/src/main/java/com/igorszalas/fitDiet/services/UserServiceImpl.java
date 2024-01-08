@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         .build();
   }
 
-  private Collection<GrantedAuthority> mapUserTypesToAuthorities(List<UserType> userTypes) {
-    return userTypes.stream().map(userType -> new SimpleGrantedAuthority(userType.getUserTypeName()))
+  private Collection<GrantedAuthority> mapUserTypesToAuthorities(List<String> userTypes) {
+    return userTypes.stream().map(userType -> new SimpleGrantedAuthority(userType))
         .collect(Collectors.toList());
   }
 }

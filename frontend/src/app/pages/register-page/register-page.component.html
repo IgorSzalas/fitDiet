@@ -36,27 +36,6 @@
         <mat-icon matSuffix>email</mat-icon>
       </mat-form-field>
 
-      <!-- <mat-form-field>
-        <mat-label>Zdjęcie profilowe</mat-label>
-        <input
-          matInput
-          (change)="uploadProfilePhoto($event)"
-          formControlName="profilePhoto"
-          placeholder="Last name, First name"
-          readonly
-        />
-        <input
-          hidden
-          multiple
-          type="file"
-          #fileWindow
-          (change)="uploadProfilePhoto($event)"
-        />
-        <button mat-icon-button matSuffix (click)="fileWindow.click()">
-          <mat-icon>attach_file</mat-icon>
-        </button>
-      </mat-form-field> -->
-
       <mat-form-field>
         <mat-label>Hasło</mat-label>
         <input
@@ -95,22 +74,11 @@
       <mat-radio-group
         aria-label="Select an option"
         formControlName="userGender"
+        color="primary"
       >
         <mat-radio-button value="man">Mężczyzna</mat-radio-button>
         <mat-radio-button value="women">Kobieta</mat-radio-button>
       </mat-radio-group>
-
-      <!-- <mat-form-field>
-        <mat-label>Podaj wiek</mat-label>
-        <input
-          type="password"
-          matInput
-          formControlName="userAge"
-          placeholder="Last name, First name"
-          required
-        />
-        <mat-icon matSuffix></mat-icon>
-      </mat-form-field> -->
 
       <mat-form-field>
         <mat-label>Choose a date</mat-label>
@@ -152,34 +120,6 @@
           >
         </mat-select>
       </mat-form-field>
-
-      <!-- <mat-form-field>
-        <mat-label>Wzrost (podany w centymetrach)</mat-label>
-        <input
-          type="number"
-          max="200"
-          min="30"
-          matInput
-          formControlName="userWeight"
-          placeholder="Waga użytkownika"
-          required
-        />
-        <mat-icon matSuffix>height</mat-icon>
-      </mat-form-field> -->
-
-      <!-- <mat-form-field>
-        <mat-label>Waga (podana w kilogramach)</mat-label>
-        <input
-          type="number"
-          max="200"
-          min="30"
-          matInput
-          formControlName="userWeight"
-          placeholder="Waga użytkownika"
-          required
-        />
-        <mat-icon matSuffix>monitor_weight</mat-icon>
-      </mat-form-field> -->
 
       <div class="example-label-container">
         <h2 id="example-name-label" class="example-name-label">
@@ -231,6 +171,10 @@
       </mat-slider>
 
       <h2 id="example-name-label" class="example-name-label">
+        Twoje zapotrzebowanie kaloryczne: {{ userEnergyDemand }} kcal
+      </h2>
+
+      <h2 id="example-name-label" class="example-name-label">
         Twoje BMI: {{ userBMI }}
       </h2>
 
@@ -278,69 +222,97 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="secondFormGroup" [editable]="true">
+  <mat-step [editable]="true">
     <form [formGroup]="secondFormGroup">
       <ng-template matStepLabel>Podaj swoje preferencje żywieniowe</ng-template>
-
-      <div class="example-container">
-        <h2>Nielubiane składniki</h2>
-        <div
-          cdkDropList
-          #fakeList="cdkDropList"
-          [cdkDropListData]="fake"
-          [cdkDropListConnectedTo]="[doneList, todoList, fakeList]"
-          class="example-list"
-          (cdkDropListDropped)="drop($event)"
-        >
-          @for (item of fake; track item) {
-          <div class="example-box" cdkDrag>{{ item }}</div>
-          }
+      <div class="containers">
+        <div class="example-container">
+          <h2>Nielubiane składniki</h2>
+          <div
+            cdkDropList
+            #dislikedIngredientsList="cdkDropList"
+            [cdkDropListData]="dislikedIngredients"
+            [cdkDropListConnectedTo]="[
+              dislikedIngredientsList,
+              ingredientsList,
+              favouriteIngredientsList
+            ]"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)"
+          >
+            @for (item of dislikedIngredients; track item) {
+            <div class="example-box" cdkDrag>{{ item }}</div>
+            }
+          </div>
         </div>
+
+        <div class="example-container">
+          <h2>Składniki</h2>
+          <div
+            cdkDropList
+            #ingredientsList="cdkDropList"
+            [cdkDropListData]="ingredients"
+            [cdkDropListConnectedTo]="[
+              dislikedIngredientsList,
+              ingredientsList,
+              favouriteIngredientsList
+            ]"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)"
+          >
+            @for (item of ingredients; track item) {
+            <div class="example-box" cdkDrag>{{ item }}</div>
+            }
+          </div>
+        </div>
+
+        <div class="example-container">
+          <h2>Ulubione składniki</h2>
+          <div
+            cdkDropList
+            #favouriteIngredientsList="cdkDropList"
+            [cdkDropListData]="favouriteIngredients"
+            [cdkDropListConnectedTo]="[
+              dislikedIngredientsList,
+              ingredientsList,
+              favouriteIngredientsList
+            ]"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)"
+          >
+            @for (item of favouriteIngredients; track item) {
+            <div class="example-box" cdkDrag>{{ item }}</div>
+            }
+          </div>
+        </div>
+        <form [formGroup]="preferencesForm">
+          <mat-checkbox
+            formControlName="vegetarian"
+            color="primary"
+            [value]="vegetarianOption"
+            [checked]="vegetarianOption"
+            >Czy chcesz by proponowano Ci dania bez mięsa?</mat-checkbox
+          >
+          <mat-checkbox
+            formControlName="glutenFree"
+            color="primary"
+            [value]="glutenFreeOption"
+            [checked]="glutenFreeOption"
+            >Czy chcesz by proponowano Ci dania bez glutenu?</mat-checkbox
+          >
+          <mat-checkbox
+            formControlName="lactoseFree"
+            color="primary"
+            [value]="lactoseFreeOption"
+            [checked]="lactoseFreeOption"
+            >Czy chcesz by proponowano Ci dania bez laktozy?</mat-checkbox
+          >
+        </form>
       </div>
 
-      <div class="example-container">
-        <h2>Składniki</h2>
-        <div
-          cdkDropList
-          #todoList="cdkDropList"
-          [cdkDropListData]="todo"
-          [cdkDropListConnectedTo]="[doneList, todoList, fakeList]"
-          class="example-list"
-          (cdkDropListDropped)="drop($event)"
-        >
-          @for (item of todo; track item) {
-          <div class="example-box" cdkDrag>{{ item }}</div>
-          }
-        </div>
-      </div>
-
-      <div class="example-container">
-        <h2>Ulubione składniki</h2>
-        <div
-          cdkDropList
-          #doneList="cdkDropList"
-          [cdkDropListData]="done"
-          [cdkDropListConnectedTo]="[doneList, todoList, fakeList]"
-          class="example-list"
-          (cdkDropListDropped)="drop($event)"
-        >
-          @for (item of done; track item) {
-          <div class="example-box" cdkDrag>{{ item }}</div>
-          }
-        </div>
-      </div>
-      <!-- <mat-form-field>
-        <mat-label>Address</mat-label>
-        <input
-          matInput
-          formControlName="secondCtrl"
-          placeholder="Ex. 1 Main St, New York, NY"
-          required
-        />
-      </mat-form-field> -->
       <div>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperNext (click)="onSubmit()">Next</button>
       </div>
     </form>
   </mat-step>
