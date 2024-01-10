@@ -1,3 +1,4 @@
+<h1>Moje preferencje</h1>
 <div class="preferences-page">
   <div class="containers">
     <div class="example-container">
@@ -21,68 +22,71 @@
     </div>
   </div>
   <div class="user-containers">
-  <div class="example-container">
-    <h2>Nielubiane składniki</h2>
-    <div
-      cdkDropList
-      #dislikedIngredientsList="cdkDropList"
-      [cdkDropListData]="dislikedIngredients"
-      [cdkDropListConnectedTo]="[
-        dislikedIngredientsList,
-        ingredientsList,
-        favouriteIngredientsList
-      ]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)"
-    >
-      @for (item of dislikedIngredients; track item) {
-      <div class="example-box" cdkDrag>{{ item }}</div>
-      }
+    <div class="example-container">
+      <h2>Nielubiane składniki</h2>
+      <div
+        cdkDropList
+        #dislikedIngredientsList="cdkDropList"
+        [cdkDropListData]="dislikedIngredients"
+        [cdkDropListConnectedTo]="[
+          dislikedIngredientsList,
+          ingredientsList,
+          favouriteIngredientsList
+        ]"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        @for (item of dislikedIngredients; track item) {
+        <div class="example-box" cdkDrag>{{ item }}</div>
+        }
+      </div>
     </div>
-  </div>
 
-  <div class="example-container">
-    <h2>Ulubione składniki</h2>
-    <div
-      cdkDropList
-      #favouriteIngredientsList="cdkDropList"
-      [cdkDropListData]="favouriteIngredients"
-      [cdkDropListConnectedTo]="[
-        dislikedIngredientsList,
-        ingredientsList,
-        favouriteIngredientsList
-      ]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)"
-    >
-      @for (item of favouriteIngredients; track item) {
-      <div class="example-box" cdkDrag>{{ item }}</div>
-      }
+    <div class="example-container">
+      <h2>Ulubione składniki</h2>
+      <div
+        cdkDropList
+        #favouriteIngredientsList="cdkDropList"
+        [cdkDropListData]="favouriteIngredients"
+        [cdkDropListConnectedTo]="[
+          dislikedIngredientsList,
+          ingredientsList,
+          favouriteIngredientsList
+        ]"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        @for (item of favouriteIngredients; track item) {
+        <div class="example-box" cdkDrag>{{ item }}</div>
+        }
+      </div>
     </div>
+    <form formGroup="preferencesForm">
+      <mat-checkbox
+        formControlName="vegetarian"
+        color="primary"
+        [value]="vegetarianOption"
+        [checked]="vegetarianOption"
+        >Czy chcesz by proponowano Ci dania bez mięsa?</mat-checkbox
+      >
+      <mat-checkbox
+        formControlName="glutenFree"
+        color="primary"
+        [value]="glutenFreeOption"
+        [checked]="glutenFreeOption"
+        >Czy chcesz by proponowano Ci dania bez glutenu?</mat-checkbox
+      >
+      <mat-checkbox
+        formControlName="lactoseFree"
+        color="primary"
+        [value]="lactoseFreeOption"
+        [checked]="lactoseFreeOption"
+        >Czy chcesz by proponowano Ci dania bez laktozy?</mat-checkbox
+      >
+
+    </form>
+    <button mat-raised-button color="primary" (click)="editUserIgredients()">
+      Zapisz
+    </button>
   </div>
-  <form formGroup="preferencesForm">
-    <mat-checkbox
-      formControlName="vegetarian"
-      color="primary"
-      [value]="vegetarianOption"
-      [checked]="vegetarianOption"
-      >Czy chcesz by proponowano Ci dania bez mięsa?</mat-checkbox
-    >
-    <mat-checkbox
-      formControlName="glutenFree"
-      color="primary"
-      [value]="glutenFreeOption"
-      [checked]="glutenFreeOption"
-      >Czy chcesz by proponowano Ci dania bez glutenu?</mat-checkbox
-    >
-    <mat-checkbox
-      formControlName="lactoseFree"
-      color="primary"
-      [value]="lactoseFreeOption"
-      [checked]="lactoseFreeOption"
-      >Czy chcesz by proponowano Ci dania bez laktozy?</mat-checkbox
-    >
-    <button mat-raised-button color="primary">Zapisz</button>
-  </form>
-</div>
 </div>

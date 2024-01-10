@@ -45,7 +45,7 @@ public class User implements UserDetails {
 
     private String profilePhoto;
 
-    private List<String> favouriteRecipes;
+    private List<String> ingredients;
 
     private List<String> favouriteIngredients;
 

@@ -75,6 +75,23 @@ export class PreferencesPageComponent implements OnInit, AfterViewInit {
     }
   }
 
+  editUserIgredients() {
+    const token = JSON.parse(localStorage.getItem('token')!);
+    this.userData.favouriteIngredients = this.favouriteIngredients;
+    this.userData.dislikedIngredients = this.dislikedIngredients;
+    this.userData.ingredients = this.ingredients;
+    this.userData.vegetarianOption = this.preferencesForm.controls['vegetarian'].value;
+    this.userData.glutenFreeOption  = this.preferencesForm.controls['glutenFree'].value;
+    this.userData.lactoseFreeOption = this.preferencesForm.controls['lactoseFree'].value;
+
+    console.log(this.userData);
+    return this.userService
+      .editUserIgredients(token.UserID, this.userData)
+      .subscribe((result) => {
+        console.log(result);
+      });
+  }
+
   fetchUserData() {
     const token = JSON.parse(localStorage.getItem('token')!);
     console.log(token.UserID);

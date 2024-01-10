@@ -19,6 +19,7 @@ export class UserService {
     return this.http.get<any>('http://localhost:9000/users');
   }
 
+
   getUserData(): any {
     return this.http.get<any>('https://localhost:9000/users');
   }
@@ -39,7 +40,7 @@ export class UserService {
 
   deleteUser(userID: string): any {
     const userParams = new HttpParams().set('userID', userID);
-    return this.http.get<any>('http://localhost:9000/users/delete', {
+    return this.http.delete<any>('http://localhost:9000/users/delete', {
       params: userParams,
     });
   }

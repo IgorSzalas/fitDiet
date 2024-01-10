@@ -216,7 +216,7 @@ export class AddNewDishComponent implements OnInit {
         console.log('userData: ', this.userData.getValue());
         this.userCalories = this.userData.getValue().caloricDemand;
         console.log('this.userCalories: ' + this.userCalories);
-        
+
       });
   }
 

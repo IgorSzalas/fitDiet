@@ -16,4 +16,8 @@ export class RecipeService {
       }
     );
   }
+
+  getAllIngredients(): any {
+    return this.http.get<any>('http://localhost:9000/recipes/all-ingredients');
+  }
 }

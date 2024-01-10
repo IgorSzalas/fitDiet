@@ -245,27 +245,6 @@
             }
           </div>
         </div>
-
-        <div class="example-container">
-          <h2>Składniki</h2>
-          <div
-            cdkDropList
-            #ingredientsList="cdkDropList"
-            [cdkDropListData]="ingredients"
-            [cdkDropListConnectedTo]="[
-              dislikedIngredientsList,
-              ingredientsList,
-              favouriteIngredientsList
-            ]"
-            class="example-list"
-            (cdkDropListDropped)="drop($event)"
-          >
-            @for (item of ingredients; track item) {
-            <div class="example-box" cdkDrag>{{ item }}</div>
-            }
-          </div>
-        </div>
-
         <div class="example-container">
           <h2>Ulubione składniki</h2>
           <div
@@ -285,6 +264,7 @@
             }
           </div>
         </div>
+
         <form [formGroup]="preferencesForm">
           <mat-checkbox
             formControlName="vegetarian"
@@ -308,11 +288,29 @@
             >Czy chcesz by proponowano Ci dania bez laktozy?</mat-checkbox
           >
         </form>
-      </div>
-
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext (click)="onSubmit()">Next</button>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext (click)="onSubmit()">Next</button>
+        </div>
+        <div class="example-container">
+          <h2>Składniki</h2>
+          <div
+            cdkDropList
+            #ingredientsList="cdkDropList"
+            [cdkDropListData]="ingredients"
+            [cdkDropListConnectedTo]="[
+              dislikedIngredientsList,
+              ingredientsList,
+              favouriteIngredientsList
+            ]"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)"
+          >
+            @for (item of ingredients; track item) {
+            <div class="example-box" cdkDrag>{{ item }}</div>
+            }
+          </div>
+        </div>
       </div>
     </form>
   </mat-step>

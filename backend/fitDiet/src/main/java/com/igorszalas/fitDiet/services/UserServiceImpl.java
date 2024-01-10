@@ -35,29 +35,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   }
 
   @Override
-  public List<User> getUsertByEmail(String email) {
-    throw new UnsupportedOperationException("Unimplemented method 'getUsertByEmail'");
-  }
-
-  @Override
-  public List<User> getUserById() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getUserById'");
-  }
-
-  @Override
-  public List<User> getUserByRole() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getUserByRole'");
-  }
-
-  @Override
-  public List<User> getUserByPosts() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getUserByPosts'");
-  }
-
-  @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
     System.out.println("TESTOWE EMAIL: " + email);
     User user = userRepository.findByEmail(email)
@@ -72,4 +49,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     return userTypes.stream().map(userType -> new SimpleGrantedAuthority(userType))
         .collect(Collectors.toList());
   }
+
+  @Override
+  public List<User> getUsertByEmail(String email) {
+    throw new UnsupportedOperationException("Unimplemented method 'getUsertByEmail'");
+  }
+
 }

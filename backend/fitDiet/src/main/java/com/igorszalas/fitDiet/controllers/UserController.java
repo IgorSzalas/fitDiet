@@ -15,7 +15,8 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,70 +38,92 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private DishRepository dishRepository;
-    @Autowired
-    private MongoTemplate mongoTemplate;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        try {
+            return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/user")
-    public User getUser(@RequestParam String userID) {
-        User user = userRepository.findUserById(userID);
-        return user;
+    public ResponseEntity<User> getUser(@RequestParam String userID) {
+        try {
+            User user = userRepository.findUserById(userID);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/user")
-    public void deleteUser(@RequestParam String userID) {
+    public ResponseEntity<?> deleteUser(@RequestParam String userID) {
         User user = userRepository.findUserById(userID);
         userRepository.delete(user);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/igredients")
-    public List<String> getFavouriteIngredientsByUsers(@RequestParam String userID) {
-        User user = userRepository.findUserById(userID);
-        return user.getFavouriteIngredients();
+    public ResponseEntity<List<String>> getFavouriteIngredientsByUsers(@RequestParam String userID) {
+        try {
+            User user = userRepository.findUserById(userID);
+            return new ResponseEntity<>(user.getFavouriteIngredients(), HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/user-progres")
-    public List<DietProgres> getDietProgresByUser(@RequestParam String userID) {
-        User user = userRepository.findUserById(userID);
-        return user.getDietProgres();
+    public ResponseEntity<List<DietProgres>> getDietProgresByUser(@RequestParam String userID) {
+        try {
+            User user = userRepository.findUserById(userID);
+            return new ResponseEntity<>(user.getDietProgres(), HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/igredients/edit")
-    public User editIngredients(@RequestParam String userID,
+    public ResponseEntity<User> editIngredients(@RequestParam String userID,
             @RequestBody User user) {
-        User userData = userRepository.findUserById(userID);
-        if (!userData.equals(null)) {
-            User editUserIngredients = userData;
-            editUserIngredients.setId(user.getId());
-            editUserIngredients.setFavouriteIngredients(user.getFavouriteIngredients());
-            editUserIngredients.setDislikedIngredients(user.getDislikedIngredients());
-            return userRepository.save(editUserIngredients);
-        } else {
-            return userData;
+        try {
+            User userData = userRepository.findUserById(userID);
+            if (!userData.equals(null)) {
+                User editUserIngredients = userData;
+                editUserIngredients.setId(user.getId());
+                editUserIngredients.setFavouriteIngredients(user.getFavouriteIngredients());
+                editUserIngredients.setDislikedIngredients(user.getDislikedIngredients());
+                editUserIngredients.setDishesWithGluten(user.isDishesWithGluten());
+                editUserIngredients.setDishesWithLactose(user.isDishesWithLactose());
+                editUserIngredients.setDishesWithMeat(user.isDishesWithMeat());
+                System.out.println("                  EDIT USER INGREDIENTS                   " + editUserIngredients);
+                return new ResponseEntity<>(userRepository.save(editUserIngredients), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(userData, HttpStatus.OK);
+            }
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/user/add-new-dish")
-    public void addNewDishToUser(@RequestParam String userID, @RequestBody Dish newDish) {
+    public ResponseEntity<?> addNewDishToUser(@RequestParam String userID, @RequestBody Dish newDish) {
         User user = userRepository.findUserById(userID);
         List<Dish> userPlannedDishes = user.getPlannedDishes();
         Dish dish = dishRepository.save(newDish);
         userPlannedDishes.add(dish);
-        System.out.println("                               USER:                             " + user
-                + "                                                             ");
         userRepository.save(user);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/edit")
-    public User editUser(@RequestParam String userID,
+    public ResponseEntity<User> editUser(@RequestParam String userID,
             @RequestBody User user) {
         System.out.println("        USER ID TEST        " + userID);
         User userData = userRepository.findUserById(userID);
@@ -109,26 +132,30 @@ public class UserController {
             editUserIngredients.setFirstName(user.getFirstName());
             editUserIngredients.setSurname(user.getSurname());
             editUserIngredients.setEmail(user.getEmail());
-            //editUserIngredients.setUserType(user.getUserType());
+            // editUserIngredients.setUserType(user.getUserType());
             // editUserIngredients.setPassword(user.getPassword());
 
-            return userRepository.save(editUserIngredients);
+            return new ResponseEntity<>(userRepository.save(editUserIngredients), HttpStatus.OK);
         } else {
-            return userData;
+            return new ResponseEntity<>(userData, HttpStatus.OK);
         }
     }
 
     @PutMapping("/edit-dish")
-    public User addDishToUser(@RequestParam String userID,
+    public ResponseEntity<User> addDishToUser(@RequestParam String userID,
             @RequestBody User user) {
-        User userData = userRepository.findUserById(userID);
-        if (!userData.equals(null)) {
-            User editUserIngredients = userData;
-            editUserIngredients.setId(user.getId());
-            editUserIngredients.setPlannedDishes(user.getPlannedDishes());
-            return userRepository.save(editUserIngredients);
-        } else {
-            return userData;
+        try {
+            User userData = userRepository.findUserById(userID);
+            if (!userData.equals(null)) {
+                User editUserIngredients = userData;
+                editUserIngredients.setId(user.getId());
+                editUserIngredients.setPlannedDishes(user.getPlannedDishes());
+                return new ResponseEntity<>(userRepository.save(editUserIngredients), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(userData, HttpStatus.OK);
+            }
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

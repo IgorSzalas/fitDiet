@@ -23,6 +23,7 @@ interface userData {
   dishesWithLactose: any;
   dislikedIngredients: any;
   favouriteIngredients: any;
+  ingredients: any;
 }
 
 interface AuthorizeInfo {
@@ -38,7 +39,7 @@ export const authorizationGuard: CanActivateFn = (
   const authorizationService = inject(AuthorizationService);
   if (authorizationService.isAuthenticated) return true;
 
-  console.log(authorizationService.isAuthenticated)
+  console.log(authorizationService.isAuthenticated);
   inject(Router).navigate(['/zaloguj-sie'], {
     queryParams: { returnUrl: state.url },
   });
@@ -48,7 +49,24 @@ export const authorizationGuard: CanActivateFn = (
   providedIn: 'root',
 })
 export class AuthorizationService {
-  constructor(private http: HttpClient, private readonly router: Router) {}
+  constructor(private http: HttpClient, private readonly router: Router) {
+    if (localStorage.getItem('token')) {
+      console.log(sessionStorage.getItem('authorizationToken'));
+      const token = jose.decodeJwt(
+        sessionStorage.getItem('authorizationToken')!
+      );
+      const userData = {
+        userID: token['UserID'],
+        Email: token['Email'],
+        Role: token['Role'],
+      };
+      this.authenticatedState.next({
+        payload: userData,
+        expiresAt: JSON.parse(localStorage.getItem('expiresAt')!),
+        accessToken: localStorage.getItem('token')!,
+      });
+    }
+  }
 
   public readonly authenticatedState: BehaviorSubject<
     AuthorizeInfo | undefined
@@ -63,16 +81,8 @@ export class AuthorizationService {
   public get isAuthenticated() {
     const state = this.authenticatedState.getValue();
     console.log(state);
-    return !!(state?.accessToken)
+    return !!state?.accessToken;
   }
-
-  // login(email: string, password: string): any {
-  //   const httpOptions = {
-  //     email: email,
-  //     password: password,
-  //   };
-  //   return this.http.post('http://localhost:9000/login', httpOptions);
-  // }
 
   login(email: string, password: string): any {
     const httpOptions = {
@@ -101,6 +111,7 @@ export class AuthorizationService {
       dishesWithGluten: userData.dishesWithGluten,
       dishesWithMeat: userData.dishesWithMeat,
       dishesWithLactose: userData.dishesWithLactose,
+      ingredients: userData.ingredients,
       favouriteRecipes: [],
       plannedDishes: [],
       dietProgres: [],
@@ -127,7 +138,7 @@ export class AuthorizationService {
     payload: any;
   }) {
     let tokenJWT = jose.decodeJwt(result.accessToken);
-    console.log(tokenJWT);
+    console.log(result.accessToken);
     this.authenticatedState.next(result);
     localStorage.setItem('token', result.accessToken);
     localStorage.setItem('expiresAt', tokenJWT.exp!.toString());

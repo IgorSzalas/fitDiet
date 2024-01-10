@@ -4,7 +4,6 @@ import { UserService } from './../../services/user.service';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { first } from 'rxjs';
@@ -12,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { DeleteUserComponent } from '../delete-user/delete-user.component';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
   standalone: true,
@@ -55,8 +55,8 @@ export class UserTableComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   fetchUsers(): any {
@@ -67,6 +67,7 @@ export class UserTableComponent implements OnInit, AfterViewInit {
       .subscribe((users: any) => {
         this.dataSource = users;
         console.log(users);
+        this.dataSource = new MatTableDataSource(users);
       });
   }
 

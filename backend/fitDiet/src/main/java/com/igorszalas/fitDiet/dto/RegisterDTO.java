@@ -13,4 +13,5 @@ public class RegisterDTO {
     private String profilePhoto;
     private List<String> favouriteRecipes;
     private List<String> favouriteIngredients;
+    private List<String> ingredients;
 }

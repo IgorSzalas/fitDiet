@@ -58,12 +58,10 @@ public class AuthorizationController {
         user.setFirstName(registerDTO.getFirstName());
         user.setSurname(registerDTO.getSurname());
         user.setProfilePhoto(registerDTO.getProfilePhoto());
-        user.setFavouriteRecipes(registerDTO.getFavouriteRecipes());
+        user.setIngredients(registerDTO.getIngredients());
         user.setFavouriteIngredients(registerDTO.getFavouriteIngredients());
-
         String userType = userTypeRepository.findByUserTypeName("ADMIN").get();
         user.setUserType(Collections.singletonList(userType));
-
         userRepository.save(user);
         return new ResponseEntity<>("Registration has been completed!", HttpStatus.OK);
     }
@@ -75,6 +73,5 @@ public class AuthorizationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateJWTToken(authentication);
         return new ResponseEntity<>(new AuthorizationResponseDTO(token), HttpStatus.OK);
-
     }
 }

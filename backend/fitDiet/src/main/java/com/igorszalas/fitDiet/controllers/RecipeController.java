@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,25 +37,37 @@ public class RecipeController {
     }
 
     @GetMapping("/all-ingredients")
-    public Set<String> getAllIngredients() {
-        List<Recipe> recipes = recipeRepository.findAll();
-        Set<String> ingredents = new TreeSet<>();
-        for (Recipe recipe : recipes) {
-            List<String> recipeIngredients = recipe.getIngredients();
-            for (String ingredient : recipeIngredients) {
-                ingredents.add(ingredient);
+    public ResponseEntity<Set<String>> getAllIngredients() {
+        try {
+            List<Recipe> recipes = recipeRepository.findAll();
+            Set<String> ingredents = new TreeSet<>();
+            for (Recipe recipe : recipes) {
+                List<String> recipeIngredients = recipe.getIngredients();
+                for (String ingredient : recipeIngredients) {
+                    ingredents.add(ingredient);
+                }
             }
+            return new ResponseEntity<>(ingredents, HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return ingredents;
     }
 
     @GetMapping("/favourite-ingredients")
-    public List<Recipe> getRecipesByUserFavouriteIngredients(@RequestParam String userID) {
-        return recipeService.getRecipesByUserFavouriteIngredients(userID);
+    public ResponseEntity<List<Recipe>> getRecipesByUserFavouriteIngredients(@RequestParam String userID) {
+        try {
+            return new ResponseEntity<>(recipeService.getRecipesByUserFavouriteIngredients(userID), HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/user-preferences")
-    public List<Recipe> getRecipesByUserPreferences(@RequestParam String userID) {
-        return recipeService.getRecipesByUserPreferences(userID);
+    public ResponseEntity<List<Recipe>> getRecipesByUserPreferences(@RequestParam String userID) {
+        try {
+            return new ResponseEntity<>(recipeService.getRecipesByUserPreferences(userID), HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

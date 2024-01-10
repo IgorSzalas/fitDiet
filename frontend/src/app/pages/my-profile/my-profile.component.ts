@@ -33,7 +33,9 @@ export class MyProfileComponent implements OnInit {
     private readonly userService: UserService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchUserData();
+  }
 
   data: any;
   userData: any;
@@ -59,7 +61,26 @@ export class MyProfileComponent implements OnInit {
       .pipe(first())
       .subscribe((userData: any) => {
         this.userData = userData;
-        console.log(userData);
+        console.log('USERDATA: ', userData);
+        this.editUserForm.setValue({
+          name: this.userData.firstName,
+          surname: this.userData.surname,
+          email: this.userData.email,
+          userType: JSON.parse(this.userData.userType),
+        });
+      });
+  }
+
+  fetchUserData() {
+    const token = JSON.parse(localStorage.getItem('token')!);
+    console.log(token.UserID);
+    return this.userService
+      .getUserDataByID(token.UserID)
+      .pipe(first())
+      .subscribe((userData: any) => {
+        this.userData = userData;
+        console.log('userData: ', userData);
+
         this.editUserForm.setValue({
           name: this.userData.firstName,
           surname: this.userData.surname,

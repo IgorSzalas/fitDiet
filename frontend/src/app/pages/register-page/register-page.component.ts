@@ -1,5 +1,5 @@
 import { AuthorizationService } from './../../services/authorization.service';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -27,6 +27,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { RecipeService } from '../../services/recipe.service';
 
 @Component({
   selector: 'app-register-page',
@@ -54,16 +55,11 @@ import { MatNativeDateModule } from '@angular/material/core';
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss',
 })
-export class RegisterPageComponent {
-  userBMI: any;
-  height: number = 170;
-  weight: number = 70;
-  userEnergyDemand: any;
-  userData: any;
-
+export class RegisterPageComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
-    private authorizationService: AuthorizationService
+    private authorizationService: AuthorizationService,
+    private recipeService: RecipeService
   ) {}
 
   startDate = new Date(1990, 0, 1);
@@ -76,6 +72,11 @@ export class RegisterPageComponent {
 
   done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
 
+  userBMI: any;
+  height: number = 170;
+  weight: number = 70;
+  userEnergyDemand: any;
+  userData: any;
   repeatPasswordVisibility: boolean = false;
   passwordVisibility: boolean = false;
   isEditable = false;
@@ -85,6 +86,10 @@ export class RegisterPageComponent {
   vegetarianOption?: any;
   glutenFreeOption?: any;
   lactoseFreeOption?: any;
+
+  ngOnInit(): void {
+    this.fetchAllIngredients();
+  }
 
   onSubmit() {
     this.userData = {
@@ -102,6 +107,7 @@ export class RegisterPageComponent {
       userType: 'USER',
       favouriteIngredients: this.favouriteIngredients,
       dislikedIngredients: this.dislikedIngredients,
+      ingredients: this.ingredients,
       vegetarianOption:
         this.preferencesForm.controls['vegetarian'].value ?? false,
       glutenFreeOption:
@@ -114,6 +120,12 @@ export class RegisterPageComponent {
     this.authorizationService.register(this.userData).subscribe((register) => {
       console.log(register);
     });
+  }
+
+  fetchAllIngredients() {
+    this.recipeService
+      .getAllIngredients()
+      .subscribe((ingredients: any) => (this.ingredients = ingredients));
   }
 
   calculateUserEnergyDemand(

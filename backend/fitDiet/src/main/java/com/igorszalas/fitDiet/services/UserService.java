@@ -12,10 +12,4 @@ public interface UserService {
 
     List<User> getUsertByEmail(String email);
 
-    List<User> getUserById();
-
-    List<User> getUserByRole();
-
-    List<User> getUserByPosts();
-
 }

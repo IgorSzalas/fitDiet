@@ -10,16 +10,18 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin: 2rem;
-  height: 40vh;
+  max-height: 40vh;
 }
 
 .user-weight-results {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin: 2rem;
-  height: 40vh;
+  max-height: 40vh;
 }
 
 button {
