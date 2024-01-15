@@ -23,9 +23,11 @@ public class Post {
 
     private String content;
 
-    private String reactions;
+    // private String reactions;
 
-    private List<String> comments;
+    // private List<String> comments;
 
-    private int rating;
+    // private int rating;
+
+    private String creatorID;
 }

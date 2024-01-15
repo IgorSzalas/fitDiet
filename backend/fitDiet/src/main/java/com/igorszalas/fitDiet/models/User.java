@@ -37,6 +37,8 @@ public class User implements UserDetails {
 
     private int userHeight;
 
+    private double userWeight;
+
     private String userGender;
 
     private double userActivityMode;
@@ -53,15 +55,13 @@ public class User implements UserDetails {
 
     private List<Dish> plannedDishes;
 
-    private boolean dishesWithGluten;
-
-    private boolean dishesWithMeat;
-
-    private boolean dishesWithLactose;
+    private String dietOption;
 
     private List<DietProgres> dietProgres;
 
     private List<Post> userPosts;
+
+    private List<WaterMeasurment> userWaterMeasurment;
 
     private int caloricDemand;
 

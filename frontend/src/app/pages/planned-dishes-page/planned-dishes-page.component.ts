@@ -11,10 +11,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  MatDialog,
-
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AddNewDishComponent } from '../../components/add-new-dish/add-new-dish.component';
 import { EditDishComponent } from '../../components/edit-dish/edit-dish.component';
 import { UserService } from '../../services/user.service';
@@ -73,6 +70,17 @@ export class PlannedDishesPageComponent implements OnInit {
     }
   }
 
+  openEditDishModal(dayData: any) {
+    const editDishDialog = this.dialog.open(EditDishComponent, {
+      data: { dayData },
+      width: '600px',
+    });
+    editDishDialog.afterClosed().subscribe((result) => {
+      console.log(result);
+      this.fetchUserData();
+    });
+  }
+
   openAddNewDishModal(dayData: any) {
     const addNewDishDialog = this.dialog.open(AddNewDishComponent, {
       data: { dayData },
@@ -92,20 +100,21 @@ export class PlannedDishesPageComponent implements OnInit {
       .subscribe((userData: any) => {
         this.userData = userData;
         console.log('userData: ', userData);
+        this.userData.plannedDishes = this.userData.plannedDishes ?? [];
         this.userData.plannedDishes.forEach((element: any) => {
           const event = {
             id: element.dishID ?? null,
             title: element.dishTitle,
             start: element.dateOfConsumption,
           };
+          // console.log('element.dateOfConsumption: ',element.dateOfConsumption)
           this.events.push(event);
-          console.log(this.events);
+          // console.log(this.events);
         });
         if (this.events.length > 0) {
           this.calendarOptions.events = this.events;
           this.events = [];
         }
-
       });
   }
 
@@ -114,11 +123,11 @@ export class PlannedDishesPageComponent implements OnInit {
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
+    this.openAddNewDishModal(selectInfo);
+
     // const title = prompt('Please enter a new title for your event');
     // console.log(selectInfo);
     // const calendarApi = selectInfo.view.calendar;
-    this.openAddNewDishModal(selectInfo);
-
     // calendarApi.unselect(); // clear date selection
 
     // if (title) {
@@ -133,8 +142,8 @@ export class PlannedDishesPageComponent implements OnInit {
   }
 
   handleEventClick(clickInfo: EventClickArg) {
+    this.openEditDishModal(clickInfo);
     // console.log(clickInfo);
-    const editDishDialog = this.dialog.open(EditDishComponent);
     // if (
     //   confirm(
     //     `Are you sure you want to delete the event '${clickInfo.event.title}'`

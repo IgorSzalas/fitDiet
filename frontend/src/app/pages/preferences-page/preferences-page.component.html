@@ -61,30 +61,34 @@
         }
       </div>
     </div>
-    <form formGroup="preferencesForm">
-      <mat-checkbox
-        formControlName="vegetarian"
-        color="primary"
-        [value]="vegetarianOption"
-        [checked]="vegetarianOption"
-        >Czy chcesz by proponowano Ci dania bez mięsa?</mat-checkbox
-      >
-      <mat-checkbox
-        formControlName="glutenFree"
-        color="primary"
-        [value]="glutenFreeOption"
-        [checked]="glutenFreeOption"
-        >Czy chcesz by proponowano Ci dania bez glutenu?</mat-checkbox
-      >
-      <mat-checkbox
-        formControlName="lactoseFree"
-        color="primary"
-        [value]="lactoseFreeOption"
-        [checked]="lactoseFreeOption"
-        >Czy chcesz by proponowano Ci dania bez laktozy?</mat-checkbox
-      >
-
-    </form>
+    <div [formGroup]="preferencesForm">
+      <mat-radio-group formControlName="dietOption">
+        <mat-radio-button
+          color="primary"
+          [value]="'standardOption'"
+          [checked]="'standardOption'"
+          >Czy chcesz by proponowano Ci dania standardowe?</mat-radio-button
+        >
+        <mat-radio-button
+          color="primary"
+          [value]="'vegetarianOption'"
+          [checked]="'vegetarianOption'"
+          >Czy chcesz by proponowano Ci dania bez mięsa?</mat-radio-button
+        >
+        <mat-radio-button
+          color="primary"
+          [value]="'glutenFreeOption'"
+          [checked]="'glutenFreeOption'"
+          >Czy chcesz by proponowano Ci dania bez glutenu?</mat-radio-button
+        >
+        <mat-radio-button
+          color="primary"
+          [value]="'lactoseFreeOption'"
+          [checked]="'lactoseFreeOption'"
+          >Czy chcesz by proponowano Ci dania bez laktozy?</mat-radio-button
+        >
+      </mat-radio-group>
+    </div>
     <button mat-raised-button color="primary" (click)="editUserIgredients()">
       Zapisz
     </button>

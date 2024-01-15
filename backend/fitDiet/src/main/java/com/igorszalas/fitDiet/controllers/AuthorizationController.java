@@ -60,8 +60,17 @@ public class AuthorizationController {
         user.setProfilePhoto(registerDTO.getProfilePhoto());
         user.setIngredients(registerDTO.getIngredients());
         user.setFavouriteIngredients(registerDTO.getFavouriteIngredients());
-        String userType = userTypeRepository.findByUserTypeName("ADMIN").get();
-        user.setUserType(Collections.singletonList(userType));
+        user.setDislikedIngredients(registerDTO.getDislikedIngredients());
+        user.setUserType(Collections.singletonList("USER"));
+        user.setDietOption(registerDTO.getDietOption());
+        user.setPlannedDishes(registerDTO.getPlannedDishes());
+        user.setUserWeight(registerDTO.getUserWeight());
+        user.setDateOfBirth(registerDTO.getDateOfBirth());
+        user.setUserHeight(registerDTO.getUserHeight());
+        user.setUserGender(registerDTO.getUserGender());
+        user.setCaloricDemand(registerDTO.getCaloricDemand());
+        user.setUserGender(registerDTO.getUserGender());
+        user.setUserActivityMode(registerDTO.getUserActivityMode());
         userRepository.save(user);
         return new ResponseEntity<>("Registration has been completed!", HttpStatus.OK);
     }

@@ -1,3 +1,4 @@
+import { userData } from './../../services/authorization.service';
 import { first, pipe } from 'rxjs';
 import { UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
@@ -21,31 +22,13 @@ export class DietProgressPageComponent implements OnInit {
     private readonly userService: UserService
   ) {}
 
-  ngOnInit() {
-    this.fetchUser();
-    console.log('onInit');
-  }
-
   public barChartOptions: any = {
     scaleShowVerticalLines: true,
     responsive: true,
   };
-  public barChartLabels: string[] = [
-    '2006',
-    '2007',
-    '2008',
-    '2009',
-    '2010',
-    '2011',
-    '2012',
-  ];
+
   public barChartType: string = 'bar';
   public barChartLegend: boolean = true;
-
-  public barChartData: any[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-    // { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
-  ];
 
   tableWeightData: any = [{ data: [], label: 'Waga' }];
 
@@ -55,21 +38,29 @@ export class DietProgressPageComponent implements OnInit {
 
   userProgres: any;
 
+  userData: any;
+
+  ngOnInit() {
+    this.fetchUserProgresData();
+    console.log('onInit');
+    this.userProgres = this.userProgres;
+  }
+
   addNewMeasurement() {
     const addNewMeasurementDialog = this.dialog.open(
       AddNewMeasurmentComponent,
       {
-        // data: { dayData },
+        data: this.userData,
         width: '400px',
       }
     );
     addNewMeasurementDialog.afterClosed().subscribe((result) => {
-      console.log(result);
+      console.log(result, 'KONIEC');
+      this.fetchUserProgresData();
     });
   }
 
-  fetchUser(): any {
-    // const authorizationToken = sessionStorage.getItem('authorizationToken');
+  fetchUserProgresData(): any {
     const token = JSON.parse(localStorage.getItem('token')!);
     console.log(token.UserID);
     this.userService
@@ -77,6 +68,7 @@ export class DietProgressPageComponent implements OnInit {
       .pipe(first())
       .subscribe((userProgres: any) => {
         this.userProgres = userProgres;
+        console.log('this.userProgres ', this.userProgres);
         console.log(this.userProgres);
         this.userProgres.map((element: any) => {
           this.tablesLabels.push(element.date);

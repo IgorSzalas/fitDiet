@@ -8,12 +8,12 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Data</mat-label>
-        <input matInput formControlName="time" />
+        <input readonly matInput formControlName="time" />
       </mat-form-field>
     </form>
   </div>
   <div mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Anuluj</button>
-    <button mat-button cdkFocusInitial type="submit">Dodaj</button>
+    <button mat-button mat-dialog-close type="submit">Dodaj</button>
   </div>
 </div>

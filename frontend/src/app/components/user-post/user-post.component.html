@@ -1,6 +1,7 @@
-<mat-card fxLayout fxLayoutAlign="space-between end" class="example-card">
+<mat-card class="example-card">
+  <!-- fxLayout fxLayoutAlign="space-between end"  -->
   <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
+    <!-- <div mat-card-avatar class="example-header-image"></div> -->
     <mat-card-title>{{ postTitle }}</mat-card-title>
     <mat-card-subtitle>{{ postCreator }}</mat-card-subtitle>
   </mat-card-header>
@@ -17,10 +18,9 @@
   <mat-card-actions>
     <button
       mat-icon-button
-      color="warn"
-      aria-label="Example icon button with a heart icon"
+      aria-label="Example icon button with a vertical three dot icon"
     >
-      <mat-icon>favorite</mat-icon>
+      <mat-icon>delete</mat-icon>
     </button>
     <h4>{{ postReactions }}</h4>
   </mat-card-actions>

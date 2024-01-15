@@ -12,12 +12,17 @@ import {
 import { BehaviorSubject, first, pipe } from 'rxjs';
 import * as jose from 'jose';
 
-interface userData {
+export interface userData {
   firstName: any;
   surname: any;
   email: any;
   password: any;
   userType: any;
+  userWeight: any;
+  userHeight: any;
+  dateOfBirth: any;
+  userActivityMode: any;
+  userGender: any;
   dishesWithGluten: any;
   dishesWithMeat: any;
   dishesWithLactose: any;
@@ -102,6 +107,7 @@ export class AuthorizationService {
   }
 
   register(userData: userData) {
+    console.log('Register data', userData);
     const httpOptions = {
       firstName: userData.firstName,
       surname: userData.surname,
@@ -111,7 +117,12 @@ export class AuthorizationService {
       dishesWithGluten: userData.dishesWithGluten,
       dishesWithMeat: userData.dishesWithMeat,
       dishesWithLactose: userData.dishesWithLactose,
+      dateOfBirth: userData.dateOfBirth,
       ingredients: userData.ingredients,
+      userHeight: userData.userHeight,
+      userWeight: userData.userWeight,
+      userActivityMode: userData.userActivityMode,
+      userGender: userData.userGender,
       favouriteRecipes: [],
       plannedDishes: [],
       dietProgres: [],
@@ -119,6 +130,7 @@ export class AuthorizationService {
       dislikedIngredients: userData.dislikedIngredients,
       favouriteIngredients: userData.favouriteIngredients,
     };
+    console.log('Register options', httpOptions);
     return this.http.post('http://localhost:9000/register', httpOptions);
   }
 
@@ -146,6 +158,8 @@ export class AuthorizationService {
   }
 
   logout() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('expiresAt');
     localStorage.removeItem('token');
     sessionStorage.removeItem('authorizationToken');
     sessionStorage.removeItem('userRole');

@@ -13,7 +13,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormBuilder, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
   selector: 'app-preferences-page',
@@ -26,6 +32,9 @@ import { FormBuilder, Validators } from '@angular/forms';
     MatDividerModule,
     MatIconModule,
     MatCheckboxModule,
+    ReactiveFormsModule,
+    MatRadioModule,
+    FormsModule,
   ],
   templateUrl: 'preferences-page.component.html',
   styleUrl: 'preferences-page.component.scss',
@@ -37,9 +46,7 @@ export class PreferencesPageComponent implements OnInit, AfterViewInit {
   ) {}
 
   preferencesForm = this.form.group({
-    vegetarian: [this.vegetarianOption, Validators.required],
-    glutenFree: [this.glutenFreeOption, Validators.required],
-    lactoseFree: [this.lactoseFreeOption, Validators.required],
+    dietOption: [Validators.required],
   });
   ngAfterViewInit(): void {
     this.fetchUserData();
@@ -51,9 +58,11 @@ export class PreferencesPageComponent implements OnInit, AfterViewInit {
   favouriteIngredients: string[] = [];
   dislikedIngredients: string[] = [];
   ingredients: string[] = [];
+  standardOption?: any;
   vegetarianOption?: any;
   glutenFreeOption?: any;
   lactoseFreeOption?: any;
+  dietOption?: any;
 
   drop(event: CdkDragDrop<any>) {
     if (event.previousContainer === event.container) {
@@ -80,11 +89,9 @@ export class PreferencesPageComponent implements OnInit, AfterViewInit {
     this.userData.favouriteIngredients = this.favouriteIngredients;
     this.userData.dislikedIngredients = this.dislikedIngredients;
     this.userData.ingredients = this.ingredients;
-    this.userData.vegetarianOption = this.preferencesForm.controls['vegetarian'].value;
-    this.userData.glutenFreeOption  = this.preferencesForm.controls['glutenFree'].value;
-    this.userData.lactoseFreeOption = this.preferencesForm.controls['lactoseFree'].value;
+    this.userData.dietOption = this.dietOption;
 
-    console.log(this.userData);
+    console.log(this.userData, this.preferencesForm);
     return this.userService
       .editUserIgredients(token.UserID, this.userData)
       .subscribe((result) => {
@@ -101,17 +108,13 @@ export class PreferencesPageComponent implements OnInit, AfterViewInit {
       .subscribe((userData: any) => {
         this.userData = userData;
         console.log('userData: ', userData);
-        this.favouriteIngredients = this.userData.favouriteIngredients;
-        this.dislikedIngredients = this.userData.dislikedIngredients;
+        this.favouriteIngredients = this.userData.favouriteIngredients ?? [];
+        this.dislikedIngredients = this.userData.dislikedIngredients ?? [];
         this.ingredients = this.userData.ingredients ?? [];
-        this.vegetarianOption = this.userData.dishesWithMeat;
-        this.glutenFreeOption = this.userData.dishesWithGluten;
-        this.lactoseFreeOption = this.userData.dishesWithLactose;
+        this.dietOption = this.userData.dietOption;
 
         this.preferencesForm.setValue({
-          vegetarian: [this.vegetarianOption],
-          glutenFree: [this.glutenFreeOption],
-          lactoseFree: [this.lactoseFreeOption],
+          dietOption: this.dietOption,
         });
       });
   }

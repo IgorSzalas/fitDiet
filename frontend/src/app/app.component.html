@@ -11,27 +11,6 @@
   <h2 [routerLink]="''">fitDiet</h2>
   <span class="spacer"></span>
 
-  <div class="water-control-section">
-    <!-- <p>{{ date | date : "dd.MM.YYYY HH:mm" }}</p> -->
-    <p>{{ dailyStartWaterDemand }}/{{ dailyWaterDemand }}ml</p>
-    <!-- <button
-      mat-mini-fab
-      disabled
-      aria-label="Example mini fab with a heart icon"
-    >
-      <mat-icon>local_drink</mat-icon>
-    </button> -->
-
-    <button
-      (click)="waterDailyCalculate()"
-      mat-mini-fab
-      matTooltip="Primary"
-      color="primary"
-      aria-label="Example mini fab with a heart icon"
-    >
-      <mat-icon>local_drink</mat-icon>
-    </button>
-  </div>
   <span class="spacer"></span>
   <button
     class="profile"
@@ -42,9 +21,11 @@
   ></button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item [routerLink]="'moj-profil'">Mój profil</button>
-    <button mat-menu-item [routerLink]="'zaloguj-sie'">Wyloguj</button>
-  </mat-menu> </mat-toolbar
->}
+    <button mat-menu-item (click)="logout()">Wyloguj</button>
+  </mat-menu>
+</mat-toolbar>
+}
+
 <mat-drawer-container autosize class="example-container">
   <mat-drawer #drawer opened="false" mode="over">
     <mat-nav-list>
@@ -83,6 +64,14 @@
         Zarządzaj użytkownikami
       </mat-list-item>
       <!-- } -->
+
+      <mat-list-item (click)="changeVisualMode()">
+        Zmień motyw @if(visualmode === 'light'){
+        <mat-icon>light_mode</mat-icon>
+        } @else if (visualmode === 'dark'){
+        <mat-icon>dark_mode</mat-icon>
+        }
+      </mat-list-item>
     </mat-nav-list>
   </mat-drawer>
   <mat-drawer-content>

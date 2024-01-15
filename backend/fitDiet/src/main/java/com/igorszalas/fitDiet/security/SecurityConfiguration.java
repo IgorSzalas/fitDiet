@@ -2,6 +2,7 @@ package com.igorszalas.fitDiet.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -65,7 +66,8 @@ public class SecurityConfiguration {
         // .httpBasic();
 
         httpSecurity.authorizeHttpRequests(
-                (authorize) -> authorize.requestMatchers("/login", "/register").permitAll().anyRequest()
+                (authorize) -> authorize.requestMatchers("/login", "/register", "/recipes/all-ingredients").permitAll()
+                        .anyRequest()
                         .authenticated())
                 .csrf((csrf) -> csrf.disable())
                 .httpBasic(Customizer.withDefaults())

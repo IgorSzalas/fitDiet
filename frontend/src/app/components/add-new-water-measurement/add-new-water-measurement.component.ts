@@ -14,6 +14,7 @@ import {
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { UserService } from '../../services/user.service';
 
 @Component({
   standalone: true,
@@ -40,7 +41,12 @@ import { MatInputModule } from '@angular/material/input';
   styleUrls: ['./add-new-water-measurement.component.scss'],
 })
 export class AddNewWaterMeasurementComponent implements OnInit {
-  constructor(private readonly formBuilder: FormBuilder) {}
+  constructor(
+    private readonly formBuilder: FormBuilder,
+    private readonly userService: UserService
+  ) {}
+
+  userWaterData: any;
 
   ngOnInit() {
     const date = new Date().toLocaleString().replace(/T.*$/, '').split(',');
@@ -49,7 +55,18 @@ export class AddNewWaterMeasurementComponent implements OnInit {
   }
 
   waterForm = this.formBuilder.group({
-    waterValue: ['', Validators.required],
+    drunkWater: ['', Validators.required],
     time: ['', Validators.required],
   });
+
+  addNewWaterMeasurment() {
+    const token = JSON.parse(localStorage.getItem('token')!);
+    console.log(token.UserID);
+    const userWaterData = {
+      drunkWater: this.waterForm.controls['drunkWater'].value,
+      time: this.waterForm.controls['time'].value,
+    };
+
+    this.userService.addUserNewWaterMeasurment(token.UserID, userWaterData);
+  }
 }

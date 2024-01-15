@@ -1,4 +1,7 @@
-import { AuthorizationService } from './../../services/authorization.service';
+import {
+  AuthorizationService,
+  userData,
+} from './../../services/authorization.service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -51,6 +54,8 @@ import { RecipeService } from '../../services/recipe.service';
     MatRadioModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatRadioModule,
+    FormsModule,
   ],
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss',
@@ -76,9 +81,9 @@ export class RegisterPageComponent implements OnInit {
   height: number = 170;
   weight: number = 70;
   userEnergyDemand: any;
-  userData: any;
-  repeatPasswordVisibility: boolean = false;
-  passwordVisibility: boolean = false;
+  userData: userData | undefined;
+  repeatPasswordVisibility: boolean = true;
+  passwordVisibility: boolean = true;
   isEditable = false;
   favouriteIngredients: string[] = [];
   dislikedIngredients: string[] = [];
@@ -97,27 +102,25 @@ export class RegisterPageComponent implements OnInit {
       surname: this.firstFormGroup.controls['surname'].value,
       email: this.firstFormGroup.controls['email'].value,
       password: this.firstFormGroup.controls['password'].value,
-      repeatPassword: this.firstFormGroup.controls['repeatPassword'].value,
-      // userEnergyDemand: this.userEnergyDemand,
       userWeight: this.firstFormGroup.controls['userWeight'].value,
       userHeight: this.firstFormGroup.controls['userHeight'].value,
-      userAge: this.firstFormGroup.controls['userAge'].value,
+      dateOfBirth: this.firstFormGroup.controls['userAge'].value,
       userActivityMode: this.firstFormGroup.controls['userActivityMode'].value,
       userGender: this.firstFormGroup.controls['userGender'].value,
       userType: 'USER',
       favouriteIngredients: this.favouriteIngredients,
       dislikedIngredients: this.dislikedIngredients,
       ingredients: this.ingredients,
-      vegetarianOption:
+      dishesWithMeat:
         this.preferencesForm.controls['vegetarian'].value ?? false,
-      glutenFreeOption:
+      dishesWithGluten:
         this.preferencesForm.controls['glutenFree'].value ?? false,
-      lactoseFreeOption:
+      dishesWithLactose:
         this.preferencesForm.controls['lactoseFree'].value ?? false,
     };
 
     console.log('this.userData ONSUBMIT ', this.userData);
-    this.authorizationService.register(this.userData).subscribe((register) => {
+    this.authorizationService.register(this.userData!).subscribe((register) => {
       console.log(register);
     });
   }

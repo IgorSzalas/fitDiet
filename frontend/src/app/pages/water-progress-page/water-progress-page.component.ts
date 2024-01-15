@@ -1,11 +1,11 @@
 import { AddNewWaterMeasurementComponent } from './../../components/add-new-water-measurement/add-new-water-measurement.component';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { first } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { NgChartsModule } from 'ng2-charts';
+import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -16,46 +16,35 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./water-progress-page.component.scss'],
 })
 export class WaterProgressPageComponent implements OnInit {
+
+  @ViewChild(BaseChartDirective)
+  public chart!: BaseChartDirective;
   constructor(
     private readonly dialog: MatDialog,
     private readonly userService: UserService
   ) {}
+
+  public barChartOptions: any = {
+    scaleShowVerticalLines: true,
+    responsive: true,
+  };
+
+  public barChartType: string = 'bar';
+  public barChartLegend: boolean = true;
+
+  tableWaterData: any = [{ data: [], label: 'Ilość wypitej wody (w mililitrach)' }];
+
+  tableWaterLabels: any = [];
+
+  tablesLabels: any = [];
+
+  userWaterProgres: any = [];
 
   ngOnInit() {
     this.fetchUser();
     console.log('onInit');
   }
 
-  public barChartOptions: any = {
-    scaleShowVerticalLines: true,
-    responsive: true,
-  };
-  public barChartLabels: string[] = [
-    '2006',
-    '2007',
-    '2008',
-    '2009',
-    '2010',
-    '2011',
-    '2012',
-  ];
-  public barChartType: string = 'bar';
-  public barChartLegend: boolean = true;
-
-  public barChartData: any[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-    // { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
-  ];
-
-  tableWaterData: any = [
-    { data: [], label: 'Ilość wypitej wody (w mililitrach)' },
-  ];
-
-  tableBMIData: any = [{ data: [], label: 'BMI' }];
-
-  tablesLabels: any = [];
-
-  userProgres: any = [];
 
   openAddNewWaterMeasurementDialog() {
     const addNewWaterMeasurementDialog = this.dialog.open(
@@ -66,32 +55,34 @@ export class WaterProgressPageComponent implements OnInit {
     );
     addNewWaterMeasurementDialog.afterClosed().subscribe((result) => {
       console.log(result);
+      this.fetchUser();
     });
   }
 
   fetchUser(): any {
-    // const authorizationToken = sessionStorage.getItem('authorizationToken');
     const token = JSON.parse(localStorage.getItem('token')!);
     console.log(token.UserID);
     this.userService
-      .getUserDataByID(token.UserID)
+      .getUserWaterProgresData(token.UserID)
       .pipe(first())
       .subscribe((userData: any) => {
-        this.userProgres = userData;
-        console.log(this.userProgres);
-        this.userProgres.map((element: any) => {
-          this.tablesLabels.push(element.date);
+        this.userWaterProgres = userData;
+        console.log('this.userWaterProgres ', this.userWaterProgres);
+
+        this.userWaterProgres.map((element: any) => {
+          this.tableWaterLabels.push(element.waterMeasurmentDate);
           console.log(element);
         });
 
-        this.userProgres.map((element: any) => {
-          this.tableWaterData[0].data.push(element.amountWaterConsumed);
+        this.userWaterProgres.map((element: any) => {
+          this.tableWaterData[0].data.push(element.userWaterDrunk);
           console.log(element);
         });
 
-        console.log('this.tablesLabels ', this.tablesLabels);
-        console.log('this.tableBMIData ', this.tableBMIData);
-        console.log('this.tableWeightData ', this.tableWaterData);
+        this.chart.chart?.update()
+
+        console.log('this.tableWaterLabels ', this.tableWaterLabels);
+        console.log('this.tableWaterData ', this.tableWaterData);
       });
   }
   // events

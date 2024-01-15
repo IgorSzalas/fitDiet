@@ -3,6 +3,7 @@ package com.igorszalas.fitDiet.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,22 +33,26 @@ public class RecipeServiceImpl implements RecipeService {
         List<Recipe> recipes = recipeRepository.findAll();
         List<Recipe> userProposedDishes = new ArrayList<Recipe>();
 
-        for (String ingredient : userFavouriteIngredients) {
-            for (Recipe recipe : recipes) {
-                List<String> dishIngredients = recipe.getIngredients();
-                for (String dishIngredient : dishIngredients) {
-                    if (ingredient.equals(dishIngredient)) {
-                        userProposedDishes.add(recipe);
+        if (!userFavouriteIngredients.isEmpty()) {
+            for (String ingredient : userFavouriteIngredients) {
+                for (Recipe recipe : recipes) {
+                    List<String> dishIngredients = recipe.getIngredients();
+                    for (String dishIngredient : dishIngredients) {
+                        if (ingredient.equals(dishIngredient)) {
+                            userProposedDishes.add(recipe);
+                        }
                     }
                 }
             }
+        } else {
+            // userProposedDishes = new ArrayList<>();
+            return recipes;
         }
-
         if (userProposedDishes.isEmpty()) {
             throw new Error("Your proposed dishes list is empty");
         }
 
-        System.out.println("userProposedDishes: " + userProposedDishes);
+        // System.out.println("userProposedDishes: " + userProposedDishes);
         return userProposedDishes;
     }
 
@@ -58,47 +63,112 @@ public class RecipeServiceImpl implements RecipeService {
         List<Recipe> recipes = recipeRepository.findAll();
         List<Recipe> userDislikedDishes = new ArrayList<Recipe>();
 
-        for (String dislikedIngredient : userDislikedIngredients) {
-            for (Recipe recipe : recipes) {
-                List<String> dishIngredients = recipe.getIngredients();
-                for (String dishIngredient : dishIngredients) {
-                    if (dislikedIngredient.equals(dishIngredient)) {
-                        userDislikedDishes.add(recipe);
+        if (!userDislikedIngredients.isEmpty()) {
+            for (String dislikedIngredient : userDislikedIngredients) {
+                for (Recipe recipe : recipes) {
+                    List<String> dishIngredients = recipe.getIngredients();
+                    for (String dishIngredient : dishIngredients) {
+                        if (dislikedIngredient.equals(dishIngredient)) {
+                            userDislikedDishes.add(recipe);
+                        }
                     }
                 }
             }
+        } else if (userDislikedIngredients.isEmpty()) {
+            // System.out.println(" TEST NA BRAK NIELUBIANYCH SKŁADNIKÓW! ");
+            userDislikedDishes = new ArrayList<>();
+
         }
-        System.out.println("userDislikedDishes: " + userDislikedDishes);
+
+        // System.out.println("userDislikedDishes: " + userDislikedDishes);
         return userDislikedDishes;
     }
 
     public List<Recipe> getRecipesByUserPreferences(String userID) {
 
-        List<Recipe> userFavoriteDishes = this.getRecipesByUserFavouriteIngredients(userID);
-        List<Recipe> userDislikedDishes = this.getRecipesByUserDislikedIngredients(userID);
+        List<Recipe> userFavoriteDishes = new ArrayList<>();
+        List<Recipe> userDislikedDishes = new ArrayList<>();
         List<Recipe> userDishesByUserPreferences = new ArrayList<>();
         List<Recipe> dishesWithoutGluten = recipeRepository.findByDishType("gluten-free");
         List<Recipe> dishesWithoutLactose = recipeRepository.findByDishType("lactose-free");
         List<Recipe> dishesWithoutMeat = recipeRepository.findByDishType("vegan");
+        List<Recipe> standardDishes = recipeRepository.findByDishType("standard");
+        List<Recipe> recipes = recipeRepository.findAll();
         User user = userRepository.findUserById(userID);
+
+        try {
+            userFavoriteDishes = this.getRecipesByUserFavouriteIngredients(userID);
+        } catch (Exception exception) {
+            throw new Error("userFavouriteIngredients is empty!");
+        }
+
+        // System.out.println("userDislikedDishes: " + userDislikedDishes);
+
+        try {
+            userDislikedDishes = this.getRecipesByUserDislikedIngredients(userID);
+            // System.out.println("userDislikedDishes: " + userDislikedDishes);
+        } catch (Exception exception) {
+            throw new Error("userDislikedIngredients is empty!");
+        }
+
+        // if (userDislikedDishes.isEmpty()
+        // && userFavoriteDishes.isEmpty()
+        // && !user.isDishesWithGluten()
+        // && !user.isDishesWithLactose()
+        // && !user.isDishesWithMeat()) {
+        // userDishesByUserPreferences = recipes;
+        // }
 
         if (!userDislikedDishes.isEmpty()) {
             userFavoriteDishes.removeAll(userDislikedDishes);
             userDishesByUserPreferences = userFavoriteDishes;
-            if (!user.isDishesWithGluten()) {
-                userDishesByUserPreferences.removeAll(dishesWithoutGluten);
-            }
-            if (!user.isDishesWithLactose()) {
-                userDishesByUserPreferences.removeAll(dishesWithoutLactose);
-            }
-            if (!user.isDishesWithMeat()) {
-                userDishesByUserPreferences.removeAll(dishesWithoutMeat);
-            }
+            // } else if (userDislikedDishes.isEmpty()
+            // && userFavoriteDishes.isEmpty()
+            // && user.isDishesWithGluten()
+            // && user.isDishesWithLactose()
+            // && user.isDishesWithMeat()) {
+            // userDishesByUserPreferences = recipes;
         } else {
-            throw new Error("userDislikedDishes is empty!");
+            userDislikedDishes = new ArrayList<>();
+            userDishesByUserPreferences = userFavoriteDishes;
+            // throw new Error("userDislikedDishes is empty!");
         }
 
-        System.out.println("userDishesByUserPreferences: " + userDishesByUserPreferences);
+        // if (user.isDishesWithGluten()
+        // && user.isDishesWithLactose()
+        // && user.isDishesWithMeat()) {
+        // return userDishesByUserPreferences;
+
+        if (user.getDietOption().equals("glutenFreeOption")) {
+            List<Recipe> glutenDishes = userDishesByUserPreferences.stream()
+                    .filter(dish -> dish.getDishType().equals("gluten-free"))
+                    .collect(Collectors.toList());
+        }
+        if (user.getDietOption().equals("lactoseFreeOption")) {
+            List<Recipe> lactoseDishes = userDishesByUserPreferences.stream()
+                    .filter(dish -> dish.getDishType().equals("lactose-free"))
+                    .collect(Collectors.toList());
+        }
+        if (user.getDietOption().equals("vegetarianOption")) {
+            List<Recipe> meatDishes = userDishesByUserPreferences.stream()
+                    .filter(dish -> dish.getDishType().equals("vegan"))
+                    .collect(Collectors.toList());
+        }
+        if (user.getDietOption().equals("standardOption")) {
+            List<Recipe> meatDishes = userDishesByUserPreferences.stream()
+                    .filter(dish -> dish.getDishType().equals("standard"))
+                    .collect(Collectors.toList());
+        }
+
+        // if (user.isDishesWithGluten()) {
+        // return glutenDishes;
+        // }
+        // System.out.println("userFavoriteDishes: " + userFavoriteDishes);
+
+        // System.out.println("userDishesByUserPreferences: " +
+        // userDishesByUserPreferences);
+        // return userDishesByUserPreferences;
+
         return userDishesByUserPreferences;
     }
 }

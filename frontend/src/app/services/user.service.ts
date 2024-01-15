@@ -19,7 +19,6 @@ export class UserService {
     return this.http.get<any>('http://localhost:9000/users');
   }
 
-
   getUserData(): any {
     return this.http.get<any>('https://localhost:9000/users');
   }
@@ -31,11 +30,57 @@ export class UserService {
     });
   }
 
+  getUserDishesData(userID: string): any {
+    const userParams = new HttpParams().set('userID', userID);
+    return this.http.get<any>('http://localhost:9000/users/user-dishes', {
+      params: userParams,
+    });
+  }
+
   getUserDietProgresData(userID: string): any {
     const userParams = new HttpParams().set('userID', userID);
     return this.http.get<any>('http://localhost:9000/users/user-progres', {
       params: userParams,
     });
+  }
+
+  getUserWaterProgresData(userID: string): any {
+    const userParams = new HttpParams().set('userID', userID);
+    return this.http.get<any>(
+      'http://localhost:9000/users/user-water-progres',
+      {
+        params: userParams,
+      }
+    );
+  }
+
+  addUserNewDietMeasurment(userID: string, userDietData: any): any {
+    const userParams = new HttpParams().set('userID', userID);
+    return this.http.put<any>(
+      'http://localhost:9000/users/user/add-new-diet-measurment',
+      userDietData,
+      {
+        params: userParams,
+      }
+    );
+  }
+
+  // getUserWaterMeasurmentData(userID: string): any {
+  //   const userParams = new HttpParams().set('userID', userID);
+  //   return this.http.get<any>('http://localhost:9000/users/water-measurment', {
+  //     params: userParams,
+  //   });
+  // }
+
+  addUserNewWaterMeasurment(userID: string, userWaterData: any): any {
+    const userParams = new HttpParams().set('userID', userID);
+    return this.http.put<any>(
+      'http://localhost:9000/users/user/add-new-water-measurment',
+      userWaterData,
+      {
+        params: userParams,
+      }
+    );
   }
 
   deleteUser(userID: string): any {
@@ -62,6 +107,14 @@ export class UserService {
     );
   }
 
+  addPostToUser(userID: string, newPost: any) {
+    const userParams = new HttpParams().set('userID', userID);
+    console.log('addDishToUser TOKEN: ', userID);
+    return this.http.put<any>('http://localhost:9000/posts/add-post', newPost, {
+      params: userParams,
+    });
+  }
+
   editUserIgredients(userID: string, user: any) {
     const userParams = new HttpParams().set('userID', userID);
     return this.http.put<any>(
@@ -76,6 +129,30 @@ export class UserService {
   editUser(userID: string, user: any) {
     const userParams = new HttpParams().set('userID', userID);
     return this.http.put<any>(`http://localhost:9000/users/edit`, user, {
+      params: userParams,
+    });
+  }
+
+  updateUserDish(userID: string, dishID: string, dishData: any) {
+    const userParams = new HttpParams()
+      .set('userID', userID)
+      .set('dishID', dishData.dishID);
+
+    return this.http.put<any>(
+      `http://localhost:9000/dishes/modify-dish`,
+      dishData,
+      {
+        params: userParams,
+      }
+    );
+  }
+
+  deleteUserDish(userID: string, dishData: any) {
+    const userParams = new HttpParams()
+      .set('userID', userID)
+      .set('dishID', dishData.dishID);
+    console.log(userParams);
+    return this.http.delete<any>(`http://localhost:9000/dishes/delete-dish`, {
       params: userParams,
     });
   }

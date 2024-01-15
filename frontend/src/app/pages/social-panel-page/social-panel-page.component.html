@@ -5,17 +5,19 @@
     <input matInput placeholder="Wyszukaj post" />
   </mat-form-field>
   <div>
-    <button mat-raised-button color="primary">Dodaj post</button>
+    <button mat-raised-button color="primary" (click)="openAddNewPostModal()">
+      Dodaj post
+    </button>
   </div>
 </div>
-<br>
+<br />
 <div class="social-panel-page">
   @for(post of posts; track post){
   <app-user-post
-    postCreator
-    postTitle
-    postContent
-    postDate
+    [postCreator]="post.creatorID"
+    [postTitle]="post.title"
+    [postContent]="post.content"
+    [postDate]="post.date"
     postComments
   ></app-user-post>
   }@empty {

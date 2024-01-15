@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.igorszalas.fitDiet.models.DietProgres;
 import com.igorszalas.fitDiet.models.Dish;
 import com.igorszalas.fitDiet.models.User;
+import com.igorszalas.fitDiet.models.WaterMeasurment;
 import com.igorszalas.fitDiet.repositories.DishRepository;
 import com.igorszalas.fitDiet.repositories.UserRepository;
 import com.igorszalas.fitDiet.services.UserService;
@@ -20,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -89,6 +89,26 @@ public class UserController {
         }
     }
 
+    @GetMapping("/user-water-progres")
+    public ResponseEntity<List<WaterMeasurment>> getWaterProgresByUser(@RequestParam String userID) {
+        try {
+            User user = userRepository.findUserById(userID);
+            return new ResponseEntity<>(user.getUserWaterMeasurment(), HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/user-dishes")
+    public ResponseEntity<List<Dish>> getPlannedDishesByUser(@RequestParam String userID) {
+        try {
+            User user = userRepository.findUserById(userID);
+            return new ResponseEntity<>(user.getPlannedDishes(), HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PutMapping("/igredients/edit")
     public ResponseEntity<User> editIngredients(@RequestParam String userID,
             @RequestBody User user) {
@@ -99,10 +119,8 @@ public class UserController {
                 editUserIngredients.setId(user.getId());
                 editUserIngredients.setFavouriteIngredients(user.getFavouriteIngredients());
                 editUserIngredients.setDislikedIngredients(user.getDislikedIngredients());
-                editUserIngredients.setDishesWithGluten(user.isDishesWithGluten());
-                editUserIngredients.setDishesWithLactose(user.isDishesWithLactose());
-                editUserIngredients.setDishesWithMeat(user.isDishesWithMeat());
-                System.out.println("                  EDIT USER INGREDIENTS                   " + editUserIngredients);
+                editUserIngredients.setDietOption(user.getDietOption());
+                // System.out.println(" EDIT USER INGREDIENTS " + editUserIngredients);
                 return new ResponseEntity<>(userRepository.save(editUserIngredients), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(userData, HttpStatus.OK);
@@ -112,6 +130,28 @@ public class UserController {
         }
     }
 
+    @PutMapping("/user/add-new-water-measurment")
+    public ResponseEntity<?> addNewWaterMeasurmentToUser(@RequestParam String userID,
+            @RequestBody WaterMeasurment newWaterMeasurment) {
+        User user = userRepository.findUserById(userID);
+        List<WaterMeasurment> userWaterMeasurment = user.getUserWaterMeasurment();
+        userWaterMeasurment.add(newWaterMeasurment);
+        userRepository.save(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/user/add-new-diet-measurment")
+    public ResponseEntity<?> addNewDietMeasurmentToUser(@RequestParam String userID,
+            @RequestBody DietProgres newDietMeasurment) {
+        User user = userRepository.findUserById(userID);
+        user.setUserWeight(newDietMeasurment.getWeight());
+        List<DietProgres> userDietMeasurment = user.getDietProgres();
+        userDietMeasurment.add(newDietMeasurment);
+        userRepository.save(user);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PutMapping("/user/add-new-dish")
     public ResponseEntity<?> addNewDishToUser(@RequestParam String userID, @RequestBody Dish newDish) {
         User user = userRepository.findUserById(userID);
@@ -119,7 +159,7 @@ public class UserController {
         Dish dish = dishRepository.save(newDish);
         userPlannedDishes.add(dish);
         userRepository.save(user);
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/edit")

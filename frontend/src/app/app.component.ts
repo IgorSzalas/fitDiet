@@ -1,3 +1,4 @@
+import { AuthorizationService } from './services/authorization.service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -19,6 +20,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { DatePipe } from '@angular/common';
 import * as jose from 'jose';
 import { timer } from 'rxjs';
+import { OverlayContainer } from '@angular/cdk/overlay';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -47,8 +49,14 @@ export class AppComponent implements OnInit {
   waterDaily: any = [];
   dailyWaterDemand = 2000;
   dailyStartWaterDemand = 0;
+  visualmode: any;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private overlay: OverlayContainer,
+    private authorizationService: AuthorizationService
+  ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.actualUrl = event.urlAfterRedirects;
@@ -63,8 +71,51 @@ export class AppComponent implements OnInit {
         }
       }
     });
+
+    this.visualmode = localStorage.getItem('visualMode');
+
+    if (localStorage.getItem('visualMode')) {
+      this.visualmode = localStorage.getItem('visualMode');
+      if (this.visualmode === 'light') {
+        this.visualmode = localStorage.setItem('visualMode', 'light');
+        document
+          .getElementsByTagName('body')[0]
+          .classList.toggle('darkMode', false);
+        this.visualmode = 'light';
+      } else if (this.visualmode === 'dark') {
+        this.visualmode = localStorage.setItem('visualMode', 'dark');
+        document
+          .getElementsByTagName('body')[0]
+          .classList.toggle('darkMode', true);
+        this.visualmode = 'dark';
+      }
+    } else if (!localStorage.getItem('visualMode')) {
+      localStorage.setItem('visualMode', 'light');
+    }
   }
 
+  logout() {
+    this.authorizationService.logout();
+    this.router.navigateByUrl('/zaloguj-sie');
+  }
+
+  changeVisualMode() {
+    this.visualmode = localStorage.getItem('visualMode');
+    if (this.visualmode === 'light') {
+      this.visualmode = localStorage.setItem('visualMode', 'dark');
+      document
+        .getElementsByTagName('body')[0]
+        .classList.toggle('darkMode', true);
+      this.visualmode = 'dark';
+    } else if (this.visualmode === 'dark') {
+      this.visualmode = localStorage.setItem('visualMode', 'light');
+      document
+        .getElementsByTagName('body')[0]
+        .classList.toggle('darkMode', false);
+      this.visualmode = 'light';
+    }
+    console.log(this.visualmode);
+  }
   waterDailyCalculate() {
     this.dailyStartWaterDemand += 250;
     console.log(this.dailyStartWaterDemand);

@@ -8,12 +8,26 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Data</mat-label>
-        <input matInput formControlName="time" />
+        <input matInput maxlength="3" readonly formControlName="time" />
       </mat-form-field>
     </form>
+    <!-- @if(userBMI < 50 && userBMI > 150){
+      <h1>
+        Twoje obecne BMI może wskazywać na poważne problemy ze zdrowiem.
+        Koniecznie skonsultuj się z lekarzem.
+      </h1>
+      } -->
   </div>
   <div mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Anuluj</button>
-    <button mat-button cdkFocusInitial type="submit">Dodaj</button>
+    <button
+      mat-button
+      cdkFocusInitial
+      mat-dialog-close
+      type="submit"
+      (click)="addNewUserMeasurment()"
+    >
+      Dodaj
+    </button>
   </div>
 </div>

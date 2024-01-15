@@ -8,5 +8,5 @@ public interface PostRepository extends MongoRepository<Post, String> {
 
     List<Post> getPostByTitle();
 
-    List<Post> getPostByRating();
+    // List<Post> getPostByRating();
 }
