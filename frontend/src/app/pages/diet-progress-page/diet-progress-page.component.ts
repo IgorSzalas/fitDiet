@@ -67,22 +67,38 @@ export class DietProgressPageComponent implements OnInit {
       .getUserDietProgresData(token.UserID)
       .pipe(first())
       .subscribe((userProgres: any) => {
-        this.userProgres = userProgres;
+        this.userProgres = userProgres
+          .sort(
+            (
+              a: { date: string | number | Date },
+              b: { date: string | number | Date }
+            ) => {
+              const dateA = new Date(a.date);
+              const dateB = new Date(b.date);
+
+              return dateA.getTime() - dateB.getTime();
+            }
+          )
+          .slice(-10);
         console.log('this.userProgres ', this.userProgres);
         console.log(this.userProgres);
-        this.userProgres.map((element: any) => {
-          this.tablesLabels.push(element.date);
+        this.tablesLabels = this.userProgres.map((element: any) => {
+          // this.tablesLabels.push(element.date);
           console.log(element);
+          return element.date;
         });
 
-        this.userProgres.map((element: any) => {
-          this.tableWeightData[0].data.push(element.weight);
+        this.tableWeightData[0].data = this.userProgres.map((element: any) => {
+          // this.tableWeightData[0].data
           console.log(element);
+          return element.weight;
         });
 
-        this.userProgres.map((element: any) => {
-          this.tableBMIData[0].data.push(element.bmi);
+        this.tableBMIData[0].data = this.userProgres.map((element: any) => {
+          // this.tableBMIData[0].data
+
           console.log(element);
+          return element.bmi;
         });
 
         console.log('this.tablesLabels ', this.tablesLabels);

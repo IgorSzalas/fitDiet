@@ -23,12 +23,14 @@ export interface userData {
   dateOfBirth: any;
   userActivityMode: any;
   userGender: any;
-  dishesWithGluten: any;
-  dishesWithMeat: any;
-  dishesWithLactose: any;
+  // userCaloricDemand: any;
+  // dishesWithGluten: any;
+  // dishesWithMeat: any;
+  // dishesWithLactose: any;
   dislikedIngredients: any;
   favouriteIngredients: any;
   ingredients: any;
+  dietOption: any;
 }
 
 interface AuthorizeInfo {
@@ -114,10 +116,12 @@ export class AuthorizationService {
       email: userData.email,
       password: userData.password,
       userType: userData.userType,
-      dishesWithGluten: userData.dishesWithGluten,
-      dishesWithMeat: userData.dishesWithMeat,
-      dishesWithLactose: userData.dishesWithLactose,
+      // dishesWithGluten: userData.dishesWithGluten,
+      // dishesWithMeat: userData.dishesWithMeat,
+      // dishesWithLactose: userData.dishesWithLactose,
+      // userCaloricDemand: userData.userCaloricDemand,
       dateOfBirth: userData.dateOfBirth,
+      dietOption: userData.dietOption,
       ingredients: userData.ingredients,
       userHeight: userData.userHeight,
       userWeight: userData.userWeight,

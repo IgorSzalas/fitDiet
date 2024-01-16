@@ -76,7 +76,7 @@
         formControlName="userGender"
         color="primary"
       >
-        <mat-radio-button value="man">Mężczyzna</mat-radio-button>
+        <mat-radio-button value="men">Mężczyzna</mat-radio-button>
         <mat-radio-button value="women">Kobieta</mat-radio-button>
       </mat-radio-group>
 
@@ -169,10 +169,6 @@
       </mat-slider>
 
       <h2 id="example-name-label" class="example-name-label">
-        Twoje zapotrzebowanie kaloryczne: {{ userEnergyDemand }} kcal
-      </h2>
-
-      <h2 id="example-name-label" class="example-name-label">
         Twoje BMI: {{ userBMI }}
       </h2>
 
@@ -221,8 +217,35 @@
     </form>
   </mat-step>
   <mat-step [editable]="true">
+    <ng-template matStepLabel>Podaj swoje preferencje żywieniowe</ng-template>
+    <mat-radio-group required [(ngModel)]="dietOption">
+      <mat-radio-button
+        color="primary"
+        [value]="'standardOption'"
+        [checked]="'standardOption'"
+        >Czy chcesz by proponowano Ci dania standardowe?</mat-radio-button
+      >
+      <mat-radio-button
+        color="primary"
+        [value]="'vegetarianOption'"
+        [checked]="'vegetarianOption'"
+        >Czy chcesz by proponowano Ci dania bez mięsa?</mat-radio-button
+      >
+      <mat-radio-button
+        color="primary"
+        [value]="'glutenFreeOption'"
+        [checked]="'glutenFreeOption'"
+        >Czy chcesz by proponowano Ci dania bez glutenu?</mat-radio-button
+      >
+      <mat-radio-button
+        color="primary"
+        [value]="'lactoseFreeOption'"
+        [checked]="'lactoseFreeOption'"
+        >Czy chcesz by proponowano Ci dania bez laktozy?</mat-radio-button
+      >
+    </mat-radio-group>
+
     <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Podaj swoje preferencje żywieniowe</ng-template>
       <div class="containers">
         <div class="example-container">
           <h2>Nielubiane składniki</h2>
@@ -263,29 +286,6 @@
           </div>
         </div>
 
-        <mat-radio-group [formGroup]="preferencesForm">
-          <mat-radio-button
-            formControlName="vegetarian"
-            color="primary"
-            [value]="vegetarianOption"
-            [checked]="vegetarianOption"
-            >Czy chcesz by proponowano Ci dania bez mięsa?</mat-radio-button
-          >
-          <mat-radio-button
-            formControlName="glutenFree"
-            color="primary"
-            [value]="glutenFreeOption"
-            [checked]="glutenFreeOption"
-            >Czy chcesz by proponowano Ci dania bez glutenu?</mat-radio-button
-          >
-          <mat-radio-button
-            formControlName="lactoseFree"
-            color="primary"
-            [value]="lactoseFreeOption"
-            [checked]="lactoseFreeOption"
-            >Czy chcesz by proponowano Ci dania bez laktozy?</mat-radio-button
-          >
-        </mat-radio-group>
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext (click)="onSubmit()">Next</button>

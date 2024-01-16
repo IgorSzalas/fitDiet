@@ -24,9 +24,10 @@
       >
         @for(dish of userProposedDishes; track dish.id){
         <mat-radio-button
+          disableRipple="true"
           [value]="dish"
           [checked]="isCheckedDish(dish)"
-          (click)="x()"
+    
         >
           <app-choose-dish-card
             [dishName]="dish.name"

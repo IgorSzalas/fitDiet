@@ -143,21 +143,29 @@ public class RecipeServiceImpl implements RecipeService {
             List<Recipe> glutenDishes = userDishesByUserPreferences.stream()
                     .filter(dish -> dish.getDishType().equals("gluten-free"))
                     .collect(Collectors.toList());
+
+            return glutenDishes;
         }
         if (user.getDietOption().equals("lactoseFreeOption")) {
             List<Recipe> lactoseDishes = userDishesByUserPreferences.stream()
                     .filter(dish -> dish.getDishType().equals("lactose-free"))
                     .collect(Collectors.toList());
+
+            return lactoseDishes;
         }
         if (user.getDietOption().equals("vegetarianOption")) {
-            List<Recipe> meatDishes = userDishesByUserPreferences.stream()
+            List<Recipe> vegetarianDishes = userDishesByUserPreferences.stream()
                     .filter(dish -> dish.getDishType().equals("vegan"))
                     .collect(Collectors.toList());
+
+            return vegetarianDishes;
         }
         if (user.getDietOption().equals("standardOption")) {
             List<Recipe> meatDishes = userDishesByUserPreferences.stream()
                     .filter(dish -> dish.getDishType().equals("standard"))
                     .collect(Collectors.toList());
+
+            return meatDishes;
         }
 
         // if (user.isDishesWithGluten()) {

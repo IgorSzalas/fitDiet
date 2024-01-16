@@ -54,7 +54,7 @@
       </mat-label>
       } }
       <mat-form-field
-        formControlName="dishDate"
+        
         (click)="helloInput.showPicker()"
       >
         <mat-label>Data i godzina posiłku</mat-label>
@@ -68,28 +68,6 @@
 
         <mat-icon matSuffix fontIcon="today" />
       </mat-form-field>
-
-      <!-- <mat-form-field>
-        <mat-label>Wybierz datę posiłku</mat-label>
-        <input matInput [matDatepicker]="picker" />
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle
-          matIconSuffix
-          [for]="picker"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Wybierz godzinę posiłku</mat-label>
-        <input
-          matInput
-          formControlName="time"
-          type="time"
-          placeholder="start date"
-        />
-      </mat-form-field> -->
-
       <div mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Anuluj</button>
         <button mat-button cdkFocusInitial type="submit" mat-dialog-close>

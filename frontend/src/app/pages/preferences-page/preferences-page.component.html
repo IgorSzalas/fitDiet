@@ -61,34 +61,33 @@
         }
       </div>
     </div>
-    <div [formGroup]="preferencesForm">
-      <mat-radio-group formControlName="dietOption">
-        <mat-radio-button
-          color="primary"
-          [value]="'standardOption'"
-          [checked]="'standardOption'"
-          >Czy chcesz by proponowano Ci dania standardowe?</mat-radio-button
-        >
-        <mat-radio-button
-          color="primary"
-          [value]="'vegetarianOption'"
-          [checked]="'vegetarianOption'"
-          >Czy chcesz by proponowano Ci dania bez mięsa?</mat-radio-button
-        >
-        <mat-radio-button
-          color="primary"
-          [value]="'glutenFreeOption'"
-          [checked]="'glutenFreeOption'"
-          >Czy chcesz by proponowano Ci dania bez glutenu?</mat-radio-button
-        >
-        <mat-radio-button
-          color="primary"
-          [value]="'lactoseFreeOption'"
-          [checked]="'lactoseFreeOption'"
-          >Czy chcesz by proponowano Ci dania bez laktozy?</mat-radio-button
-        >
-      </mat-radio-group>
-    </div>
+    <mat-radio-group [(ngModel)]="dietOption">
+      <mat-radio-button
+        color="primary"
+        [value]="'standardOption'"
+        [checked]="'standardOption'"
+        >Czy chcesz by proponowano Ci dania standardowe?</mat-radio-button
+      >
+      <mat-radio-button
+        color="primary"
+        [value]="'vegetarianOption'"
+        [checked]="'vegetarianOption'"
+        >Czy chcesz by proponowano Ci dania bez mięsa?</mat-radio-button
+      >
+      <mat-radio-button
+        color="primary"
+        [value]="'glutenFreeOption'"
+        [checked]="'glutenFreeOption'"
+        >Czy chcesz by proponowano Ci dania bez glutenu?</mat-radio-button
+      >
+      <mat-radio-button
+        color="primary"
+        [value]="'lactoseFreeOption'"
+        [checked]="'lactoseFreeOption'"
+        >Czy chcesz by proponowano Ci dania bez laktozy?</mat-radio-button
+      >
+    </mat-radio-group>
+
     <button mat-raised-button color="primary" (click)="editUserIgredients()">
       Zapisz
     </button>

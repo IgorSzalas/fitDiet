@@ -67,6 +67,7 @@ public class RecipeController {
         try {
             return new ResponseEntity<>(recipeService.getRecipesByUserPreferences(userID), HttpStatus.OK);
         } catch (Exception exception) {
+            System.out.println(exception);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -91,6 +91,7 @@ export class RegisterPageComponent implements OnInit {
   vegetarianOption?: any;
   glutenFreeOption?: any;
   lactoseFreeOption?: any;
+  dietOption: any;
 
   ngOnInit(): void {
     this.fetchAllIngredients();
@@ -107,20 +108,16 @@ export class RegisterPageComponent implements OnInit {
       dateOfBirth: this.firstFormGroup.controls['userAge'].value,
       userActivityMode: this.firstFormGroup.controls['userActivityMode'].value,
       userGender: this.firstFormGroup.controls['userGender'].value,
+      // userCaloricDemand: this.userEnergyDemand,
       userType: 'USER',
       favouriteIngredients: this.favouriteIngredients,
       dislikedIngredients: this.dislikedIngredients,
       ingredients: this.ingredients,
-      dishesWithMeat:
-        this.preferencesForm.controls['vegetarian'].value ?? false,
-      dishesWithGluten:
-        this.preferencesForm.controls['glutenFree'].value ?? false,
-      dishesWithLactose:
-        this.preferencesForm.controls['lactoseFree'].value ?? false,
+      dietOption: this.dietOption,
     };
 
     console.log('this.userData ONSUBMIT ', this.userData);
-    this.authorizationService.register(this.userData!).subscribe((register) => {
+    this.authorizationService.register(this.userData).subscribe((register) => {
       console.log(register);
     });
   }
@@ -160,14 +157,14 @@ export class RegisterPageComponent implements OnInit {
     return this.userBMI;
   }
 
-  uploadProfilePhoto(event: any) {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      console.log(reader.result);
-    };
-  }
+  // uploadProfilePhoto(event: any) {
+  //   const file = event.target.files[0];
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
+  //   reader.onload = () => {
+  //     console.log(reader.result);
+  //   };
+  // }
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
@@ -197,12 +194,6 @@ export class RegisterPageComponent implements OnInit {
     userWeight: ['', Validators.required],
     userGender: ['', Validators.required],
     userActivityMode: ['', Validators.required],
-  });
-
-  preferencesForm = this.formBuilder.group({
-    vegetarian: [this.vegetarianOption, Validators.required],
-    glutenFree: [this.glutenFreeOption, Validators.required],
-    lactoseFree: [this.lactoseFreeOption, Validators.required],
   });
 
   secondFormGroup = this.formBuilder.group({

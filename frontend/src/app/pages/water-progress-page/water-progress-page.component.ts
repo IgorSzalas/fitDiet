@@ -16,7 +16,6 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./water-progress-page.component.scss'],
 })
 export class WaterProgressPageComponent implements OnInit {
-
   @ViewChild(BaseChartDirective)
   public chart!: BaseChartDirective;
   constructor(
@@ -32,7 +31,9 @@ export class WaterProgressPageComponent implements OnInit {
   public barChartType: string = 'bar';
   public barChartLegend: boolean = true;
 
-  tableWaterData: any = [{ data: [], label: 'Ilość wypitej wody (w mililitrach)' }];
+  tableWaterData: any = [
+    { data: [], label: 'Ilość wypitej wody (w mililitrach)' },
+  ];
 
   tableWaterLabels: any = [];
 
@@ -44,7 +45,6 @@ export class WaterProgressPageComponent implements OnInit {
     this.fetchUser();
     console.log('onInit');
   }
-
 
   openAddNewWaterMeasurementDialog() {
     const addNewWaterMeasurementDialog = this.dialog.open(
@@ -66,20 +66,29 @@ export class WaterProgressPageComponent implements OnInit {
       .getUserWaterProgresData(token.UserID)
       .pipe(first())
       .subscribe((userData: any) => {
-        this.userWaterProgres = userData;
+        this.userWaterProgres = userData
+          .sort((a: { date: string | number | Date }, b: { date: string | number | Date }) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+
+            return dateA.getTime() - dateB.getTime();
+          })
+          .slice(-10);
         console.log('this.userWaterProgres ', this.userWaterProgres);
 
-        this.userWaterProgres.map((element: any) => {
-          this.tableWaterLabels.push(element.waterMeasurmentDate);
+        this.tableWaterLabels = this.userWaterProgres.map((element: any) => {
           console.log(element);
+          return element.waterMeasurmentDate;
         });
 
-        this.userWaterProgres.map((element: any) => {
-          this.tableWaterData[0].data.push(element.userWaterDrunk);
-          console.log(element);
-        });
+        this.tableWaterData[0].data = this.userWaterProgres.map(
+          (element: any) => {
+            console.log(element);
+            return element.userWaterDrunk;
+          }
+        );
 
-        this.chart.chart?.update()
+        // this.chart.chart?.update()
 
         console.log('this.tableWaterLabels ', this.tableWaterLabels);
         console.log('this.tableWaterData ', this.tableWaterData);

@@ -63,10 +63,13 @@ export class AddNewWaterMeasurementComponent implements OnInit {
     const token = JSON.parse(localStorage.getItem('token')!);
     console.log(token.UserID);
     const userWaterData = {
-      drunkWater: this.waterForm.controls['drunkWater'].value,
-      time: this.waterForm.controls['time'].value,
+      userWaterDrunk: this.waterForm.controls['drunkWater'].value,
+      waterMeasurmentDate: this.waterForm.controls['time'].value,
     };
-
-    this.userService.addUserNewWaterMeasurment(token.UserID, userWaterData);
+    this.userService
+      .addUserNewWaterMeasurment(token.UserID, userWaterData)
+      .subscribe((result: any) => {
+        console.log(result);
+      });
   }
 }

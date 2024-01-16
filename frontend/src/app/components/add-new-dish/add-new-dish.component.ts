@@ -1,3 +1,4 @@
+import { CaloriesService } from './../../services/calories.service';
 import { userData } from './../../services/authorization.service';
 import {
   first,
@@ -81,7 +82,8 @@ export class AddNewDishComponent implements OnInit {
     private readonly recipeService: RecipeService,
     public dialogRef: MatDialogRef<AddNewDishComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private readonly toastService: HotToastService
+    private readonly toastService: HotToastService,
+    private readonly caloriesService: CaloriesService
   ) {
     this.userData = new BehaviorSubject<User>({
       favouriteIngredients: [],
@@ -131,12 +133,12 @@ export class AddNewDishComponent implements OnInit {
     this.fetchUserProposedDishes();
 
     console.log('this.dialogRef CALORIC VALUE: ', this.data);
-    this.userData
-      .asObservable()
-      .pipe(filter<any>(Boolean))
-      .subscribe((value) => {
-        this.calculateRestCalories(value);
-      });
+    // this.userData
+    //   .asObservable()
+    //   .pipe(filter<any>(Boolean))
+    //   .subscribe((value) => {
+    //     this.calculateRestCalories(value);
+    //   });
   }
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -151,88 +153,16 @@ export class AddNewDishComponent implements OnInit {
   }
 
   calculateRestCalories(dishCaloricValue: any) {
-    let today = dayjs().format('YYYY');
-    console.log('today: ', today);
-
-    let userDateOfBirth = dayjs(this.userData.getValue().dateOfBirth).format(
-      'YYYY'
+    console.log(' DUPA ', dishCaloricValue);
+    const date = dayjs().format('DD-MM-YYYY');
+    console.log(' this.userData: ', this.userData);
+    this.restCalories = this.caloriesService.calculateCalories(
+      this.userData.getValue().plannedDishes,
+      this.userData.getValue(),
+      date,
+      dishCaloricValue
     );
-    console.log(userDateOfBirth);
-
-    let userActualAge = parseInt(today) - parseInt(userDateOfBirth);
-
-    let userActualWeight = 0;
-    if (this.userData.getValue().dietProgres) {
-      userActualWeight =
-        this.userData.getValue().dietProgres[
-          this.userData.getValue().dietProgres.length - 1
-        ].weight;
-    } else if (this.userData.getValue().userWeight) {
-      userActualWeight = this.userData.getValue().userWeight;
-    }
-    console.log(userActualWeight);
-
-    let userHeight = this.userData.getValue().userHeight;
-
-    let userActivityMode = this.userData.getValue().userActivityMode;
-
-    let userGender = this.userData.getValue().userGender;
-
-    console.log('userActualWeight ', userActualWeight);
-    console.log('userActualAge ', userActualAge);
-    console.log('userHeight ', userHeight);
-    console.log('userActivityMode ', userActivityMode);
-
-    let Mifflin = 0;
-    if (userGender === 'men') {
-      console.log('MEN');
-      Mifflin =
-        (9.99 * userActualWeight +
-          6.25 * userHeight -
-          4.92 * userActualAge +
-          5) *
-        userActivityMode;
-      Mifflin = Math.floor(Mifflin);
-      console.log('Men : ', Mifflin);
-    } else if (userGender === 'women') {
-      console.log('WOMEN');
-      Mifflin =
-        (9.99 * userActualWeight +
-          6.25 * userHeight -
-          4.92 * userActualAge -
-          161) *
-        userActivityMode;
-      Mifflin = Math.floor(Mifflin);
-      console.log('Woemn Mifflin : ', Mifflin);
-    }
-    console.log('USERCALORIES: ', Mifflin);
-    const x = this.dialogRef.componentInstance.data.dayData.start
-      .toLocaleString()
-      .split(',');
-    let calories = Mifflin;
-    if (this.userData.getValue().plannedDishes) {
-      this.userData.getValue().plannedDishes.forEach((element: any) => {
-        if (element.dateOfConsumption !== null) {
-          const y = element.dateOfConsumption.toLocaleString().split(',');
-          let dayA = dayjs(x[0]).format('MM-DD-YYYY');
-          let dayB = dayjs(y[0]).format('DD-MM-YYYY');
-          console.log('dayA: ', dayA);
-          console.log('dayB: ', dayB);
-          console.log(
-            'element.dishRecipe.caloricValue: ',
-            element.dishRecipe.caloricValue
-          );
-          console.log(dayA === dayB);
-          if (dayA === dayB) {
-            console.log(this.userData.getValue().caloricDemand);
-            calories -= element.dishRecipe.caloricValue;
-          }
-        } else {
-          // this.toastService.error('Nieoczekiwany, błąd przy obliczaniu kalorii');
-        }
-      });
-    }
-    this.restCalories = calories - dishCaloricValue;
+    console.log('RESTCALORIES ', this.restCalories);
   }
 
   fetchUserData() {
@@ -279,7 +209,6 @@ export class AddNewDishComponent implements OnInit {
         console.log(result);
       });
   }
-
 
   private addDishToCalendar(dayData: any) {
     // Wyświetlanie pozostałych kalorii danego dnia

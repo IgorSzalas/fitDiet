@@ -57,7 +57,7 @@ export class AddNewMeasurmentComponent implements OnInit {
 
     console.log(
       this.weightForm.controls['weight'].setValue(
-        this.data.dietProgres[this.data.dietProgres.lenght - 1]
+        this.userData.dietProgres[this.userData.dietProgres.lenght - 1]
       )
     );
 
@@ -91,14 +91,17 @@ export class AddNewMeasurmentComponent implements OnInit {
     const userWeight = this.weightForm.controls['weight'].value!;
     console.log(userWeight);
     this.userBMI =
-      (10000 * userWeight) / (this.data.userHeight * this.data.userHeight);
+      (10000 * userWeight) /
+      (this.userData.userHeight * this.userData.userHeight);
     console.log('userBMI: ', this.userBMI);
 
     this.userDietData = {
       weight: this.weightForm.controls['weight'].value,
-      bmi: this.userBMI,
+      bmi: Math.floor(this.userBMI),
       date: this.weightForm.controls['time'].value,
     };
+
+    console.log('this.userDietData: ', this.userDietData);
     this.userService
       .addUserNewDietMeasurment(token.UserID, this.userDietData)
       .subscribe((result: any) => console.log(result));

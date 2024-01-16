@@ -136,6 +136,7 @@ public class UserController {
         User user = userRepository.findUserById(userID);
         List<WaterMeasurment> userWaterMeasurment = user.getUserWaterMeasurment();
         userWaterMeasurment.add(newWaterMeasurment);
+        user.setUserWaterMeasurment(userWaterMeasurment);
         userRepository.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -145,8 +146,10 @@ public class UserController {
             @RequestBody DietProgres newDietMeasurment) {
         User user = userRepository.findUserById(userID);
         user.setUserWeight(newDietMeasurment.getWeight());
+
         List<DietProgres> userDietMeasurment = user.getDietProgres();
         userDietMeasurment.add(newDietMeasurment);
+        user.setDietProgres(userDietMeasurment);
         userRepository.save(user);
 
         return new ResponseEntity<>(HttpStatus.OK);
