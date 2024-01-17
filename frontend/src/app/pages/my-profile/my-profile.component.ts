@@ -55,6 +55,13 @@ export class MyProfileComponent implements OnInit {
     userType: ['', Validators.required],
   });
 
+  get isAdmin() {
+    return (
+      this.userData.userType && this.userData.userType.length > 0 &&
+      JSON.parse(this.userData.userType).userTypeName === 'ADMIN'
+    );
+  }
+
   fetchUserByID(userID: string) {
     this.userService
       .getUserDataByID(userID)
@@ -66,7 +73,7 @@ export class MyProfileComponent implements OnInit {
           name: this.userData.firstName,
           surname: this.userData.surname,
           email: this.userData.email,
-          userType: JSON.parse(this.userData.userType),
+          userType: JSON.parse(this.userData.userType).userTypeName,
         });
       });
   }
@@ -85,7 +92,7 @@ export class MyProfileComponent implements OnInit {
           name: this.userData.firstName,
           surname: this.userData.surname,
           email: this.userData.email,
-          userType: this.userData.userType,
+          userType: JSON.parse(this.userData.userType).userTypeName,
         });
       });
   }

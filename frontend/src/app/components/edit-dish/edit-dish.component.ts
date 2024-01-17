@@ -106,7 +106,7 @@ export class EditDishComponent implements OnInit {
 
     this.editDishForm = this.form.group<any>({
       title: [Validators.required],
-      dishDate: ['12', Validators.required],
+      dishDate: ['', Validators.required],
       dishRecipe: [Validators.required],
     });
   }
@@ -115,7 +115,7 @@ export class EditDishComponent implements OnInit {
   userProposedDishes: any;
   calories: any;
   userCalories: any;
-  restCalories: any;
+  restCalories: any = 0;
   options: string[] = [
     'Śniadanie',
     'Drugie śniadanie',
@@ -150,10 +150,20 @@ export class EditDishComponent implements OnInit {
       .asObservable()
       .pipe(filter<any>(Boolean))
       .subscribe((value: any) => {
+      const plannedDishes = this.userData
+        .getValue()
+        .plannedDishes.filter(
+          (dish: any) => dish.dishID !== this.data.dayData.event._def.publicId
+        );
         this.restCalories = this.caloriesService.calculateCalories(
-          value.plannedDishes,
+          plannedDishes,
           value,
           this.editDishForm.controls['dishDate'].value,
+          this.editDishForm.controls['dishRecipe'].value.caloricValue
+        );
+        console.log(
+          value.plannedDishes,
+          this.restCalories,
           this.editDishForm.controls['dishRecipe'].value.caloricValue
         );
         console.log(
@@ -163,10 +173,24 @@ export class EditDishComponent implements OnInit {
       });
 
     this.editDishForm.controls['dishRecipe'].valueChanges.subscribe((value) => {
+      const plannedDishes = this.userData
+        .getValue()
+        .plannedDishes.filter(
+          (dish: any) => dish.dishID !== this.data.dayData.event._def.publicId
+        );
+      console.log(plannedDishes);
       this.restCalories = this.caloriesService.calculateCalories(
-        this.userData.value.plannedDishes,
-        this.userData.value,
-        this.editDishForm.controls['dishDate'].value,
+        plannedDishes,
+        this.userData.getValue(),
+        dayjs(this.editDishForm.controls['dishDate'].value),
+        value.caloricValue
+      );
+      console.log(
+        this.userData.getValue().plannedDishes,
+        this.userData.getValue(),
+        dayjs(this.editDishForm.controls['dishDate'].value).format(
+          'DD-MM-YYYY'
+        ),
         value.caloricValue
       );
     });
@@ -221,10 +245,7 @@ export class EditDishComponent implements OnInit {
       dishID: this.dishID,
     };
     this.userService
-      .deleteUserDish(
-        token.UserID,
-        dishData
-      )
+      .deleteUserDish(token.UserID, dishData)
       .subscribe((result) => {
         console.log(result);
       });
@@ -243,6 +264,8 @@ export class EditDishComponent implements OnInit {
         const eventData = userData.plannedDishes.filter(
           (dish: any) => dish.dishID === this.data.dayData.event._def.publicId
         );
+
+        console.log(userData.plannedDishes);
 
         console.log(eventData);
 
@@ -270,7 +293,7 @@ export class EditDishComponent implements OnInit {
         console.log('RECIPES: ', recipes);
         this.userProposedDishes = recipes;
         this.editDishForm.controls['dishDate'].setValue(
-          this.formatDate(this.dialogRef.componentInstance.data.dayData.start)
+          this.formatDate(this.data.dayData.start)
         );
       });
   }
@@ -320,6 +343,7 @@ export class EditDishComponent implements OnInit {
   }
 
   private formatDate(date: any) {
+    console.log(date);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();

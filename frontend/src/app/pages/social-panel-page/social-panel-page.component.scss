@@ -1,6 +1,5 @@
 .social-panel-page {
   display: flex;
-
   align-items: center;
   flex-direction: column;
   width: 100%;
@@ -9,10 +8,14 @@
 
 .search-module {
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
   margin: 0 2rem 0 2rem;
 }
 
 app-user-post {
-  width: 50vw;
+  width: 100%;
+}
+
+h1 {
+  margin: 20px;
 }

@@ -66,32 +66,42 @@ export class WaterProgressPageComponent implements OnInit {
       .getUserWaterProgresData(token.UserID)
       .pipe(first())
       .subscribe((userData: any) => {
-        this.userWaterProgres = userData
-          .sort((a: { date: string | number | Date }, b: { date: string | number | Date }) => {
-            const dateA = new Date(a.date);
-            const dateB = new Date(b.date);
+        if (userData !== null) {
+          this.userWaterProgres = userData
+            .sort(
+              (
+                a: { date: string | number | Date },
+                b: { date: string | number | Date }
+              ) => {
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
 
-            return dateA.getTime() - dateB.getTime();
-          })
-          .slice(-10);
-        console.log('this.userWaterProgres ', this.userWaterProgres);
+                return dateA.getTime() - dateB.getTime();
+              }
+            )
+            .slice(-10);
 
-        this.tableWaterLabels = this.userWaterProgres.map((element: any) => {
-          console.log(element);
-          return element.waterMeasurmentDate;
-        });
+          console.log('this.userWaterProgres ', this.userWaterProgres);
 
-        this.tableWaterData[0].data = this.userWaterProgres.map(
-          (element: any) => {
+          this.tableWaterLabels = this.userWaterProgres.map((element: any) => {
             console.log(element);
-            return element.userWaterDrunk;
-          }
-        );
+            return element.waterMeasurmentDate;
+          });
 
-        // this.chart.chart?.update()
+          this.tableWaterData[0].data = this.userWaterProgres.map(
+            (element: any) => {
+              console.log(element);
+              return element.userWaterDrunk;
+            }
+          );
 
-        console.log('this.tableWaterLabels ', this.tableWaterLabels);
-        console.log('this.tableWaterData ', this.tableWaterData);
+          // this.chart.chart?.update()
+
+          console.log('this.tableWaterLabels ', this.tableWaterLabels);
+          console.log('this.tableWaterData ', this.tableWaterData);
+        } else {
+          this.userWaterProgres = userData;
+        }
       });
   }
   // events

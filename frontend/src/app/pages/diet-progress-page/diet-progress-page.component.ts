@@ -67,43 +67,50 @@ export class DietProgressPageComponent implements OnInit {
       .getUserDietProgresData(token.UserID)
       .pipe(first())
       .subscribe((userProgres: any) => {
-        this.userProgres = userProgres
-          .sort(
-            (
-              a: { date: string | number | Date },
-              b: { date: string | number | Date }
-            ) => {
-              const dateA = new Date(a.date);
-              const dateB = new Date(b.date);
+        if (userProgres !== null) {
+          this.userProgres = userProgres
+            .sort(
+              (
+                a: { date: string | number | Date },
+                b: { date: string | number | Date }
+              ) => {
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
 
-              return dateA.getTime() - dateB.getTime();
+                return dateA.getTime() - dateB.getTime();
+              }
+            )
+            .slice(-10);
+
+          console.log('this.userProgres ', this.userProgres);
+          console.log(this.userProgres);
+          this.tablesLabels = this.userProgres.map((element: any) => {
+            // this.tablesLabels.push(element.date);
+            console.log(element);
+            return element.date;
+          });
+
+          this.tableWeightData[0].data = this.userProgres.map(
+            (element: any) => {
+              // this.tableWeightData[0].data
+              console.log(element);
+              return element.weight;
             }
-          )
-          .slice(-10);
-        console.log('this.userProgres ', this.userProgres);
-        console.log(this.userProgres);
-        this.tablesLabels = this.userProgres.map((element: any) => {
-          // this.tablesLabels.push(element.date);
-          console.log(element);
-          return element.date;
-        });
+          );
 
-        this.tableWeightData[0].data = this.userProgres.map((element: any) => {
-          // this.tableWeightData[0].data
-          console.log(element);
-          return element.weight;
-        });
+          this.tableBMIData[0].data = this.userProgres.map((element: any) => {
+            // this.tableBMIData[0].data
 
-        this.tableBMIData[0].data = this.userProgres.map((element: any) => {
-          // this.tableBMIData[0].data
+            console.log(element);
+            return element.bmi;
+          });
 
-          console.log(element);
-          return element.bmi;
-        });
-
-        console.log('this.tablesLabels ', this.tablesLabels);
-        console.log('this.tableBMIData ', this.tableBMIData);
-        console.log('this.tableWeightData ', this.tableWeightData);
+          console.log('this.tablesLabels ', this.tablesLabels);
+          console.log('this.tableBMIData ', this.tableBMIData);
+          console.log('this.tableWeightData ', this.tableWeightData);
+        } else {
+          this.userProgres = userProgres;
+        }
       });
   }
   // events

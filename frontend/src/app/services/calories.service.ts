@@ -23,16 +23,14 @@ export class CaloriesService {
       userData.userActivityMode
     );
 
-    if (plannedDishes.length === 0) {
-      userMifflin -= selectedDishCalories;
-    } else {
+    if (plannedDishes.length > 0) {
       plannedDishes.forEach((element: any) => {
         let dishDate = dayjs(date).format('DD-MM-YYYY');
         console.log('dishDate: ', dishDate);
         let elementDate = dayjs(element.dateOfConsumption).format('DD-MM-YYYY');
         console.log('testowanie dat: ', date, elementDate);
-        console.log(date)
-        if (date == elementDate) {
+        console.log(date);
+        if (dishDate == elementDate) {
           console.log(element, ' PASS ');
           userMifflin -= element.dishRecipe.caloricValue;
         }

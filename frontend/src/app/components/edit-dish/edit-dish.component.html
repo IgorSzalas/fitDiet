@@ -27,7 +27,7 @@
           disableRipple="true"
           [value]="dish"
           [checked]="isCheckedDish(dish)"
-    
+
         >
           <app-choose-dish-card
             [dishName]="dish.name"
@@ -44,7 +44,7 @@
       </mat-radio-group>
 
       @if(restCalories){
-      <mat-label> Pozostanie tego dnia {{ restCalories }} kcal </mat-label>
+      <mat-label>Pozostanie tego dnia {{ restCalories }} kcal.</mat-label>
       } @if(restCalories<0){
       <mat-label class="calories-error">
         Uwaga! Wybierając to danie przekroczysz dzienne zapotrzebowanie

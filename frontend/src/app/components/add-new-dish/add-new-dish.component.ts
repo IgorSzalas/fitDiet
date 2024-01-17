@@ -154,7 +154,7 @@ export class AddNewDishComponent implements OnInit {
 
   calculateRestCalories(dishCaloricValue: any) {
     console.log(' DUPA ', dishCaloricValue);
-    const date = dayjs().format('DD-MM-YYYY');
+    const date = dayjs(this.addNewDishForm.controls['dishDate'].value);
     console.log(' this.userData: ', this.userData);
     this.restCalories = this.caloriesService.calculateCalories(
       this.userData.getValue().plannedDishes,

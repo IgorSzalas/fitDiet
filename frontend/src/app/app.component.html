@@ -56,14 +56,16 @@
       >
         Panel społecznościowy
       </mat-list-item>
-      <!-- @if(isAdministrator()){ -->
-      <mat-list-item
+
+      @if(isAdministrator){
+        <mat-list-item
         (click)="drawer.toggle()"
         [routerLink]="'zarzadzaj-uzytkownikami'"
       >
         Zarządzaj użytkownikami
       </mat-list-item>
-      <!-- } -->
+      }
+
 
       <mat-list-item (click)="changeVisualMode()">
         Zmień motyw @if(visualmode === 'light'){

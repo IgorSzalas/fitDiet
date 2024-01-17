@@ -51,10 +51,18 @@ export class PreferencesPageComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.fetchUserData();
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let visualMode;
+    // if (localStorage.getItem('visualMode') == 'light') {
+    //   document.getElementsByClassName('light-mode')!
+    //   document.getElementsByClassName('myDIV')!.classList.add('mystyle');
+    // } else if (localStorage.getItem('visualMode') == 'dark') {
+    //   document.getElementsByClassName('myDIV')!.classList.add('mystyle');
+    //   document.getElementsByClassName('myDIV')!.classList.add('mystyle');
+    // }
+  }
 
   userData: any;
-
   favouriteIngredients: string[] = [];
   dislikedIngredients: string[] = [];
   ingredients: string[] = [];

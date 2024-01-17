@@ -1,4 +1,3 @@
-
 <div class="my-profile">
   <h1>Mój profil</h1>
   <mat-card>
@@ -30,6 +29,7 @@
             <input
               formControlName="userType"
               matInput
+              [disabled]="!isAdmin"
               placeholder="Typ użytkownika"
             />
           </mat-form-field>

@@ -16,7 +16,7 @@
         (cdkDropListDropped)="drop($event)"
       >
         @for (item of ingredients; track item) {
-        <div class="example-box" cdkDrag>{{ item }}</div>
+        <div class="light-mode" cdkDrag>{{ item }}</div>
         }
       </div>
     </div>
@@ -37,7 +37,7 @@
         (cdkDropListDropped)="drop($event)"
       >
         @for (item of dislikedIngredients; track item) {
-        <div class="example-box" cdkDrag>{{ item }}</div>
+        <div class="light-mode" cdkDrag>{{ item }}</div>
         }
       </div>
     </div>
@@ -57,39 +57,40 @@
         (cdkDropListDropped)="drop($event)"
       >
         @for (item of favouriteIngredients; track item) {
-        <div class="example-box" cdkDrag>{{ item }}</div>
+        <div class="light-mode" cdkDrag>{{ item }}</div>
         }
       </div>
     </div>
-    <mat-radio-group [(ngModel)]="dietOption">
-      <mat-radio-button
-        color="primary"
-        [value]="'standardOption'"
-        [checked]="'standardOption'"
-        >Czy chcesz by proponowano Ci dania standardowe?</mat-radio-button
-      >
-      <mat-radio-button
-        color="primary"
-        [value]="'vegetarianOption'"
-        [checked]="'vegetarianOption'"
-        >Czy chcesz by proponowano Ci dania bez mięsa?</mat-radio-button
-      >
-      <mat-radio-button
-        color="primary"
-        [value]="'glutenFreeOption'"
-        [checked]="'glutenFreeOption'"
-        >Czy chcesz by proponowano Ci dania bez glutenu?</mat-radio-button
-      >
-      <mat-radio-button
-        color="primary"
-        [value]="'lactoseFreeOption'"
-        [checked]="'lactoseFreeOption'"
-        >Czy chcesz by proponowano Ci dania bez laktozy?</mat-radio-button
-      >
-    </mat-radio-group>
-
-    <button mat-raised-button color="primary" (click)="editUserIgredients()">
-      Zapisz
-    </button>
+    <div>
+      <mat-radio-group class="diet-options" [(ngModel)]="dietOption">
+        <mat-radio-button
+          color="primary"
+          [value]="'standardOption'"
+          [checked]="'standardOption'"
+          >Czy chcesz by proponowano Ci dania standardowe?</mat-radio-button
+        >
+        <mat-radio-button
+          color="primary"
+          [value]="'vegetarianOption'"
+          [checked]="'vegetarianOption'"
+          >Czy chcesz by proponowano Ci dania bez mięsa?</mat-radio-button
+        >
+        <mat-radio-button
+          color="primary"
+          [value]="'glutenFreeOption'"
+          [checked]="'glutenFreeOption'"
+          >Czy chcesz by proponowano Ci dania bez glutenu?</mat-radio-button
+        >
+        <mat-radio-button
+          color="primary"
+          [value]="'lactoseFreeOption'"
+          [checked]="'lactoseFreeOption'"
+          >Czy chcesz by proponowano Ci dania bez laktozy?</mat-radio-button
+        >
+      </mat-radio-group>
+      <button mat-raised-button color="primary" (click)="editUserIgredients()">
+        Zapisz
+      </button>
+    </div>
   </div>
 </div>

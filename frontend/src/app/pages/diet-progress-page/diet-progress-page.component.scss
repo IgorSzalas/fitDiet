@@ -2,23 +2,31 @@
   height: 100%;
   width: 100%;
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   flex-direction: column;
 }
 
 .user-bmi-results {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
   margin: 2rem;
   max-height: 40vh;
 }
 
+.diet-progress-text {
+  margin: 3rem 0 3rem 0;
+}
+
+.add-weight {
+  margin: 3rem 0 0 0;
+}
+
 .user-weight-results {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
   margin: 2rem;
   max-height: 40vh;
@@ -27,4 +35,8 @@
 button {
   width: 10rem;
   height: 4rem;
+}
+
+h1 {
+  margin: 20px;
 }

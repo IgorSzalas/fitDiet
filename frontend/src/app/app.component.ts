@@ -1,4 +1,8 @@
-import { AuthorizationService } from './services/authorization.service';
+import { UserService } from './services/user.service';
+import {
+  AuthorizationService,
+  userData,
+} from './services/authorization.service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -19,7 +23,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DatePipe } from '@angular/common';
 import * as jose from 'jose';
-import { timer } from 'rxjs';
+import { first, timer } from 'rxjs';
 import { OverlayContainer } from '@angular/cdk/overlay';
 @Component({
   selector: 'app-root',
@@ -50,12 +54,16 @@ export class AppComponent implements OnInit {
   dailyWaterDemand = 2000;
   dailyStartWaterDemand = 0;
   visualmode: any;
+  userData: any;
+  isAdministrator: boolean | undefined;
+  userRole: any;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private overlay: OverlayContainer,
-    private authorizationService: AuthorizationService
+    private authorizationService: AuthorizationService,
+    private userService: UserService
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -97,6 +105,8 @@ export class AppComponent implements OnInit {
   logout() {
     this.authorizationService.logout();
     this.router.navigateByUrl('/zaloguj-sie');
+    this.isAdministratorCheck();
+    this.opened = true;
   }
 
   changeVisualMode() {
@@ -126,19 +136,49 @@ export class AppComponent implements OnInit {
       this.date = new Date();
     });
     console.log(this.parseJWT(sessionStorage.getItem('authorizationToken')!));
+    this.isAdministratorCheck();
   }
 
   parseJWT(token: string) {
     if (token) {
-      const claims = jose.decodeJwt(token);
+      const claims: any = jose.decodeJwt(token);
       console.log(claims);
+      console.log(claims['Role']);
+      this.userRole = claims['Role'];
+      this.userRole = JSON.parse(this.userRole[0]);
+      this.userRole = this.userRole.userTypeName;
       localStorage.setItem('token', JSON.stringify(claims));
     } else {
       throw new Error("Token hasn't been decoded");
     }
   }
 
-  isAdministrator(): void {
-    this.parseJWT(sessionStorage.getItem('authorizationToken')!);
+  isAdministratorCheck() {
+    if (this.userRole === 'ADMIN') {
+      this.isAdministrator = true;
+      console.log(this.isAdministrator);
+    } else {
+      this.isAdministrator = false;
+      console.log(this.userRole);
+    }
+  }
+
+  // isAdministrator(): void {
+  //   let authorizationToken = this.parseJWT(
+  //     sessionStorage.getItem('authorizationToken')!
+  //   );
+  //   console.log(authorizationToken);
+  // }
+
+  fetchUserData() {
+    const token = JSON.parse(localStorage.getItem('token')!);
+    console.log(token.UserID);
+    return this.userService
+      .getUserDataByID(token.UserID)
+      .pipe(first())
+      .subscribe((userData: any) => {
+        this.userData = userData;
+        console.log('userData: ', userData);
+      });
   }
 }

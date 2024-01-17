@@ -13,6 +13,7 @@ import com.igorszalas.fitDiet.services.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,7 +136,12 @@ public class UserController {
             @RequestBody WaterMeasurment newWaterMeasurment) {
         User user = userRepository.findUserById(userID);
         List<WaterMeasurment> userWaterMeasurment = user.getUserWaterMeasurment();
-        userWaterMeasurment.add(newWaterMeasurment);
+        if (userWaterMeasurment == null) {
+            userWaterMeasurment = new ArrayList<>();
+            userWaterMeasurment.add(newWaterMeasurment);
+        } else {
+            userWaterMeasurment.add(newWaterMeasurment);
+        }
         user.setUserWaterMeasurment(userWaterMeasurment);
         userRepository.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -148,7 +154,12 @@ public class UserController {
         user.setUserWeight(newDietMeasurment.getWeight());
 
         List<DietProgres> userDietMeasurment = user.getDietProgres();
-        userDietMeasurment.add(newDietMeasurment);
+        if (userDietMeasurment == null) {
+            userDietMeasurment = new ArrayList<>();
+            userDietMeasurment.add(newDietMeasurment);
+        } else {
+            userDietMeasurment.add(newDietMeasurment);
+        }
         user.setDietProgres(userDietMeasurment);
         userRepository.save(user);
 

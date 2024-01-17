@@ -59,6 +59,7 @@ export class PlannedDishesPageComponent implements OnInit {
     themeSystem: 'Pulse',
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
+    eventBackgroundColor: 'rgb(0,150,136)',
   };
 
   fetchDishes(info: any, success: any, failed: any) {
