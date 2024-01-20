@@ -1,6 +1,6 @@
 <div class="edit-dish">
   <h1 mat-dialog-title>Edytuj posiłek</h1>
-  <div mat-dialog-content>
+  <div class="edit-dish-dialog" mat-dialog-content>
     <form [formGroup]="editDishForm">
       <mat-form-field>
         <mat-label>Nazwa posiłku</mat-label>
@@ -9,6 +9,7 @@
           formControlName="title"
           placeholder="Nazwa posiłku"
           [matAutocomplete]="auto"
+          required
         />
         <mat-autocomplete #auto="matAutocomplete">
           @for (option of options; track option) {
@@ -27,7 +28,7 @@
           disableRipple="true"
           [value]="dish"
           [checked]="isCheckedDish(dish)"
-
+          class="dish-card"
         >
           <app-choose-dish-card
             [dishName]="dish.name"

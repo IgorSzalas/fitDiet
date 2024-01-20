@@ -30,12 +30,14 @@
       <mat-card-content>Simple card</mat-card-content>
     </mat-card>
     <mat-card class="widget">
+      <mat-card-header>
+        <h2>Twoje BMI</h2>
+      </mat-card-header>
       <mat-card-content>
         <div class="diet-progress-page">
           @if(userProgres){
 
           <div class="user-bmi-results">
-            <h2>Twoje BMI</h2>
             <canvas
               baseChart
               [datasets]="tableBMIData"
@@ -49,13 +51,20 @@
           }
         </div>
       </mat-card-content>
+      <mat-card-footer>
+        <button class="add-weight" mat-raised-button color="primary">
+          Przejdź do "Kontrola postępu diety"
+        </button>
+      </mat-card-footer>
     </mat-card>
     <mat-card class="widget">
+      <mat-card-header>
+        <h2>Twoje pomiary ilości wypitej wody</h2>
+      </mat-card-header>
       <mat-card-content>
         <div class="diet-progress-page">
           @if(userProgres){
           <div class="user-weight-results">
-            <h2>Twoje pomiary ilości wypitej wody</h2>
             <canvas
               baseChart
               [datasets]="tableWaterData"
@@ -67,6 +76,11 @@
             <!-- (chartClick)="chartClicked($event)" -->
           </div>
           }
+          <mat-card-footer>
+            <button class="add-weight" mat-raised-button color="primary">
+              Przejdź do "Kontrola wypijanej wody"
+            </button>
+          </mat-card-footer>
         </div>
       </mat-card-content>
     </mat-card>

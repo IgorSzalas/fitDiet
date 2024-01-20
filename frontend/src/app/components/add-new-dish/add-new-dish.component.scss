@@ -1,4 +1,3 @@
-
 form {
   display: flex;
   flex-direction: column;
@@ -6,7 +5,9 @@ form {
 
 .dish-choose {
   display: flex;
-  width: 60rem;
+  flex-direction: column;
+  width: 100%;
+
 }
 
 input[type="radio"] {
@@ -19,6 +20,6 @@ input[type="radio"] {
   visibility: hidden;
 }
 
-.calories-error{
-  color:red;
+.calories-error {
+  color: red;
 }

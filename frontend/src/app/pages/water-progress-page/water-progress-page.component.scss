@@ -2,9 +2,8 @@
   height: 100%;
   width: 100%;
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  
+  align-items: center;
 }
 
 .user-bmi-results {
@@ -12,7 +11,8 @@
   flex-direction: column;
   justify-content: center;
   margin: 2rem;
-  height: 40vh;
+  height: 25vh;
+
 }
 
 .user-weight-results {
@@ -20,8 +20,8 @@
   flex-direction: column;
   justify-content: center;
   margin: 2rem;
-  height: 40vh;
-
+  height: 25vh;
+  // align-items: center;
 }
 
 button {

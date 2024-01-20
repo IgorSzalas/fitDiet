@@ -20,4 +20,31 @@ export class PostService {
       }
     );
   }
+
+  deletePost(userID: string, postID: string): any {
+    const userParams = new HttpParams()
+      .set('userID', userID)
+      .set('postID', postID);
+    return this.http.delete<any>('http://localhost:9000/posts/delete', {
+      params: userParams,
+    });
+  }
+
+  deleteComment(userID: string, postID: string): any {
+    const userParams = new HttpParams()
+      .set('userID', userID)
+      .set('postID', postID);
+    return this.http.delete<any>('http://localhost:9000/posts/delete', {
+      params: userParams,
+    });
+  }
+
+  addComment(userID: string, postID: string): any {
+    const userParams = new HttpParams()
+      .set('userID', userID)
+      .set('postID', postID);
+    return this.http.delete<any>('http://localhost:9000/posts/delete', {
+      params: userParams,
+    });
+  }
 }

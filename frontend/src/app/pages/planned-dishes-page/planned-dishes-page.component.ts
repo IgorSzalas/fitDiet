@@ -1,8 +1,19 @@
 import interactionPlugin from '@fullcalendar/interaction';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FullCalendarModule } from '@fullcalendar/angular';
 import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  FullCalendarComponent,
+  FullCalendarModule,
+} from '@fullcalendar/angular';
+import {
+  Calendar,
   CalendarOptions,
   DateSelectArg,
   EventClickArg,
@@ -17,10 +28,11 @@ import { EditDishComponent } from '../../components/edit-dish/edit-dish.componen
 import { UserService } from '../../services/user.service';
 import { first } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, MatButtonModule, FullCalendarModule],
+  imports: [CommonModule, MatButtonModule, FullCalendarModule, MatCardModule],
   selector: 'app-planned-dishes-page',
   templateUrl: './planned-dishes-page.component.html',
   styleUrls: ['./planned-dishes-page.component.scss'],
@@ -35,9 +47,11 @@ export class PlannedDishesPageComponent implements OnInit {
 
   calendarVisible: boolean = true;
   currentEvents: any;
+
   ngOnInit() {
     this.fetchUserData();
     this.changeDetector.detectChanges();
+
   }
   userData: any;
   events: any = [];
@@ -53,6 +67,7 @@ export class PlannedDishesPageComponent implements OnInit {
     firstDay: 1,
     allDaySlot: false,
     locale: 'pl',
+    rerenderDelay: 1000,
     timeZone: 'local',
     editable: true,
     selectable: true,
@@ -79,6 +94,7 @@ export class PlannedDishesPageComponent implements OnInit {
     editDishDialog.afterClosed().subscribe((result) => {
       console.log(result);
       this.fetchUserData();
+      window.location.reload();
     });
   }
 
@@ -110,12 +126,16 @@ export class PlannedDishesPageComponent implements OnInit {
           };
           // console.log('element.dateOfConsumption: ',element.dateOfConsumption)
           this.events.push(event);
+
           // console.log(this.events);
         });
         if (this.events.length > 0) {
           this.calendarOptions.events = this.events;
           this.events = [];
         }
+        this.events = [...this.events];
+
+        console.log('this.events ', this.events);
       });
   }
 

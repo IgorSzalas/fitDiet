@@ -39,7 +39,7 @@ import { MatRadioModule } from '@angular/material/radio';
   templateUrl: 'preferences-page.component.html',
   styleUrl: 'preferences-page.component.scss',
 })
-export class PreferencesPageComponent implements OnInit, AfterViewInit {
+export class PreferencesPageComponent implements AfterViewInit {
   constructor(
     private readonly form: FormBuilder,
     private readonly userService: UserService
@@ -50,16 +50,6 @@ export class PreferencesPageComponent implements OnInit, AfterViewInit {
   });
   ngAfterViewInit(): void {
     this.fetchUserData();
-  }
-  ngOnInit(): void {
-    let visualMode;
-    // if (localStorage.getItem('visualMode') == 'light') {
-    //   document.getElementsByClassName('light-mode')!
-    //   document.getElementsByClassName('myDIV')!.classList.add('mystyle');
-    // } else if (localStorage.getItem('visualMode') == 'dark') {
-    //   document.getElementsByClassName('myDIV')!.classList.add('mystyle');
-    //   document.getElementsByClassName('myDIV')!.classList.add('mystyle');
-    // }
   }
 
   userData: any;

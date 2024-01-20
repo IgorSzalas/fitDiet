@@ -1,3 +1,4 @@
+import { userData } from './../../services/authorization.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -7,6 +8,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatNativeDateModule } from '@angular/material/core';
 import { UserCommentComponent } from '../user-comment/user-comment.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DeletePostComponent } from '../delete-post/delete-post.component';
+import { PostService } from '../../services/post.service';
+import { first } from 'rxjs';
+import { UserService } from '../../services/user.service';
 @Component({
   standalone: true,
   imports: [
@@ -24,25 +30,52 @@ import { UserCommentComponent } from '../user-comment/user-comment.component';
   styleUrls: ['user-post.component.scss'],
 })
 export class UserPostComponent implements OnInit {
-  constructor() {}
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly postService: PostService,
+    private readonly userService: UserService
+  ) {
+    this.fetchUserData();
+  }
+  @Input() postID?: string;
   @Input() postTitle?: string;
   @Input() postCreator?: string;
   @Input() postContent?: string;
   @Input() postDate?: string;
   @Input() postComments?: string;
   @Input() postReactions?: string;
-  step = 0;
+  userData: any;
 
-  setStep(index: number) {
-    this.step = index;
+  openDeletePostModal() {
+    const addNewDishDialog = this.dialog.open(DeletePostComponent, {
+      data: { postID: this.postID },
+      width: '300px',
+    });
+    addNewDishDialog.afterClosed().subscribe((result: any) => {
+      console.log(result);
+      console.log(this.postID);
+      this.postService.getAllPosts().subscribe();
+    });
   }
 
-  nextStep() {
-    this.step++;
+  fetchUserData() {
+    const token = JSON.parse(localStorage.getItem('token')!);
+    console.log(token.UserID);
+    return this.userService
+      .getUserDataByID(token.UserID)
+      .pipe(first())
+      .subscribe((userData: any) => {
+        this.userData = userData;
+        console.log('userData: ', userData);
+      });
   }
 
-  prevStep() {
-    this.step--;
+  addNewComment(postID: string) {
+    this.postService
+      .addComment(this.userData.id, postID)
+      .subscribe((result: any) => {
+        console.log(result);
+      });
   }
 
   ngOnInit() {}

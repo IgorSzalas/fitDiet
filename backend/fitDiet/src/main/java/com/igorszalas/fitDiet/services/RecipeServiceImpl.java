@@ -89,11 +89,6 @@ public class RecipeServiceImpl implements RecipeService {
         List<Recipe> userFavoriteDishes = new ArrayList<>();
         List<Recipe> userDislikedDishes = new ArrayList<>();
         List<Recipe> userDishesByUserPreferences = new ArrayList<>();
-        List<Recipe> dishesWithoutGluten = recipeRepository.findByDishType("gluten-free");
-        List<Recipe> dishesWithoutLactose = recipeRepository.findByDishType("lactose-free");
-        List<Recipe> dishesWithoutMeat = recipeRepository.findByDishType("vegan");
-        List<Recipe> standardDishes = recipeRepository.findByDishType("standard");
-        List<Recipe> recipes = recipeRepository.findAll();
         User user = userRepository.findUserById(userID);
 
         try {
@@ -102,42 +97,19 @@ public class RecipeServiceImpl implements RecipeService {
             throw new Error("userFavouriteIngredients is empty!");
         }
 
-        // System.out.println("userDislikedDishes: " + userDislikedDishes);
-
         try {
             userDislikedDishes = this.getRecipesByUserDislikedIngredients(userID);
-            // System.out.println("userDislikedDishes: " + userDislikedDishes);
         } catch (Exception exception) {
             throw new Error("userDislikedIngredients is empty!");
         }
 
-        // if (userDislikedDishes.isEmpty()
-        // && userFavoriteDishes.isEmpty()
-        // && !user.isDishesWithGluten()
-        // && !user.isDishesWithLactose()
-        // && !user.isDishesWithMeat()) {
-        // userDishesByUserPreferences = recipes;
-        // }
-
         if (!userDislikedDishes.isEmpty()) {
             userFavoriteDishes.removeAll(userDislikedDishes);
             userDishesByUserPreferences = userFavoriteDishes;
-            // } else if (userDislikedDishes.isEmpty()
-            // && userFavoriteDishes.isEmpty()
-            // && user.isDishesWithGluten()
-            // && user.isDishesWithLactose()
-            // && user.isDishesWithMeat()) {
-            // userDishesByUserPreferences = recipes;
         } else {
             userDislikedDishes = new ArrayList<>();
             userDishesByUserPreferences = userFavoriteDishes;
-            // throw new Error("userDislikedDishes is empty!");
         }
-
-        // if (user.isDishesWithGluten()
-        // && user.isDishesWithLactose()
-        // && user.isDishesWithMeat()) {
-        // return userDishesByUserPreferences;
 
         if (user.getDietOption().equals("glutenFreeOption")) {
             List<Recipe> glutenDishes = userDishesByUserPreferences.stream()
@@ -167,15 +139,6 @@ public class RecipeServiceImpl implements RecipeService {
 
             return meatDishes;
         }
-
-        // if (user.isDishesWithGluten()) {
-        // return glutenDishes;
-        // }
-        // System.out.println("userFavoriteDishes: " + userFavoriteDishes);
-
-        // System.out.println("userDishesByUserPreferences: " +
-        // userDishesByUserPreferences);
-        // return userDishesByUserPreferences;
 
         return userDishesByUserPreferences;
     }

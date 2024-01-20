@@ -121,7 +121,6 @@ public class UserController {
                 editUserIngredients.setFavouriteIngredients(user.getFavouriteIngredients());
                 editUserIngredients.setDislikedIngredients(user.getDislikedIngredients());
                 editUserIngredients.setDietOption(user.getDietOption());
-                // System.out.println(" EDIT USER INGREDIENTS " + editUserIngredients);
                 return new ResponseEntity<>(userRepository.save(editUserIngredients), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(userData, HttpStatus.OK);

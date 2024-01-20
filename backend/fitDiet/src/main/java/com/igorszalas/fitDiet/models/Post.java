@@ -23,11 +23,8 @@ public class Post {
 
     private String content;
 
-    // private String reactions;
-
-    // private List<String> comments;
-
-    // private int rating;
+    private List<Comment> comments;
 
     private String creatorID;
+
 }

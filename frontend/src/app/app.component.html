@@ -8,7 +8,7 @@
   >
     <mat-icon>menu</mat-icon>
   </button>
-  <h2 [routerLink]="''">fitDiet</h2>
+  <img src="../assets/logo-fitdiet.png" class="logo" [routerLink]="''" />
   <span class="spacer"></span>
 
   <span class="spacer"></span>
@@ -36,7 +36,7 @@
         (click)="drawer.toggle()"
         [routerLink]="'planowane-posilki'"
       >
-        Planowane posiłki i zadania
+        Planowane posiłki
       </mat-list-item>
       <mat-list-item
         (click)="drawer.toggle()"
@@ -58,14 +58,13 @@
       </mat-list-item>
 
       @if(isAdministrator){
-        <mat-list-item
+      <mat-list-item
         (click)="drawer.toggle()"
         [routerLink]="'zarzadzaj-uzytkownikami'"
       >
         Zarządzaj użytkownikami
       </mat-list-item>
       }
-
 
       <mat-list-item (click)="changeVisualMode()">
         Zmień motyw @if(visualmode === 'light'){

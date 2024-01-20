@@ -9,6 +9,7 @@
           formControlName="title"
           placeholder="Nazwa posiłku"
           [matAutocomplete]="auto"
+          required
         />
         <mat-autocomplete #auto="matAutocomplete">
           @for (option of options; track option) {
@@ -53,10 +54,7 @@
         kaloryczne i pogorszysz rezultaty diety!
       </mat-label>
       } }
-      <mat-form-field
-        
-        (click)="helloInput.showPicker()"
-      >
+      <mat-form-field (click)="helloInput.showPicker()">
         <mat-label>Data i godzina posiłku</mat-label>
         <input
           type="datetime-local"

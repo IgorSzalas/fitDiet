@@ -14,6 +14,7 @@
 <div class="social-panel-page">
   @for(post of posts; track post){
   <app-user-post
+    [postID]="post.id"
     [postCreator]="post.creatorID"
     [postTitle]="post.title"
     [postContent]="post.content"

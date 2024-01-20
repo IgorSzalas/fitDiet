@@ -1,4 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { HotToastService } from '@ngneat/hot-toast';
+import dayjs from 'dayjs';
+import { User } from '../../models/user';
+import { RecipeService } from '../../services/recipe.service';
+import { UserService } from '../../services/user.service';
+import { MatRadioModule } from '@angular/material/radio';
+import { ChooseDishCardComponent } from '../choose-dish-card/choose-dish-card.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CaloriesService } from '../../services/calories.service';
 import {
   MatDialog,
   MAT_DIALOG_DATA,
@@ -8,9 +22,6 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatButtonModule } from '@angular/material/button';
 import {
   FormBuilder,
   FormControl,
@@ -19,8 +30,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import {
   BehaviorSubject,
   Observable,
@@ -29,17 +38,6 @@ import {
   map,
   startWith,
 } from 'rxjs';
-import { HotToastService } from '@ngneat/hot-toast';
-import dayjs from 'dayjs';
-import { User } from '../../models/user';
-import { RecipeService } from '../../services/recipe.service';
-import { UserService } from '../../services/user.service';
-import { AddNewDishComponent } from '../add-new-dish/add-new-dish.component';
-import { MatRadioModule } from '@angular/material/radio';
-import { ChooseDishCardComponent } from '../choose-dish-card/choose-dish-card.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { CaloriesService } from '../../services/calories.service';
-
 @Component({
   standalone: true,
   selector: 'app-edit-dish',
@@ -150,11 +148,11 @@ export class EditDishComponent implements OnInit {
       .asObservable()
       .pipe(filter<any>(Boolean))
       .subscribe((value: any) => {
-      const plannedDishes = this.userData
-        .getValue()
-        .plannedDishes.filter(
-          (dish: any) => dish.dishID !== this.data.dayData.event._def.publicId
-        );
+        const plannedDishes = this.userData
+          .getValue()
+          .plannedDishes.filter(
+            (dish: any) => dish.dishID !== this.data.dayData.event._def.publicId
+          );
         this.restCalories = this.caloriesService.calculateCalories(
           plannedDishes,
           value,

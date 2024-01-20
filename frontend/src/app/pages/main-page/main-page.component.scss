@@ -15,23 +15,32 @@
   row-gap: 5rem;
   grid-template-columns: 40vw 40vw;
   grid-template-rows: 42vh 42vh;
-
 }
 
-mat-card{
+mat-card {
   opacity: 0.9;
 }
 
 .widget {
+  height: 100%;
   display: flex;
+
   justify-content: center;
   align-items: center;
+  align-content: space-between;
 }
 
 section {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("../../../assets/main-page-background-image.jpg");
-  background-size:cover;
 }
+
+.background {
+  background-image: url("../../../assets/fitdiet-background-image.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+

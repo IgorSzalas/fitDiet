@@ -1,17 +1,16 @@
 .planned-dishes-page {
   display: flex;
-  justify-content: center;
-  height: max-content;
+  // justify-content: center;
+  height: 100%;
   flex-direction: column;
-  background-image: url("../../../assets/calendar-background.jpg");
-  background-size: cover;
+
 }
 
 full-calendar {
   margin: 1rem;
   width: 95%;
-  height: 100%;
-  background-color: white;
+  height: 70%;
+  // background-color: white;
   opacity: 0.95;
 }
 

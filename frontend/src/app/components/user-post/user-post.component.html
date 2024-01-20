@@ -2,6 +2,7 @@
   <!-- fxLayout fxLayoutAlign="space-between end"  -->
   <mat-card-header>
     <!-- <div mat-card-avatar class="example-header-image"></div> -->
+
     <mat-card-title>{{ postTitle }}</mat-card-title>
     <mat-card-subtitle>{{ postCreator }}</mat-card-subtitle>
   </mat-card-header>
@@ -16,12 +17,16 @@
     </h4>
   </mat-card-content>
   <mat-card-actions>
+    @if(postID === userData.id){
     <button
       mat-icon-button
       aria-label="Example icon button with a vertical three dot icon"
+      (click)="openDeletePostModal()"
     >
       <mat-icon>delete</mat-icon>
     </button>
+    }
+
     <h4>{{ postReactions }}</h4>
   </mat-card-actions>
 
@@ -41,7 +46,9 @@
           ></textarea>
         </mat-form-field>
       </form>
-      <button mat-raised-button color="primary">Udostępnij</button>
+      <button mat-raised-button color="primary" (click)="addNewComment(postID)">
+        Udostępnij
+      </button>
     </div>
   </mat-expansion-panel>
 
@@ -49,6 +56,6 @@
     <mat-expansion-panel-header>
       <mat-panel-title>Komentarze</mat-panel-title>
     </mat-expansion-panel-header>
-    <app-user-comment></app-user-comment>
+    <app-user-comment [postID]="postID"></app-user-comment>
   </mat-expansion-panel>
 </mat-card>

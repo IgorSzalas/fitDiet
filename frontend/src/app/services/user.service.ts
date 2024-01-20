@@ -85,7 +85,7 @@ export class UserService {
 
   deleteUser(userID: string): any {
     const userParams = new HttpParams().set('userID', userID);
-    return this.http.delete<any>('http://localhost:9000/users/delete', {
+    return this.http.delete<any>('http://localhost:9000/users/user', {
       params: userParams,
     });
   }
