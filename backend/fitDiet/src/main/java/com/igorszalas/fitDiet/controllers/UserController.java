@@ -49,7 +49,9 @@ public class UserController {
         try {
             return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
         } catch (Exception exception) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            System.out.println(exception);
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
         }
     }
 
@@ -118,6 +120,7 @@ public class UserController {
             if (!userData.equals(null)) {
                 User editUserIngredients = userData;
                 editUserIngredients.setId(user.getId());
+                editUserIngredients.setIngredients(user.getIngredients());
                 editUserIngredients.setFavouriteIngredients(user.getFavouriteIngredients());
                 editUserIngredients.setDislikedIngredients(user.getDislikedIngredients());
                 editUserIngredients.setDietOption(user.getDietOption());

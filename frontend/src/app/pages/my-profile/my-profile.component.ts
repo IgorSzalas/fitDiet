@@ -55,12 +55,12 @@ export class MyProfileComponent implements OnInit {
     userType: ['', Validators.required],
   });
 
-  get isAdmin() {
-    return (
-      this.userData.userType && this.userData.userType.length > 0 &&
-      JSON.parse(this.userData.userType).userTypeName === 'ADMIN'
-    );
-  }
+  // get isAdmin() {
+  //   return (
+  //     this.userData.userType && this.userData.userType.length > 0 &&
+  //     JSON.parse(this.userData.userType).userTypeName === 'ADMIN'
+  //   );
+  // }
 
   fetchUserByID(userID: string) {
     this.userService

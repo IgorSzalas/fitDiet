@@ -43,7 +43,7 @@ public class User implements UserDetails {
 
     private double userActivityMode;
 
-    private List<String> userType = new ArrayList<>();
+    private String userType;
 
     private String profilePhoto;
 
@@ -100,8 +100,6 @@ public class User implements UserDetails {
         return new ArrayList<>();
     }
 
-    public void setUserType(List<String> list) {
-        this.userType = userType;
-    }
+
 
 }

@@ -6,10 +6,26 @@
   height: 100%;
 }
 
+.example-card {
+  margin: 2rem 0;
+  width: 75vw;
+}
+
+.example-card-comment {
+  width: 100%;
+  margin: 2rem 0;
+}
+
 .search-module {
   display: flex;
   justify-content: space-between;
   margin: 0 2rem 0 2rem;
+}
+
+.comment-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 app-user-post {

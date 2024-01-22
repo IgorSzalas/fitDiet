@@ -22,17 +22,21 @@ export class ChooseDishCardComponent implements OnInit {
   @Input() dishType?: string;
   @Input() dishCreator?: string;
   @Input() dishCaloricValue?: string;
+  @Input() dishNutrients?: any;
   @Input() dishImage?: string;
   @Input() dishDescription?: string;
 
-  dishData = {
-    dishName: this.dishName,
-    dishType: this.dishType,
-    dishCreator: this.dishCreator,
-    dishCaloricValue: this.dishCaloricValue,
-    dishImage: this.dishImage,
-    dishDescription: this.dishDescription,
-  };
+  dishData:
+    | {
+        dishName: string | undefined;
+        dishType: string | undefined;
+        dishCreator: string | undefined;
+        dishCaloricValue: string | undefined;
+        dishImage: string | undefined;
+        dishNutrients: any;
+        dishDescription: string | undefined;
+      }
+    | undefined;
 
   constructor(
     public dialogRef: MatDialogRef<ChooseDishCardComponent>,
@@ -41,15 +45,19 @@ export class ChooseDishCardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // console.log('dishName: ', this.dishName);
-    // console.log('dishType: ', this.dishType);
-    // console.log('dishCreator: ', this.dishCreator);
-    // console.log('dishCaloricValue: ', this.dishCaloricValue);
-    // console.log('dishImage: ', this.dishImage);
-    // console.log('dishDescription: ', this.dishDescription);
+    this.dishData = {
+      dishName: this.dishName,
+      dishType: this.dishType,
+      dishCreator: this.dishCreator,
+      dishCaloricValue: this.dishCaloricValue,
+      dishImage: this.dishImage,
+      dishNutrients: this.dishNutrients,
+      dishDescription: this.dishDescription,
+    };
   }
 
   openDishDetails() {
+    console.log('CHOOSE CARD DISH DATA: ', this.dishData);
     const openDishDetailsDialog = this.dialog.open(DishDetailsCardComponent, {
       data: { dishData: this.dishData },
       width: '600px',

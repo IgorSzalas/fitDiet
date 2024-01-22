@@ -1,5 +1,5 @@
 import { userData } from './../../services/authorization.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +13,9 @@ import { DeletePostComponent } from '../delete-post/delete-post.component';
 import { PostService } from '../../services/post.service';
 import { first } from 'rxjs';
 import { UserService } from '../../services/user.service';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import dayjs from 'dayjs';
+import { HotToastService } from '@ngneat/hot-toast';
 @Component({
   standalone: true,
   imports: [
@@ -24,6 +27,7 @@ import { UserService } from '../../services/user.service';
     MatFormFieldModule,
     MatInputModule,
     UserCommentComponent,
+    ReactiveFormsModule,
   ],
   selector: 'app-user-post',
   templateUrl: 'user-post.component.html',
@@ -33,17 +37,34 @@ export class UserPostComponent implements OnInit {
   constructor(
     private readonly dialog: MatDialog,
     private readonly postService: PostService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly form: FormBuilder,
+    private readonly toastService: HotToastService
   ) {
     this.fetchUserData();
   }
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
+
+  @Output() fetchPostData = new EventEmitter<any>();
+
   @Input() postID?: string;
   @Input() postTitle?: string;
   @Input() postCreator?: string;
   @Input() postContent?: string;
   @Input() postDate?: string;
-  @Input() postComments?: string;
-  @Input() postReactions?: string;
+  @Input() postComments?: any;
+
+  commentData:
+    | {
+        commentContent: string;
+        creationDate: string;
+        creatorUsername: string;
+        creatorID: string;
+      }
+    | undefined;
+
   userData: any;
 
   openDeletePostModal() {
@@ -54,8 +75,16 @@ export class UserPostComponent implements OnInit {
     addNewDishDialog.afterClosed().subscribe((result: any) => {
       console.log(result);
       console.log(this.postID);
-      this.postService.getAllPosts().subscribe();
+      this.fetchPostsData();
+      this.toastService.success('Dodano nowy post!', {
+        autoClose: true,
+        dismissible: true,
+      });
     });
+  }
+
+  fetchPostsData() {
+    this.fetchPostData.emit();
   }
 
   fetchUserData() {
@@ -70,13 +99,21 @@ export class UserPostComponent implements OnInit {
       });
   }
 
+  commentForm = this.form.group({
+    comment: ['', Validators.required],
+  });
+
   addNewComment(postID: string) {
+    this.commentData = {
+      commentContent: this.commentForm.controls['comment'].value!,
+      creationDate: dayjs().format('DD-MM-YYYY'),
+      creatorUsername: this.userData.firstName + ' ' + this.userData.surname,
+      creatorID: this.userData.id,
+    };
     this.postService
-      .addComment(this.userData.id, postID)
+      .addComment(postID, this.commentData)
       .subscribe((result: any) => {
         console.log(result);
       });
   }
-
-  ngOnInit() {}
 }

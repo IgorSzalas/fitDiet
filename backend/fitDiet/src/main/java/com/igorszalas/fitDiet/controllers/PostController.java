@@ -64,6 +64,7 @@ public class PostController {
             postService.addNewComment(postID, commentData);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception exception) {
+            System.out.println(exception.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

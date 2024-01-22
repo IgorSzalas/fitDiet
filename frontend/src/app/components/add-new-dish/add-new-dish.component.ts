@@ -122,7 +122,6 @@ export class AddNewDishComponent implements OnInit {
   ];
   myControl = new FormControl('');
   filteredOptions!: Observable<string[]>;
-  //inputData: any = this.formatDate(new Date());
   ngOnInit() {
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
@@ -133,12 +132,6 @@ export class AddNewDishComponent implements OnInit {
     this.fetchUserProposedDishes();
 
     console.log('this.dialogRef CALORIC VALUE: ', this.data);
-    // this.userData
-    //   .asObservable()
-    //   .pipe(filter<any>(Boolean))
-    //   .subscribe((value) => {
-    //     this.calculateRestCalories(value);
-    //   });
   }
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -257,7 +250,6 @@ export class AddNewDishComponent implements OnInit {
 
   addNewDishForm = this.form.group({
     title: ['', Validators.required],
-    // time: ['', Validators.required],
     dishDate: ['', Validators.required],
     dishRecipe: ['', Validators.required],
   });

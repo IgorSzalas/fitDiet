@@ -61,7 +61,7 @@ public class AuthorizationController {
         user.setIngredients(registerDTO.getIngredients());
         user.setFavouriteIngredients(registerDTO.getFavouriteIngredients());
         user.setDislikedIngredients(registerDTO.getDislikedIngredients());
-        user.setUserType(Collections.singletonList("USER"));
+        user.setUserType(registerDTO.getUserType());
         user.setDietOption(registerDTO.getDietOption());
         user.setPlannedDishes(registerDTO.getPlannedDishes());
         user.setUserWeight(registerDTO.getUserWeight());

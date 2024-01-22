@@ -1,7 +1,7 @@
 <div class="add-new-dish">
   <h1 mat-dialog-title>Dodaj kolejny posiłek</h1>
   <div mat-dialog-content>
-    <form [formGroup]="addNewDishForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="addNewDishForm">
       <mat-form-field>
         <mat-label>Nazwa posiłku</mat-label>
         <input
@@ -34,7 +34,8 @@
             [dishType]="dish.dishType"
             [dishCreator]="dish.creator"
             [dishDescription]="dish.description"
-            [dishCaloricValue]="dish.nutrients"
+            [dishNutrients]="dish.nutrients"
+            [dishCaloricValue]="dish.caloricValue"
             [dishImage]="dish.photo"
           ></app-choose-dish-card>
         </mat-radio-button>
@@ -66,12 +67,17 @@
 
         <mat-icon matSuffix fontIcon="today" />
       </mat-form-field>
-      <div mat-dialog-actions align="end">
+      <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Anuluj</button>
-        <button mat-button cdkFocusInitial type="submit" mat-dialog-close>
+        <button
+          mat-button
+          cdkFocusInitial
+          (click)="onSubmit()"
+          mat-dialog-close
+        >
           Dodaj
         </button>
-      </div>
+      </mat-dialog-actions>
     </form>
   </div>
 </div>

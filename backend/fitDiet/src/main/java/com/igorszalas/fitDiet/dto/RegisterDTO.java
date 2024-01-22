@@ -29,5 +29,5 @@ public class RegisterDTO {
     private String userGender;
     private int caloricDemand;
     private List<Dish> plannedDishes;
-
+    private String userType;
 }

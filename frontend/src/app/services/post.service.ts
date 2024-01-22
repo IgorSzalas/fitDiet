@@ -34,17 +34,19 @@ export class PostService {
     const userParams = new HttpParams()
       .set('userID', userID)
       .set('postID', postID);
-    return this.http.delete<any>('http://localhost:9000/posts/delete', {
+    return this.http.delete<any>('http://localhost:9000/posts/delete-comment', {
       params: userParams,
     });
   }
 
-  addComment(userID: string, postID: string): any {
-    const userParams = new HttpParams()
-      .set('userID', userID)
-      .set('postID', postID);
-    return this.http.delete<any>('http://localhost:9000/posts/delete', {
-      params: userParams,
-    });
+  addComment(postID: string, commentData: any): any {
+    const userParams = new HttpParams().set('postID', postID);
+    return this.http.post<any>(
+      'http://localhost:9000/posts/add-comment',
+      commentData,
+      {
+        params: userParams,
+      }
+    );
   }
 }

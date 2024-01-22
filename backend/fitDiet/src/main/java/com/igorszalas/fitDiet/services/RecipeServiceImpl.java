@@ -111,33 +111,62 @@ public class RecipeServiceImpl implements RecipeService {
             userDishesByUserPreferences = userFavoriteDishes;
         }
 
-        if (user.getDietOption().equals("glutenFreeOption")) {
-            List<Recipe> glutenDishes = userDishesByUserPreferences.stream()
-                    .filter(dish -> dish.getDishType().equals("gluten-free"))
-                    .collect(Collectors.toList());
+        // if (user.getDietOption().equals("glutenFreeOption")) {
+        // List<Recipe> glutenDishes = userDishesByUserPreferences.stream()
+        // .filter(dish -> dish.getDishType().equals("gluten-free"))
+        // .collect(Collectors.toList());
 
-            return glutenDishes;
-        }
-        if (user.getDietOption().equals("lactoseFreeOption")) {
-            List<Recipe> lactoseDishes = userDishesByUserPreferences.stream()
-                    .filter(dish -> dish.getDishType().equals("lactose-free"))
-                    .collect(Collectors.toList());
+        // return glutenDishes;
+        // }
+        // if (user.getDietOption().equals("lactoseFreeOption")) {
+        // List<Recipe> lactoseDishes = userDishesByUserPreferences.stream()
+        // .filter(dish -> dish.getDishType().equals("lactose-free"))
+        // .collect(Collectors.toList());
 
-            return lactoseDishes;
-        }
-        if (user.getDietOption().equals("vegetarianOption")) {
-            List<Recipe> vegetarianDishes = userDishesByUserPreferences.stream()
-                    .filter(dish -> dish.getDishType().equals("vegan"))
-                    .collect(Collectors.toList());
+        // return lactoseDishes;
+        // }
+        // if (user.getDietOption().equals("vegetarianOption")) {
+        // List<Recipe> vegetarianDishes = userDishesByUserPreferences.stream()
+        // .filter(dish -> dish.getDishType().equals("vegan"))
+        // .collect(Collectors.toList());
 
-            return vegetarianDishes;
-        }
-        if (user.getDietOption().equals("standardOption")) {
-            List<Recipe> meatDishes = userDishesByUserPreferences.stream()
-                    .filter(dish -> dish.getDishType().equals("standard"))
-                    .collect(Collectors.toList());
+        // return vegetarianDishes;
+        // }
+        // if (user.getDietOption().equals("standardOption")) {
+        // List<Recipe> meatDishes = userDishesByUserPreferences.stream()
+        // .filter(dish -> dish.getDishType().equals("standard"))
+        // .collect(Collectors.toList());
 
-            return meatDishes;
+        // return meatDishes;
+        // }
+
+        switch (user.getDietOption()) {
+            case "glutenFreeOption":
+                List<Recipe> glutenDishes = userDishesByUserPreferences.stream()
+                        .filter(dish -> dish.getDishType().equals("gluten-free"))
+                        .collect(Collectors.toList());
+
+                return glutenDishes;
+            case "lactoseFreeOption":
+                List<Recipe> lactoseDishes = userDishesByUserPreferences.stream()
+                        .filter(dish -> dish.getDishType().equals("lactose-free"))
+                        .collect(Collectors.toList());
+
+                return lactoseDishes;
+            case "vegetarianOption":
+                List<Recipe> vegetarianDishes = userDishesByUserPreferences.stream()
+                        .filter(dish -> dish.getDishType().equals("vegan"))
+                        .collect(Collectors.toList());
+
+                return vegetarianDishes;
+            case "standardOption":
+                List<Recipe> meatDishes = userDishesByUserPreferences.stream()
+                        .filter(dish -> dish.getDishType().equals("standard"))
+                        .collect(Collectors.toList());
+
+                return meatDishes;
+            default:
+                System.out.println("Unknown diet option!");
         }
 
         return userDishesByUserPreferences;

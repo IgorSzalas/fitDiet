@@ -1,22 +1,16 @@
 <mat-card class="example-card">
-  <!-- fxLayout fxLayoutAlign="space-between end"  -->
   <mat-card-header>
-    <!-- <div mat-card-avatar class="example-header-image"></div> -->
-
     <mat-card-title>{{ postTitle }}</mat-card-title>
     <mat-card-subtitle>{{ postCreator }}</mat-card-subtitle>
   </mat-card-header>
-  <!-- <img
-    mat-card-image
-    src="https://material.angular.io/assets/img/examples/shiba2.jpg"
-    alt="Photo of a Shiba Inu"
-  /> -->
   <mat-card-content>
     <h4>
       {{ postContent }}
     </h4>
   </mat-card-content>
   <mat-card-actions>
+    {{ postID }}
+    {{ userData.id }}
     @if(postID === userData.id){
     <button
       mat-icon-button
@@ -26,8 +20,6 @@
       <mat-icon>delete</mat-icon>
     </button>
     }
-
-    <h4>{{ postReactions }}</h4>
   </mat-card-actions>
 
   <mat-expansion-panel hideToggle>
@@ -36,17 +28,22 @@
     </mat-expansion-panel-header>
 
     <div class="comment-form-container">
-      <form class="comment-form">
+      <form class="comment-form" [formGroup]="commentForm">
         <mat-form-field>
           <mat-label>Komentarz</mat-label>
           <textarea
             maxlength="2000"
             matInput
+            formControlName="comment"
             placeholder="Tutaj napisz swój komentarz..."
           ></textarea>
         </mat-form-field>
       </form>
-      <button mat-raised-button color="primary" (click)="addNewComment(postID)">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="addNewComment(postID!)"
+      >
         Udostępnij
       </button>
     </div>
@@ -56,6 +53,19 @@
     <mat-expansion-panel-header>
       <mat-panel-title>Komentarze</mat-panel-title>
     </mat-expansion-panel-header>
-    <app-user-comment [postID]="postID"></app-user-comment>
+    @for(comment of postComments; track comment){
+    <app-user-comment
+      class="user-comment"
+      (fetchPostData)="fetchPostsData()"
+      [postID]="postID"
+      [userID]="this.userData.id"
+      [commentContent]="comment.commentContent"
+      [creationDate]="comment.creationDate"
+      [creatorUsername]="comment.creatorUsername"
+      [creatorID]="comment.creatorID"
+    ></app-user-comment>
+    }@empty {
+    <h1>Brak komentarzy</h1>
+    }
   </mat-expansion-panel>
 </mat-card>

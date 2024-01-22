@@ -7,7 +7,10 @@ form {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
 
+mat-radio-button {
+  margin: 1rem 0 1rem 0;
 }
 
 input[type="radio"] {

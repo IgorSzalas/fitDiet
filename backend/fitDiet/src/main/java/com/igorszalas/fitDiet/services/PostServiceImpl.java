@@ -1,5 +1,6 @@
 package com.igorszalas.fitDiet.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,6 @@ public class PostServiceImpl implements PostService {
         for (Comment comment : userComment) {
             if (comment.getCommentID().equals(commentID)) {
                 userComment.remove(comment);
-                break;
             }
         }
         postRepository.save(post);
@@ -32,6 +32,10 @@ public class PostServiceImpl implements PostService {
         Optional<Post> userPost = postRepository.findById(postID);
         Post post = userPost.get();
         List<Comment> userComment = post.getComments();
+
+        if (userComment == null)
+            userComment = new ArrayList<>();
+
         userComment.add(commentData);
         post.setComments(userComment);
         postRepository.save(post);

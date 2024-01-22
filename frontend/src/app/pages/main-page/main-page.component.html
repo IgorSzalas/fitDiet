@@ -24,38 +24,51 @@
     >
     </app-card-widget> -->
     <mat-card class="widget">
-      <mat-card-content>Simple card</mat-card-content>
-    </mat-card>
-    <mat-card class="widget">
-      <mat-card-content>Simple card</mat-card-content>
-    </mat-card>
-    <mat-card class="widget">
       <mat-card-header>
-        <h2>Twoje BMI</h2>
+        <h2>Twoje pomiary ilości wypitej wody</h2>
       </mat-card-header>
       <mat-card-content>
         <div class="diet-progress-page">
-          @if(userProgres){
+          <img src="../../../assets/water-glass.jpg" />
 
-          <div class="user-bmi-results">
-            <canvas
-              baseChart
-              [datasets]="tableBMIData"
-              [labels]="tablesLabels"
-              [options]="barChartOptions"
-              [legend]="barChartLegend"
-            ></canvas>
-            <!-- (chartHover)="chartHovered($event)" -->
-            <!-- (chartClick)="chartClicked($event)" -->
-          </div>
-          }
+          <mat-card-footer>
+            <button class="add-weight" mat-raised-button color="primary">
+              Przejdź do "Kontrola wypijanej wody"
+            </button>
+          </mat-card-footer>
         </div>
       </mat-card-content>
-      <mat-card-footer>
-        <button class="add-weight" mat-raised-button color="primary">
-          Przejdź do "Kontrola postępu diety"
-        </button>
-      </mat-card-footer>
+    </mat-card>
+    <mat-card class="widget">
+      <mat-card-header>
+        <h2>Twoje pomiary wagi i BMI</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="diet-progress-page">
+          <img src="../../../assets/pexels-pixabay-53404.jpg" />
+          <mat-card-footer>
+            <button class="add-weight" mat-raised-button color="primary">
+              Przejdź do "Kontrola postępu diety"
+            </button>
+          </mat-card-footer>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="widget">
+      <mat-card-header>
+        <h2>Twoje preferencje smakowe</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="diet-progress-page">
+          <img src="../../../assets/pexels-vanessa-loring-5966443.jpg" />
+        </div>
+
+        <mat-card-footer>
+          <button class="add-weight" mat-raised-button color="primary">
+            Przejdź do "Moje preferencje"
+          </button>
+        </mat-card-footer>
+      </mat-card-content>
     </mat-card>
     <mat-card class="widget">
       <mat-card-header>
@@ -63,22 +76,10 @@
       </mat-card-header>
       <mat-card-content>
         <div class="diet-progress-page">
-          @if(userProgres){
-          <div class="user-weight-results">
-            <canvas
-              baseChart
-              [datasets]="tableWaterData"
-              [labels]="tablesLabels"
-              [options]="barChartOptions"
-              [legend]="barChartLegend"
-            ></canvas>
-            <!-- (chartHover)="chartHovered($event)" -->
-            <!-- (chartClick)="chartClicked($event)" -->
-          </div>
-          }
+          <img src="../../../assets/pexels-picjumbocom-196650.jpg" />
           <mat-card-footer>
             <button class="add-weight" mat-raised-button color="primary">
-              Przejdź do "Kontrola wypijanej wody"
+              Przejdź do "Planowane posiłki"
             </button>
           </mat-card-footer>
         </div>

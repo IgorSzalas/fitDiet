@@ -13,14 +13,87 @@
 <br />
 <div class="social-panel-page">
   @for(post of posts; track post){
-  <app-user-post
-    [postID]="post.id"
-    [postCreator]="post.creatorID"
-    [postTitle]="post.title"
-    [postContent]="post.content"
-    [postDate]="post.date"
-    postComments
-  ></app-user-post>
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>{{ post.title }}</mat-card-title>
+      <mat-card-subtitle>{{ post.creatorID }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <h4>
+        {{ post.content }}
+      </h4>
+    </mat-card-content>
+    <mat-card-actions>
+      {{ post.id }}
+      @if(userData.id === post.creatorID || userData.userType == 'ADMIN'){
+      <button
+        mat-icon-button
+        aria-label="Example icon button with a vertical three dot icon"
+        (click)="deleteUserPost(post.id)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+      }
+    </mat-card-actions>
+
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Dodaj komentarz</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="comment-form-container">
+        <mat-form-field class="comment-form" [formGroup]="commentForm">
+          <mat-label>Komentarz</mat-label>
+          <textarea
+            maxlength="2000"
+            matInput
+            formControlName="comment"
+            placeholder="Tutaj napisz swój komentarz..."
+          ></textarea>
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="addUserComment(post.id)"
+        >
+          Udostępnij
+        </button>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel hideToggle opened>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Komentarze</mat-panel-title>
+      </mat-expansion-panel-header>
+      @for(comment of post.comments; track comment){
+      <mat-card class="example-card-comment">
+        <mat-card-header>
+          <mat-card-title-group>
+            <mat-card-title>{{ comment.creatorUsername }}</mat-card-title>
+            <mat-card-subtitle>{{ comment.creationDate }}</mat-card-subtitle>
+          </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-content> {{ comment.commentContent }} </mat-card-content>
+        @if(userData.id == comment.creatorID || userData.userType == 'ADMIN'){
+        <mat-card-footer align="end">
+          <button
+            mat-icon-button
+            aria-label="Example icon button with a vertical three dot icon"
+            (click)="deleteUserComment(post.id, comment.commentID)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-footer>
+        }
+      </mat-card>
+
+      }@empty {
+      <h1>Brak komentarzy</h1>
+      }
+    </mat-expansion-panel>
+  </mat-card>
+
   }@empty {
   <h1>Brak postów</h1>
   }

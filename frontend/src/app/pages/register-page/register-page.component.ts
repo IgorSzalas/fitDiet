@@ -108,7 +108,6 @@ export class RegisterPageComponent implements OnInit {
       dateOfBirth: this.firstFormGroup.controls['userAge'].value,
       userActivityMode: this.firstFormGroup.controls['userActivityMode'].value,
       userGender: this.firstFormGroup.controls['userGender'].value,
-      // userCaloricDemand: this.userEnergyDemand,
       userType: 'USER',
       favouriteIngredients: this.favouriteIngredients,
       dislikedIngredients: this.dislikedIngredients,
@@ -157,15 +156,6 @@ export class RegisterPageComponent implements OnInit {
     return this.userBMI;
   }
 
-  // uploadProfilePhoto(event: any) {
-  //   const file = event.target.files[0];
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(file);
-  //   reader.onload = () => {
-  //     console.log(reader.result);
-  //   };
-  // }
-
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
@@ -186,9 +176,9 @@ export class RegisterPageComponent implements OnInit {
   firstFormGroup = this.formBuilder.group({
     firstName: ['', Validators.required],
     surname: ['', Validators.required],
-    email: ['', Validators.required],
-    password: ['', Validators.required],
-    repeatPassword: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(5)]],
+    repeatPassword: ['', [Validators.required, Validators.minLength(5)]],
     userAge: ['', Validators.required],
     userHeight: ['', Validators.required],
     userWeight: ['', Validators.required],

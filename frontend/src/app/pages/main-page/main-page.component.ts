@@ -1,3 +1,4 @@
+import { DietProgressPageComponent } from './../diet-progress-page/diet-progress-page.component';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardWidgetComponent } from '../../components/card-widget/card-widget.component';
@@ -9,6 +10,7 @@ import { first } from 'rxjs';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { NgChartsModule } from 'ng2-charts';
+import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'app-main-page',
@@ -29,11 +31,16 @@ import { NgChartsModule } from 'ng2-charts';
 export class MainPageComponent implements OnInit {
   constructor(
     private readonly dialog: MatDialog,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly app: AppComponent
   ) {}
 
   ngOnInit() {
     this.fetchUser();
+    if (!localStorage.getItem('visualMode')) {
+      localStorage.setItem('visualMode', 'light');
+    }
+    this.app.isAdministratorCheck();
     console.log('onInit');
   }
 
@@ -45,23 +52,6 @@ export class MainPageComponent implements OnInit {
   userProgres: any = [];
 
   tablesLabels: any = [];
-
-  tableWaterData: any = [
-    { data: [], label: 'Ilość wypitej wody (w mililitrach)' },
-  ];
-
-  public barChartType: string = 'bar';
-
-  public barChartData: any[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-    // { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
-  ];
-
-  tableWeightData: any = [{ data: [], label: 'Waga' }];
-
-  tableBMIData: any = [{ data: [], label: 'BMI' }];
-
-  nextDish: string = 'kotlet';
 
   openAddNewWaterMeasurementDialog() {
     throw new Error('Method not implemented.');
@@ -81,13 +71,6 @@ export class MainPageComponent implements OnInit {
           this.tablesLabels.push(element.date);
           console.log(element);
         });
-
-        this.userProgres.map((element: any) => {
-          this.tableWaterData[0].data.push(element.amountWaterConsumed);
-          console.log(element);
-        });
-
-        console.log('this.tableWeightData ', this.tableWaterData);
       });
   }
 }

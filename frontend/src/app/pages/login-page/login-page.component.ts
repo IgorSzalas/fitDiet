@@ -6,6 +6,8 @@ import {
   ReactiveFormsModule,
   FormGroup,
   FormControl,
+  FormBuilder,
+  Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -14,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router, RouterModule } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import * as jose from 'jose';
+import { AppComponent } from '../../app.component';
 
 interface accessToken {
   accessToken: string;
@@ -38,53 +41,21 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private readonly authorizationService: AuthorizationService,
     private readonly router: Router,
-    private readonly toastService: HotToastService
+    private readonly toastService: HotToastService,
+    private readonly form: FormBuilder,
+    private readonly app: AppComponent
   ) {}
 
-  loginForm = new FormGroup({
-    email: new FormControl(),
-    password: new FormControl(),
+  loginForm = this.form.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
   });
 
   ngOnInit() {}
 
-  // login() {
-  //   if (
-  //     this.loginForm.controls.email.value !== ' ' &&
-  //     this.loginForm.controls.password.value !== ' '
-  //   ) {
-  //     this.authorizationService.login(
-  //       this.loginForm.controls.email.value,
-  //       this.loginForm.controls.password.value
-  //     )
-  //     .pipe({
-  //       next: (token: accessToken) => {
-  //         this.parseJWT(token.accessToken);
-  //         sessionStorage.setItem('authorizationToken', token.accessToken);
-  //         console.log(sessionStorage.getItem('authorizationToken'));
-  //         this.toastService.success('Logowanie udane!', {
-  //           autoClose: true,
-  //           dismissible: true,
-  //         }),
-  //           this.router.navigateByUrl('/');
-  //       },
-  //       error: (error: string) =>
-  //         this.toastService.error('Logowanie nieudane!', {
-  //           autoClose: true,
-  //           dismissible: true,
-  //         }),
-  //     });
-  // } else {
-  //   this.toastService.warning(
-  //     'Przed zalogowaniem sprawdź poprawność danych!',
-  //     {
-  //       autoClose: true,
-  //       dismissible: true,
-  //     }
-  //   );
-  // }
-
-  //   }
+  onSubmit() {
+    this.login();
+  }
 
   parseJWT(token: string) {
     if (token) {
@@ -98,13 +69,13 @@ export class LoginPageComponent implements OnInit {
 
   login() {
     if (
-      this.loginForm.controls.email.value !== ' ' &&
-      this.loginForm.controls.password.value !== ' '
+      this.loginForm.controls['email'].value !== ' ' &&
+      this.loginForm.controls['password'].value !== ' '
     ) {
       this.authorizationService
         .loginToSession(
-          this.loginForm.controls.email.value,
-          this.loginForm.controls.password.value
+          this.loginForm.controls['email'].value!,
+          this.loginForm.controls['password'].value!
         )
         .subscribe({
           next: (token: accessToken) => {
@@ -134,9 +105,5 @@ export class LoginPageComponent implements OnInit {
         dismissible: true,
       });
     }
-  }
-
-  onSubmit() {
-    this.login();
   }
 }

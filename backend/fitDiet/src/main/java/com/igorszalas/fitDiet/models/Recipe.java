@@ -34,7 +34,7 @@ public class Recipe {
 
     private List<String> ingredients;
 
-    private List<String> nutrients;
+    private List<Nutrient> nutrients;
 
     private String photo;
 

@@ -3,7 +3,12 @@ import {
   AuthorizationService,
   userData,
 } from './services/authorization.service';
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ActivatedRoute,
@@ -25,6 +30,7 @@ import { DatePipe } from '@angular/common';
 import * as jose from 'jose';
 import { first, timer } from 'rxjs';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -40,7 +46,9 @@ import { OverlayContainer } from '@angular/cdk/overlay';
     MatCardModule,
     MatMenuModule,
     RouterModule,
+    MatProgressSpinnerModule,
   ],
+  changeDetection: ChangeDetectionStrategy.Default,
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -56,6 +64,9 @@ export class AppComponent implements OnInit {
   visualmode: any;
   userData: any;
   isAdministrator: boolean | undefined;
+  userType: any;
+  loading: boolean | undefined;
+  token: any;
   userRole: any;
 
   constructor(
@@ -63,12 +74,14 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private overlay: OverlayContainer,
     private authorizationService: AuthorizationService,
-    private userService: UserService
+    private userService: UserService,
+    private cdr: ChangeDetectorRef
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.actualUrl = event.urlAfterRedirects;
         console.log('url is', this.actualUrl);
+        this.opened = false;
         if (
           this.actualUrl?.includes('zarejestruj-sie') ||
           this.actualUrl?.includes('zaloguj-sie')
@@ -107,6 +120,7 @@ export class AppComponent implements OnInit {
     this.router.navigateByUrl('/zaloguj-sie');
     this.isAdministratorCheck();
     this.opened = true;
+    this.cdr.detectChanges();
   }
 
   changeVisualMode() {
@@ -131,44 +145,54 @@ export class AppComponent implements OnInit {
     console.log(this.dailyStartWaterDemand);
   }
 
+  public _reload = true;
+
+  private reload() {
+    setTimeout(() => (this._reload = false));
+    setTimeout(() => (this._reload = true));
+  }
+
   ngOnInit(): void {
-    timer(0, 1000).subscribe((date) => {
-      this.date = new Date();
+    this.fetchUserData();
+    console.log('ON INIT TEST');
+    // localStorage.setItem('visualMode', 'light');
+    this.authorizationService.authenticatedState.subscribe((value) => {
+      console.log(value);
+      try {
+        this.parseJWT(value?.accessToken!);
+      } catch (e) {
+        console.error(e);
+      }
     });
-    console.log(this.parseJWT(sessionStorage.getItem('authorizationToken')!));
+
     this.isAdministratorCheck();
   }
 
   parseJWT(token: string) {
+    console.log(token);
     if (token) {
       const claims: any = jose.decodeJwt(token);
-      console.log(claims);
-      console.log(claims['Role']);
       this.userRole = claims['Role'];
-      this.userRole = JSON.parse(this.userRole[0]);
-      this.userRole = this.userRole.userTypeName;
+      // this.userRole = JSON.parse(this.userRole);
+      console.log(this.userRole);
+      //this.userRole = this.userRole.userTypeName;
       localStorage.setItem('token', JSON.stringify(claims));
     } else {
       throw new Error("Token hasn't been decoded");
     }
   }
 
-  isAdministratorCheck() {
-    if (this.userRole === 'ADMIN') {
+  public isAdministratorCheck() {
+    if (this.userData.userType === 'ADMIN') {
       this.isAdministrator = true;
-      console.log(this.isAdministrator);
+      console.log('this.isAdministrator ', this.isAdministrator);
     } else {
       this.isAdministrator = false;
+
+      console.log('this.isAdministrator ', this.isAdministrator);
       console.log(this.userRole);
     }
   }
-
-  // isAdministrator(): void {
-  //   let authorizationToken = this.parseJWT(
-  //     sessionStorage.getItem('authorizationToken')!
-  //   );
-  //   console.log(authorizationToken);
-  // }
 
   fetchUserData() {
     const token = JSON.parse(localStorage.getItem('token')!);
@@ -179,6 +203,46 @@ export class AppComponent implements OnInit {
       .subscribe((userData: any) => {
         this.userData = userData;
         console.log('userData: ', userData);
+        this.userType = this.userData.userType;
+        this.loading = false;
       });
+  }
+
+  get menuPaths() {
+    let paths: any[] = [
+      {
+        name: 'Strona Główna',
+        path: '',
+      },
+      {
+        name: 'Planowane posiłki',
+        path: 'planowane-posilki',
+      },
+      {
+        name: 'Moje preferencje',
+        path: 'moje-preferencje',
+      },
+      {
+        name: 'Kontrola postępu diety',
+        path: 'progres-diety',
+      },
+      {
+        name: 'Kontrola wypijanej wody',
+        path: 'wypijana-woda',
+      },
+      {
+        name: 'Panel społecznościowy',
+        path: 'panel-spolecznosciowy',
+      },
+    ];
+
+    if (this.userRole === 'ADMIN') {
+      paths.push({
+        name: 'Zarządzaj użytkownikami',
+        path: 'zarzadzaj-uzytkownikami',
+      });
+    }
+
+    return paths;
   }
 }

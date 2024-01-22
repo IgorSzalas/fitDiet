@@ -70,7 +70,7 @@ export class AuthorizationService {
       this.authenticatedState.next({
         payload: userData,
         expiresAt: JSON.parse(localStorage.getItem('expiresAt')!),
-        accessToken: localStorage.getItem('token')!,
+        accessToken: sessionStorage.getItem('authorizationToken')!,
       });
     }
   }
@@ -116,10 +116,6 @@ export class AuthorizationService {
       email: userData.email,
       password: userData.password,
       userType: userData.userType,
-      // dishesWithGluten: userData.dishesWithGluten,
-      // dishesWithMeat: userData.dishesWithMeat,
-      // dishesWithLactose: userData.dishesWithLactose,
-      // userCaloricDemand: userData.userCaloricDemand,
       dateOfBirth: userData.dateOfBirth,
       dietOption: userData.dietOption,
       ingredients: userData.ingredients,
@@ -154,8 +150,9 @@ export class AuthorizationService {
     payload: any;
   }) {
     let tokenJWT = jose.decodeJwt(result.accessToken);
-    console.log(result.accessToken);
+    console.log(result);
     this.authenticatedState.next(result);
+    console.log(this.authenticatedState.value);
     localStorage.setItem('token', result.accessToken);
     localStorage.setItem('expiresAt', tokenJWT.exp!.toString());
     localStorage.setItem('user', JSON.stringify(result.payload));
@@ -168,6 +165,7 @@ export class AuthorizationService {
     sessionStorage.removeItem('authorizationToken');
     sessionStorage.removeItem('userRole');
     this.router.navigateByUrl('/');
+    this.authenticatedState.next(undefined);
   }
 
   userIsLogged() {
