@@ -31,6 +31,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { RecipeService } from '../../services/recipe.service';
+import JSConfetti from 'js-confetti';
 
 @Component({
   selector: 'app-register-page',
@@ -119,6 +120,7 @@ export class RegisterPageComponent implements OnInit {
     this.authorizationService.register(this.userData).subscribe((register) => {
       console.log(register);
     });
+    this.confettiDrop();
   }
 
   fetchAllIngredients() {
@@ -141,6 +143,12 @@ export class RegisterPageComponent implements OnInit {
     }
 
     this.userEnergyDemand * liveMode;
+  }
+
+  confettiDrop() {
+    const jsConfetti = new JSConfetti();
+
+    jsConfetti.addConfetti({ confettiRadius: 6, confettiNumber: 500 });
   }
 
   calculateBMI(height: number, weight: number) {

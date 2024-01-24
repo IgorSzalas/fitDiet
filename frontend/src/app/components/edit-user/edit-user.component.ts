@@ -72,15 +72,17 @@ export class EditUserComponent implements OnInit {
     this.userService
       .getUserDataByID(userID)
       .pipe(first())
-      .subscribe((userData: any) => {
-        this.userData = userData;
-        console.log(userData);
-        this.editUserForm.setValue({
-          name: this.userData.firstName,
-          surname: this.userData.surname,
-          email: this.userData.email,
-          userType: this.userData.userType,
-        });
+      .subscribe({
+        next:(userData: any) => {this.userData = userData;
+          console.log(userData);
+          this.editUserForm.setValue({
+            name: this.userData.firstName,
+            surname: this.userData.surname,
+            email: this.userData.email,
+            userType: this.userData.userType,
+          });},
+
+
       });
   }
 

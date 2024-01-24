@@ -4,7 +4,7 @@
     <form [formGroup]="waterForm">
       <mat-form-field>
         <mat-label>Dodaj swoje spożycie wody</mat-label>
-        <input matInput formControlName="drunkWater" />
+        <input type="number" matInput formControlName="drunkWater" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Data</mat-label>
@@ -14,7 +14,7 @@
   </div>
   <div mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Anuluj</button>
-    <button mat-button mat-dialog-close (click)="addNewWaterMeasurment()">
+    <button class="add-water-measurment" mat-button mat-dialog-close (click)="addNewWaterMeasurment()">
       Dodaj
     </button>
   </div>

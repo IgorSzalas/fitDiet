@@ -49,28 +49,18 @@ export class CaloriesService {
     activityMode: any
   ) {
     let today = dayjs().format('YYYY');
-    console.log('today: ', today);
-
     let userDateOfBirth = dayjs(dateOfBirth).format('YYYY');
-    console.log(userDateOfBirth);
     let actualAge = parseInt(today) - parseInt(userDateOfBirth);
-
-    console.log(gender);
     let Mifflin = 0;
     if (gender === 'men') {
-      console.log('MEN');
-      Mifflin = 9.99 * weight + 6.25 * height - 4.92 * actualAge + 5;
+      Mifflin = 10 * weight + 6.25 * height - 5 * actualAge + 5;
       Mifflin = Mifflin * activityMode;
       Mifflin = Math.floor(Mifflin);
-      console.log('Men Mifflin: ', Mifflin);
     } else if (gender === 'women') {
-      console.log('WOMEN');
-      Mifflin = 9.99 * weight + 6.25 * height - 4.92 * actualAge - 161;
+      Mifflin = 10 * weight + 6.25 * height - 5 * actualAge - 161;
       Mifflin = Mifflin * activityMode;
       Mifflin = Math.floor(Mifflin);
-      console.log('Women Mifflin : ', Mifflin);
     }
-    console.log('Mifflin ', Mifflin);
     return Mifflin;
   }
 }
