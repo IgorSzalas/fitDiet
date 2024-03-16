@@ -51,7 +51,6 @@ export class PlannedDishesPageComponent implements OnInit {
   ngOnInit() {
     this.fetchUserData();
     this.changeDetector.detectChanges();
-
   }
   userData: any;
   events: any = [];
@@ -94,7 +93,7 @@ export class PlannedDishesPageComponent implements OnInit {
     editDishDialog.afterClosed().subscribe((result) => {
       console.log(result);
       this.fetchUserData();
-      window.location.reload();
+      // window.location.reload();
     });
   }
 

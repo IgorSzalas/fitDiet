@@ -26,11 +26,11 @@ export class DeleteCommentComponent implements OnInit {
     console.log(this.data);
   }
 
-  deleteComment() {
-    this.postService
-      .deleteComment(this.data.userID, this.data.postID)
-      .subscribe((result: any) => {
-        console.log(result);
-      });
-  }
+  // deleteComment() {
+  //   this.postService
+  //     .deleteComment(this.data.userID, this.data.postID)
+  //     .subscribe((result: any) => {
+  //       console.log(result);
+  //     });
+  // }
 }

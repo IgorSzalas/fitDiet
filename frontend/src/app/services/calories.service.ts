@@ -15,7 +15,7 @@ export class CaloriesService {
     date: any,
     selectedDishCalories: any
   ) {
-    let userMifflin = this.calculateMifflinValue(
+    let CPM = this.calculateMifflinValue(
       userData.userHeight,
       userData.userWeight,
       userData.userGender,
@@ -26,18 +26,13 @@ export class CaloriesService {
     if (plannedDishes.length > 0) {
       plannedDishes.forEach((element: any) => {
         let dishDate = dayjs(date).format('DD-MM-YYYY');
-        console.log('dishDate: ', dishDate);
         let elementDate = dayjs(element.dateOfConsumption).format('DD-MM-YYYY');
-        console.log('testowanie dat: ', date, elementDate);
-        console.log(date);
         if (dishDate == elementDate) {
-          console.log(element, ' PASS ');
-          userMifflin -= element.dishRecipe.caloricValue;
+          CPM -= element.dishRecipe.caloricValue;
         }
       });
     }
-    console.log('selectedDishCalories ', selectedDishCalories);
-    let restCalories = userMifflin - selectedDishCalories;
+    let restCalories = CPM - selectedDishCalories;
     return restCalories;
   }
 
@@ -53,13 +48,24 @@ export class CaloriesService {
     let actualAge = parseInt(today) - parseInt(userDateOfBirth);
     let Mifflin = 0;
     if (gender === 'men') {
+      console.log(
+        'height: ' + height,
+        'weight: ' + weight,
+        'gender: ' + gender,
+        'actualAge: ' + actualAge,
+        'activityMode ' + activityMode
+      );
       Mifflin = 10 * weight + 6.25 * height - 5 * actualAge + 5;
+      console.log('test1: ', Mifflin);
       Mifflin = Mifflin * activityMode;
       Mifflin = Math.floor(Mifflin);
+      console.log('test: ', Mifflin);
     } else if (gender === 'women') {
       Mifflin = 10 * weight + 6.25 * height - 5 * actualAge - 161;
+      console.log('test1: ', Mifflin);
       Mifflin = Mifflin * activityMode;
       Mifflin = Math.floor(Mifflin);
+      console.log('test: ', Mifflin);
     }
     return Mifflin;
   }

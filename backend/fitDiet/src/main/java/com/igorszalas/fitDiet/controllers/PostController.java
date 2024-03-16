@@ -10,7 +10,6 @@ import com.igorszalas.fitDiet.repositories.PostRepository;
 import com.igorszalas.fitDiet.services.PostServiceImpl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

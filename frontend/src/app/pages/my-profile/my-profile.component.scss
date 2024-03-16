@@ -5,8 +5,16 @@ form {
   flex-direction: column;
 }
 
-mat-card {
-  width: 40%;
+mat-card-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.example-form{
+  display: flex;
+  justify-content: center;
 }
 
 .my-profile {

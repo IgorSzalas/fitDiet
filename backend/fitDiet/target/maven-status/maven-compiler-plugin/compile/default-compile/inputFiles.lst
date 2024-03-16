@@ -13,8 +13,10 @@ C:\Users\szala\Desktop\fitDiet (1)\fitDiet\backend\fitDiet\src\main\java\com\igo
 C:\Users\szala\Desktop\fitDiet (1)\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\repositories\RecipeRepository.java
 C:\Users\szala\Desktop\fitDiet (1)\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\security\JWTGenerator.java
 C:\Users\szala\Desktop\fitDiet (1)\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\services\RecipeServiceImpl.java
+C:\Users\szala\Desktop\fitDiet (1)\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\services\DishService.java
 C:\Users\szala\Desktop\fitDiet (1)\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\models\Post.java
 C:\Users\szala\Desktop\fitDiet (1)\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\repositories\UserRepository.java
+C:\Users\szala\Desktop\fitDiet (1)\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\services\DishServiceImpl.java
 C:\Users\szala\Desktop\fitDiet (1)\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\services\UserServiceImpl.java
 C:\Users\szala\Desktop\fitDiet (1)\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\models\Nutrient.java
 C:\Users\szala\Desktop\fitDiet (1)\fitDiet\backend\fitDiet\src\main\java\com\igorszalas\fitDiet\security\SecurityConfiguration.java

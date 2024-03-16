@@ -11,6 +11,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { NgChartsModule } from 'ng2-charts';
 import { AppComponent } from '../../app.component';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
@@ -24,12 +25,14 @@ import { AppComponent } from '../../app.component';
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
+    RouterModule,
   ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss',
 })
 export class MainPageComponent implements OnInit {
   constructor(
+    private readonly router: Router,
     private readonly dialog: MatDialog,
     private readonly userService: UserService,
     private readonly app: AppComponent

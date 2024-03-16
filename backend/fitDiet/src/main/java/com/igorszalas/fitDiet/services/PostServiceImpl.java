@@ -19,13 +19,20 @@ public class PostServiceImpl implements PostService {
     public void deleteCommentByID(String postID, String commentID) {
         Optional<Post> userPost = postRepository.findById(postID);
         Post post = userPost.get();
-        List<Comment> userComment = post.getComments();
-        for (Comment comment : userComment) {
+        List<Comment> userComments = post.getComments();
+        for (Comment comment : userComments) {
             if (comment.getCommentID().equals(commentID)) {
-                userComment.remove(comment);
+                System.out.println("commentID ------> " + commentID);
+                System.out.println("comment.getCommentID() ------> " + comment.getCommentID());
+                userComments.remove(comment);
+                System.out.println("AFTER REMOVE");
             }
         }
+        System.out.println("AFTER FOR LOOP");
+        post.setComments(userComments);
+        System.out.println("AFTER SET COMMENT");
         postRepository.save(post);
+        System.out.println("AFTER SAVING");
     }
 
     public void addNewComment(String postID, Comment commentData) {

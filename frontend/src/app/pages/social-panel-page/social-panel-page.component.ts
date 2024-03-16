@@ -85,6 +85,8 @@ export class SocialPanelPageComponent implements OnInit {
   }
 
   deleteUserComment(postID: string, commentID: string) {
+    console.log('CommentID: ' + commentID);
+    
     return this.postService
       .deleteComment(postID, commentID)
       .pipe(first())
@@ -121,12 +123,15 @@ export class SocialPanelPageComponent implements OnInit {
   }
 
   addUserComment(postID: string) {
+    let commentID =  (Math.random() + 30).toString(36).substring(2)+ (Math.random() + 30).toString(36).substring(2);
     const commentData = {
+      commentID: commentID,
       creatorID: this.userData.id,
       creatorUsername: this.userData.firstName + ' ' + this.userData.surname,
       commentContent: this.commentForm.controls['comment'].value,
       creationDate: dayjs().format('DD-MM-YYYY'),
     };
+    console.log(commentData.commentID);
     return this.postService
       .addComment(postID, commentData)
       .pipe(first())

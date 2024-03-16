@@ -25,14 +25,19 @@
     </app-card-widget> -->
     <mat-card class="widget">
       <mat-card-header>
-        <h2>Twoje pomiary ilości wypitej wody</h2>
+        <h2>Pomiary ilości wypitej wody</h2>
       </mat-card-header>
       <mat-card-content>
         <div class="diet-progress-page">
           <img src="../../../assets/water-glass.jpg" />
 
           <mat-card-footer>
-            <button class="add-weight" mat-raised-button color="primary">
+            <button
+              class="add-weight"
+              mat-raised-button
+              color="primary"
+              [routerLink]="'wypijana-woda'"
+            >
               Przejdź do "Kontrola wypijanej wody"
             </button>
           </mat-card-footer>
@@ -41,13 +46,18 @@
     </mat-card>
     <mat-card class="widget">
       <mat-card-header>
-        <h2>Twoje pomiary wagi i BMI</h2>
+        <h2>Pomiary wagi i BMI</h2>
       </mat-card-header>
       <mat-card-content>
         <div class="diet-progress-page">
           <img src="../../../assets/pexels-pixabay-53404.jpg" />
           <mat-card-footer>
-            <button class="add-weight" mat-raised-button color="primary">
+            <button
+              class="add-weight"
+              mat-raised-button
+              color="primary"
+              [routerLink]="'progres-diety'"
+            >
               Przejdź do "Kontrola postępu diety"
             </button>
           </mat-card-footer>
@@ -56,7 +66,7 @@
     </mat-card>
     <mat-card class="widget">
       <mat-card-header>
-        <h2>Twoje preferencje smakowe</h2>
+        <h2>Preferencje smakowe</h2>
       </mat-card-header>
       <mat-card-content>
         <div class="diet-progress-page">
@@ -64,7 +74,12 @@
         </div>
 
         <mat-card-footer>
-          <button class="add-weight" mat-raised-button color="primary">
+          <button
+            class="add-weight"
+            mat-raised-button
+            color="primary"
+            [routerLink]="'moje-preferencje'"
+          >
             Przejdź do "Moje preferencje"
           </button>
         </mat-card-footer>
@@ -72,13 +87,18 @@
     </mat-card>
     <mat-card class="widget">
       <mat-card-header>
-        <h2>Twoje pomiary ilości wypitej wody</h2>
+        <h2>Zaplanowane posiłki</h2>
       </mat-card-header>
       <mat-card-content>
         <div class="diet-progress-page">
           <img src="../../../assets/pexels-picjumbocom-196650.jpg" />
           <mat-card-footer>
-            <button class="add-weight" mat-raised-button color="primary">
+            <button
+              class="add-weight"
+              mat-raised-button
+              color="primary"
+              [routerLink]="'planowane-posilki'"
+            >
               Przejdź do "Planowane posiłki"
             </button>
           </mat-card-footer>

@@ -75,7 +75,7 @@ export class AddNewPostComponent implements OnInit {
     const postData = {
       title: this.addNewPostForm.controls['title'].value,
       content: this.addNewPostForm.controls['content'].value,
-      creatorID: this.userData.id,
+      creatorID: this.userData.firstName + " " +this.userData.surname,
     };
     this.postService
       .addNewPost(this.userData.id, postData)

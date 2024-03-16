@@ -30,10 +30,11 @@ export class PostService {
     });
   }
 
-  deleteComment(userID: string, postID: string): any {
+  deleteComment(postID: string, commentID: string): any {
+    console.log("PostID: " + postID)
     const userParams = new HttpParams()
-      .set('userID', userID)
-      .set('postID', postID);
+      .set('postID', postID)
+      .set('commentID', commentID);
     return this.http.delete<any>('http://localhost:9000/posts/delete-comment', {
       params: userParams,
     });

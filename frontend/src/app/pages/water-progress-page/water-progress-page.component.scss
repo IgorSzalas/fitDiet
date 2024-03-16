@@ -15,13 +15,17 @@
 
 .diet-progress-text {
   margin: 3rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .add-weight {
   margin: 3rem 0 0 0;
 }
 
-canvas{
+canvas {
   margin: 0 0 2rem 0;
 }
 
@@ -40,4 +44,11 @@ canvas{
 
 h1 {
   margin: 20px;
+}
+
+ol {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: left;
 }
